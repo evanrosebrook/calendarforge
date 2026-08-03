@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-
-type Metric = { name: string; value: number; path: string };
-
-function report(metric: Metric) {
-  const body = JSON.stringify(metric);
-  if (navigator.sendBeacon) navigator.sendBeacon("/api/telemetry", body);
-}
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { referringSource, reportTelemetry } from "@/lib/telemetry-client";
 
 export function PerformanceReporter() {
+  const pathname = usePathname();
+  const previousPath = useRef<string | null>(null);
+
+  useEffect(() => {
+    reportTelemetry("page_view", { source: previousPath.current ? "internal" : referringSource() });
+    previousPath.current = pathname;
+  }, [pathname]);
+
   useEffect(() => {
     if (!("PerformanceObserver" in window)) return;
     let cls = 0;
@@ -17,7 +20,7 @@ export function PerformanceReporter() {
     try {
       const paint = new PerformanceObserver((list) => {
         const last = list.getEntries().at(-1);
-        if (last) report({ name: "lcp", value: Math.round(last.startTime), path: location.pathname });
+        if (last) reportTelemetry("lcp", { value: Math.round(last.startTime) });
       });
       paint.observe({ type: "largest-contentful-paint", buffered: true });
       observers.push(paint);
@@ -33,7 +36,7 @@ export function PerformanceReporter() {
     } catch {
       return;
     }
-    const flush = () => report({ name: "cls", value: Number(cls.toFixed(4)), path: location.pathname });
+    const flush = () => reportTelemetry("cls", { value: Number(cls.toFixed(4)) });
     addEventListener("pagehide", flush);
     return () => {
       removeEventListener("pagehide", flush);

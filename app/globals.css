@@ -113,6 +113,7 @@ button, select { cursor: pointer; }
 .field { margin-top: 11px; }
 .field label { display: block; color: var(--muted); font-size: 11px; margin-bottom: 5px; font-weight: 700; }
 .field input, .field select { width: 100%; height: 37px; border: 1px solid #c6c5be; border-radius: 7px; background: var(--paper); padding: 0 10px; color: var(--ink); font-size: 12px; }
+.field-help { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; }
 .toolbar-actions { display: grid; gap: 8px; margin-top: 17px; }
 .toolbar-actions .button { width: 100%; }
 .toolbar-help { color: var(--muted); font-size: 10px; line-height: 1.4; text-align: center; margin: 10px 0 0; }
@@ -138,6 +139,7 @@ button, select { cursor: pointer; }
 .calendar-table .weekend:not(.outside) { background: #f4f1e9; }
 .calendar-sheet.no-weekends .calendar-table .weekend:not(.outside) { background: transparent; }
 .day-number { font-size: 13px; font-weight: 750; font-variant-numeric: tabular-nums; }
+.day-note { margin: 10px 0 0; color: var(--ink); font-size: 9px; line-height: 1.3; overflow-wrap: anywhere; white-space: pre-wrap; }
 .holiday-list { list-style: none; padding: 0; margin: 7px 0 0; }
 .holiday-list li { color: var(--accent-dark); font-size: 9px; line-height: 1.25; font-weight: 700; }
 .holiday-list li::before { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); margin: 0 4px 2px 0; }
@@ -173,16 +175,151 @@ button, select { cursor: pointer; }
 .error-page h1 { font-family: Georgia, serif; font-size: 54px; font-weight: 500; margin: 0 0 10px; }
 .error-page p { color: var(--muted); }
 
+.content-page { padding: 62px 0 86px; }
+.content-shell { max-width: 960px; }
+.content-shell > h1, .content-title-row h1 { margin: 9px 0 0; font-family: Georgia, serif; font-size: clamp(42px, 6vw, 65px); line-height: 1; letter-spacing: -.05em; font-weight: 500; }
+.content-intro { max-width: 720px; margin: 22px 0 34px; color: var(--muted); font-size: 18px; line-height: 1.65; }
+.country-card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.country-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; background: var(--paper); }
+.country-card > span { color: var(--accent-dark); font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.country-card h2 { margin: 10px 0; font-family: Georgia, serif; font-size: 32px; font-weight: 500; letter-spacing: -.035em; }
+.country-card p { color: var(--muted); line-height: 1.5; }
+.text-link { color: var(--accent-dark); font-size: 14px; font-weight: 800; }
+.content-note { margin-top: 28px; border-left: 3px solid var(--accent); padding: 17px 20px; background: var(--soft); }
+.content-note strong { font-size: 13px; }
+.content-note p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.breadcrumb { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 28px; color: var(--muted); font-size: 12px; }
+.breadcrumb a:hover { color: var(--accent-dark); }
+.content-title-row { display: flex; justify-content: space-between; align-items: end; gap: 24px; }
+.content-title-row .button { flex: none; }
+.content-title-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.year-switcher { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin: 20px 0 12px; font-size: 13px; font-weight: 750; }
+.year-switcher span { color: var(--muted); }
+.year-switcher a:last-child { justify-self: end; }
+.year-switcher a:hover { color: var(--accent-dark); }
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--paper); }
+.holiday-table { width: 100%; border-collapse: collapse; min-width: 690px; }
+.holiday-table th { padding: 13px 16px; border-bottom: 2px solid var(--ink); color: var(--muted); text-align: left; text-transform: uppercase; letter-spacing: .1em; font-size: 10px; }
+.holiday-table td { padding: 15px 16px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.holiday-table tr:last-child td { border-bottom: 0; }
+.holiday-table td:nth-child(3) { font-weight: 750; }
+.holiday-table td:nth-child(3) a:hover { color: var(--accent-dark); }
+.category-tag { display: inline-flex; border: 1px solid var(--line); border-radius: 100px; padding: 5px 8px; color: var(--muted); background: var(--canvas); white-space: nowrap; font-size: 10px; font-weight: 750; }
+.source-copy { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.source-copy a { text-decoration: underline; text-underline-offset: 2px; }
+.narrow-content { max-width: 760px; }
+.occurrence-panel { margin-top: 36px; border-top: 2px solid var(--ink); }
+.occurrence-panel h2 { margin: 21px 0 5px; font-family: Georgia, serif; font-size: 28px; font-weight: 500; }
+.occurrence-list { margin: 0; padding: 0; list-style: none; }
+.occurrence-list li { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.occurrence-list li a { font-weight: 700; }
+.occurrence-list li a:hover { color: var(--accent-dark); }
+.occurrence-list li span { color: var(--accent-dark); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.inline-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+.builder-title-row { align-items: start; }
+.builder-title-row p { max-width: 680px; margin: 14px 0 0; color: var(--muted); line-height: 1.55; }
+.builder-workspace { grid-template-columns: 310px minmax(0, 1fr); }
+.builder-toolbar { padding: 18px; }
+.builder-date-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.builder-range-summary { margin-bottom: 12px; color: var(--muted); font-size: 12px; text-align: right; }
+.builder-range-summary strong { color: var(--ink); }
+.builder-sheets { display: grid; gap: 22px; }
+.builder-sheets .calendar-sheet { break-after: page; page-break-after: always; }
+.builder-sheets .calendar-sheet:last-child { break-after: auto; page-break-after: auto; }
+.builder-sheets.range-3 .calendar-sheet, .builder-sheets.range-6 .calendar-sheet, .builder-sheets.range-12 .calendar-sheet { --cell-min: 92px; }
+.day-notes-editor form { border-top: 1px solid #cfcdc4; padding: 10px 0; }
+.day-notes-editor label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; font-weight: 800; }
+.day-notes-editor textarea { display: block; width: 100%; min-height: 54px; resize: vertical; border: 1px solid #c6c5be; border-radius: 7px; padding: 8px; background: var(--paper); color: var(--ink); font: inherit; font-size: 11px; }
+.day-notes-editor form > div { display: flex; gap: 12px; margin-top: 6px; }
+.day-notes-editor form > div button { border: 0; padding: 0; background: transparent; color: var(--accent-dark); font-size: 10px; font-weight: 800; }
+.day-notes-editor .new-note-form input { width: 100%; height: 36px; margin-bottom: 7px; border: 1px solid #c6c5be; border-radius: 7px; padding: 0 8px; background: var(--paper); color: var(--ink); font-size: 11px; }
+.day-notes-editor .new-note-form .button { margin-top: 7px; width: 100%; }
+.builder-copy { max-width: 760px; margin: 70px auto 10px; padding-top: 34px; border-top: 1px solid var(--line); text-align: center; }
+.builder-copy h2 { margin: 10px 0; font-family: Georgia, serif; font-size: 36px; font-weight: 500; letter-spacing: -.04em; }
+.builder-copy p { color: var(--muted); line-height: 1.65; }
+.calendar-sheet.theme-linen { --ink: #30281f; --muted: #776b5c; --line: #cfc5b4; --paper: #fffdf6; --accent: #95643d; --accent-dark: #765436; background-color: #fffdf6; }
+.calendar-sheet.theme-linen .calendar-table .weekend:not(.outside) { background: #f1ebdd; }
+.calendar-sheet.theme-blueprint { --ink: #122e4d; --muted: #526c85; --line: #a5b8ca; --paper: #f8fbfe; --accent: #2c70ae; --accent-dark: #1e4f8a; background-color: #f8fbfe; }
+.calendar-sheet.theme-blueprint .calendar-table .weekend:not(.outside) { background: #eaf2f8; }
+
+.calculator-page { padding: 42px 0 88px; }
+.calculator-shell { max-width: 1060px; }
+.calculator-nav { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 42px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
+.calculator-nav a { border-radius: 100px; padding: 8px 12px; color: var(--muted); font-size: 12px; font-weight: 750; }
+.calculator-nav a:hover, .calculator-nav a.active { background: var(--ink); color: white; }
+.calculator-hero { max-width: 780px; margin-bottom: 38px; }
+.calculator-hero.compact { margin-bottom: 30px; }
+.calculator-hero h1 { margin: 10px 0 16px; font-family: Georgia, serif; font-size: clamp(43px, 6vw, 67px); line-height: .98; letter-spacing: -.05em; font-weight: 500; }
+.calculator-hero.compact h1 { font-size: clamp(42px, 5vw, 60px); }
+.calculator-hero p { margin: 0; color: var(--muted); font-size: 18px; line-height: 1.6; }
+.calculator-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+.calculator-card { min-height: 290px; border: 1px solid var(--line); border-radius: var(--radius); padding: 27px; background: var(--paper); display: flex; flex-direction: column; }
+.calculator-card > span { color: var(--accent-dark); font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.calculator-card h2 { margin: 24px 0 10px; font-family: Georgia, serif; font-size: 30px; line-height: 1.05; font-weight: 500; letter-spacing: -.035em; }
+.calculator-card p { margin: 0 0 26px; color: var(--muted); line-height: 1.55; }
+.calculator-card .text-link { margin-top: auto; }
+.calculator-workspace { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr); gap: 20px; align-items: start; }
+.calculator-form { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; background: #eceae2; }
+.calculator-form > .button { width: 100%; margin-top: 18px; }
+.calculator-field { margin-bottom: 15px; }
+.calculator-field label, .timezone-form label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 800; }
+.calculator-field input, .calculator-field select, .timezone-form select { width: 100%; min-height: 42px; border: 1px solid #c6c5be; border-radius: 8px; padding: 0 10px; background: var(--paper); color: var(--ink); }
+.calculator-check { display: flex; gap: 9px; align-items: start; margin-top: 5px; color: #41433f; font-size: 13px; line-height: 1.4; }
+.calculator-check input { margin-top: 2px; }
+.amount-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+.calculator-results { min-height: 420px; border: 1px solid #c6c4ba; padding: clamp(25px, 4vw, 43px); background: var(--paper); box-shadow: 0 10px 32px rgba(39,35,25,.06); }
+.result-kicker { display: block; color: var(--accent-dark); font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.calculator-results > h2, .date-format-panel h2, .quick-date-panel h2 { margin: 12px 0; font-family: Georgia, serif; font-size: clamp(32px, 4vw, 48px); line-height: 1; letter-spacing: -.04em; font-weight: 500; }
+.result-summary { margin: 0 0 28px; color: var(--muted); line-height: 1.55; }
+.metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); }
+.metric { min-width: 0; padding: 17px 15px 17px 0; border-bottom: 1px solid var(--line); }
+.metric:not(:nth-child(3n+1)) { padding-left: 15px; border-left: 1px solid var(--line); }
+.metric span { display: block; min-height: 28px; color: var(--muted); font-size: 10px; line-height: 1.35; text-transform: uppercase; letter-spacing: .08em; font-weight: 750; }
+.metric strong { display: block; margin-top: 6px; overflow-wrap: anywhere; font-family: Georgia, serif; font-size: 21px; font-weight: 500; }
+.calculation-note { margin: 26px 0 0; border-left: 3px solid var(--accent); padding: 13px 16px; background: var(--soft); color: var(--muted); font-size: 12px; line-height: 1.55; }
+.result-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+.calculator-error { margin-top: 70px; text-align: center; }
+.calculator-error strong { font-family: Georgia, serif; font-size: 27px; font-weight: 500; }
+.calculator-error p { color: var(--muted); }
+.timezone-form { display: grid; grid-template-columns: minmax(240px, 1fr) auto; align-items: end; gap: 10px; max-width: 630px; margin-bottom: 22px; border: 1px solid var(--line); border-radius: 12px; padding: 16px; background: #eceae2; }
+.timezone-form label { grid-column: 1/-1; margin-bottom: -3px; }
+.timezone-form .button { min-height: 42px; }
+.today-panel { display: grid; grid-template-columns: 250px 1fr; gap: 28px; border: 1px solid #c6c4ba; padding: 30px; background: var(--paper); box-shadow: 0 10px 32px rgba(39,35,25,.06); }
+.today-primary { border-right: 1px solid var(--line); text-align: center; }
+.today-primary span { color: var(--accent-dark); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 800; }
+.today-primary strong { display: block; margin: 7px 0 0; font-family: Georgia, serif; font-size: 84px; line-height: .9; font-weight: 500; }
+.today-primary p { margin: 10px 0 0; color: var(--muted); }
+.today-metrics { grid-template-columns: 1fr 1fr; }
+.today-metrics .metric:nth-child(3) { border-left: 0; padding-left: 0; }
+.today-metrics .metric:nth-child(4) { border-left: 1px solid var(--line); padding-left: 15px; }
+.today-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.date-format-panel, .quick-date-panel { border: 1px solid var(--line); padding: 28px; background: var(--paper); }
+.date-format-panel h2, .quick-date-panel h2 { font-size: 30px; }
+.date-format-panel dl { margin: 23px 0 0; }
+.date-format-panel dl > div, .quick-date-panel li { display: flex; justify-content: space-between; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.date-format-panel dt, .quick-date-panel li span { color: var(--muted); font-size: 12px; }
+.date-format-panel dd { margin: 0; text-align: right; font-size: 12px; font-weight: 750; overflow-wrap: anywhere; }
+.quick-date-panel ul { list-style: none; padding: 0; margin: 23px 0 0; }
+.quick-date-panel a { font-size: 12px; font-weight: 750; }
+.quick-date-panel a:hover { color: var(--accent-dark); }
+
 @media (max-width: 900px) {
   .main-nav { display: none; }
   .header-inner { justify-content: space-between; }
   .hero-grid { grid-template-columns: 1fr; gap: 45px; }
   .hero-copy { max-width: 680px; }
   .calendar-workspace { grid-template-columns: 1fr; }
+  .builder-workspace { grid-template-columns: 1fr; }
+  .calculator-card-grid { grid-template-columns: 1fr; }
+  .calculator-card { min-height: 0; }
+  .calculator-workspace { grid-template-columns: 1fr; }
   .toolbar { position: static; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .toolbar-section { margin: 0; padding: 0 14px 0 0; border-bottom: 0; border-right: 1px solid #cfcdc4; }
   .toolbar-actions { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
   .toolbar-help { display: none; }
+  .builder-toolbar { display: block; }
+  .builder-toolbar .toolbar-section { padding: 10px 0 18px; margin-bottom: 10px; border-right: 0; border-bottom: 1px solid #cfcdc4; }
   .mini-grid { grid-template-columns: repeat(2, 1fr); }
   .feature-grid { grid-template-columns: 1fr 1fr; }
   .feature-card:not(:nth-child(3n+1)) { padding-left: 0; border-left: 0; }
@@ -220,8 +357,23 @@ button, select { cursor: pointer; }
   .calendar-sheet, .year-sheet { padding: 13px; overflow-x: auto; }
   .calendar-table { min-width: 590px; }
   .calendar-table td { height: 84px; }
+  .builder-sheets .calendar-table { min-width: 650px; }
+  .builder-date-fields { grid-template-columns: 1fr; }
+  .calculator-nav { margin-bottom: 28px; }
+  .metric-grid, .today-metrics { grid-template-columns: 1fr; }
+  .metric, .metric:not(:nth-child(3n+1)), .today-metrics .metric:nth-child(3), .today-metrics .metric:nth-child(4) { padding: 14px 0; border-left: 0; }
+  .metric span { min-height: 0; }
+  .today-panel, .today-sections { grid-template-columns: 1fr; }
+  .today-primary { border-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 25px; }
+  .timezone-form { grid-template-columns: 1fr; }
+  .timezone-form label { grid-column: auto; }
+  .date-format-panel dl > div, .quick-date-panel li { display: block; }
+  .date-format-panel dd { margin-top: 5px; text-align: left; }
   .mini-grid { grid-template-columns: 1fr; }
   .footer-note { text-align: left; }
+  .country-card-grid { grid-template-columns: 1fr; }
+  .content-title-row { display: block; }
+  .content-title-actions { justify-content: flex-start; margin-top: 22px; }
 }
 
 @media print {
@@ -230,9 +382,16 @@ button, select { cursor: pointer; }
   body { background: white; }
   .no-print, .site-header, .site-footer, .toolbar, .calendar-nav, .page-title-row, .ad-slot { display: none !important; }
   .calendar-page, .section { padding: 0; }
+  .calculator-page { padding: 0; }
+  .calculator-form, .timezone-form { display: none; }
+  .calculator-results, .today-panel, .date-format-panel, .quick-date-panel { border: 0; box-shadow: none; }
   .shell { width: 100%; }
   .calendar-workspace { display: block; }
   .calendar-sheet { border: 0; box-shadow: none; padding: 0; }
+  .builder-sheets { display: block; }
+  .builder-sheets .calendar-sheet { min-height: calc(100vh - .7in); overflow: visible; }
+  .builder-sheets .calendar-table { min-width: 0; }
+  .builder-sheets .calendar-table td { height: var(--cell-min); }
   .calendar-table td { height: var(--cell-min); }
   .year-sheet { padding: 0; }
   .mini-grid { gap: 13px; }

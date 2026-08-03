@@ -1,0 +1,10 @@
+.git
+.gitignore
+.next
+coverage
+node_modules
+*.log
+.DS_Store
+.env*
+AGENTS.md
+docs

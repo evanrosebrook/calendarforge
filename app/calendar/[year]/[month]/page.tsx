@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowRight } from "@/components/icons";
 import { PageActions } from "@/components/page-actions";
 import { createCalendarMonth } from "@/lib/calendar";
 import { adjacentMonth, queryString } from "@/lib/navigation";
-import { holidaysForSettings, parseSettings, settingsToParams, type SearchParams } from "@/lib/settings";
+import { holidaysForSettings, parseSettings, type SearchParams } from "@/lib/settings";
 
 type Props = { params: Promise<{ year: string; month: string }>; searchParams: Promise<SearchParams> };
 
@@ -22,13 +22,13 @@ function readDate(params: { year: string; month: string }) {
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const date = readDate(await params);
   if (!date) return { title: "Calendar not found" };
-  const settings = parseSettings(await searchParams);
+  const customized = Object.keys(await searchParams).length > 0;
   const label = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(date.year, date.month - 1, 1)));
-  const query = settingsToParams(settings).toString();
   return {
     title: `${label} Calendar`,
     description: `Create, customize, print, and download a clean ${label} calendar. Choose Sunday or Monday start, holidays, and week numbers.`,
-    alternates: { canonical: `/calendar/${date.year}/${date.month}${query ? `?${query}` : ""}` },
+    alternates: { canonical: `/calendar/${date.year}/${date.month}` },
+    robots: customized ? { index: false, follow: true } : undefined,
   };
 }
 

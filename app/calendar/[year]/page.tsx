@@ -8,7 +8,7 @@ import { MiniCalendar } from "@/components/mini-calendar";
 import { PageActions } from "@/components/page-actions";
 import { createCalendarYear } from "@/lib/calendar";
 import { queryString } from "@/lib/navigation";
-import { holidaysForSettings, parseSettings, settingsToParams, type SearchParams } from "@/lib/settings";
+import { holidaysForSettings, parseSettings, type SearchParams } from "@/lib/settings";
 
 type Props = { params: Promise<{ year: string }>; searchParams: Promise<SearchParams> };
 
@@ -20,12 +20,12 @@ function readYear(value: string): number | null {
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const year = readYear((await params).year);
   if (!year) return { title: "Calendar not found" };
-  const settings = parseSettings(await searchParams);
-  const query = settingsToParams(settings).toString();
+  const customized = Object.keys(await searchParams).length > 0;
   return {
     title: `${year} Printable Calendar`,
     description: `View, customize, print, and download a complete ${year} calendar with holidays and optional week numbers.`,
-    alternates: { canonical: `/calendar/${year}${query ? `?${query}` : ""}` },
+    alternates: { canonical: `/calendar/${year}` },
+    robots: customized ? { index: false, follow: true } : undefined,
   };
 }
 

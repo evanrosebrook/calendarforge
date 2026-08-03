@@ -1,9 +1,13 @@
-import { getUsFederalHolidaysForRange, type Holiday, type WeekStart } from "@/lib/calendar";
+import { getNationalHolidaysForRange, type Holiday, type HolidayCountry, type WeekStart } from "./calendar";
+
+export type HolidayScope = "national";
 
 export type CalendarSettings = {
   firstDayOfWeek: WeekStart;
   showWeekNumbers: boolean;
   showHolidays: boolean;
+  holidayCountry: HolidayCountry;
+  holidayScope: HolidayScope;
   highlightWeekends: boolean;
   locale: string;
   orientation: "portrait" | "landscape";
@@ -29,6 +33,8 @@ export function parseSettings(params: SearchParams): CalendarSettings {
     firstDayOfWeek: start === "monday" ? 1 : 0,
     showWeekNumbers: stringParam(params.weekNumbers) === "1",
     showHolidays: stringParam(params.holidays) !== "0",
+    holidayCountry: stringParam(params.country) === "ca" ? "ca" : "us",
+    holidayScope: "national",
     highlightWeekends: stringParam(params.weekends) !== "0",
     locale: "en-US",
     orientation: orientation === "landscape" ? "landscape" : "portrait",
@@ -40,7 +46,7 @@ export function parseSettings(params: SearchParams): CalendarSettings {
 }
 
 export function holidaysForSettings(settings: CalendarSettings, startYear: number, endYear: number): Holiday[] {
-  return settings.showHolidays ? getUsFederalHolidaysForRange(startYear, endYear) : [];
+  return settings.showHolidays ? getNationalHolidaysForRange(settings.holidayCountry, startYear, endYear) : [];
 }
 
 export function settingsToParams(settings: CalendarSettings): URLSearchParams {
@@ -48,6 +54,8 @@ export function settingsToParams(settings: CalendarSettings): URLSearchParams {
   if (settings.firstDayOfWeek === 1) params.set("start", "monday");
   if (settings.showWeekNumbers) params.set("weekNumbers", "1");
   if (!settings.showHolidays) params.set("holidays", "0");
+  if (settings.showHolidays) params.set("scope", settings.holidayScope);
+  if (settings.holidayCountry === "ca") params.set("country", "ca");
   if (!settings.highlightWeekends) params.set("weekends", "0");
   if (settings.orientation === "landscape") params.set("orientation", "landscape");
   if (settings.paper === "a4") params.set("paper", "a4");

@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "deploy:droplet": "bash scripts/deploy-droplet.sh",
     "start": "next start",
     "lint": "eslint .",
+    "rollback:droplet": "bash scripts/rollback-droplet.sh",
     "test": "vitest run",
     "test:watch": "vitest"
   },

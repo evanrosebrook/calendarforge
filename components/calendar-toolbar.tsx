@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import type { CalendarSettings } from "@/lib/settings";
+import { reportTelemetry } from "@/lib/telemetry-client";
 import { Download, Printer, Share2 } from "./icons";
 
 type Props = { settings: CalendarSettings; year: number; month?: number };
@@ -34,9 +35,15 @@ export function CalendarToolbar({ settings, year, month }: Props) {
         setToast("Link copied to clipboard");
         window.setTimeout(() => setToast(""), 2200);
       }
+      reportTelemetry("share", { surface: "calendar" });
     } catch {
       // The native share sheet was dismissed.
     }
+  }
+
+  function print() {
+    reportTelemetry("print", { surface: "calendar" });
+    window.print();
   }
 
   const exportBase = `/api/export/`;
@@ -53,7 +60,19 @@ export function CalendarToolbar({ settings, year, month }: Props) {
           <button className={settings.firstDayOfWeek === 1 ? "active" : ""} onClick={() => update("start", "monday")} type="button">Monday</button>
         </div>
         <div className="toggle-row"><span>Week numbers</span><button aria-label="Toggle week numbers" aria-pressed={settings.showWeekNumbers} className={`switch ${settings.showWeekNumbers ? "on" : ""}`} onClick={() => toggle("weekNumbers", !settings.showWeekNumbers)} type="button" /></div>
-        <div className="toggle-row"><span>US holidays</span><button aria-label="Toggle US holidays" aria-pressed={settings.showHolidays} className={`switch ${settings.showHolidays ? "on" : ""}`} onClick={() => toggle("holidays", !settings.showHolidays, "1", "0")} type="button" /></div>
+        <div className="toggle-row"><span>National holidays</span><button aria-label="Toggle national holidays" aria-pressed={settings.showHolidays} className={`switch ${settings.showHolidays ? "on" : ""}`} onClick={() => toggle("holidays", !settings.showHolidays, "1", "0")} type="button" /></div>
+        {settings.showHolidays && <div className="field">
+          <label htmlFor="holiday-country">Holiday country</label>
+          <select id="holiday-country" value={settings.holidayCountry} onChange={(event) => {
+            const next = new URLSearchParams(searchParams.toString());
+            if (event.target.value === "ca") next.set("country", "ca"); else next.delete("country");
+            next.set("scope", "national");
+            startTransition(() => router.replace(`${pathname}?${next}`, { scroll: false }));
+          }}>
+            <option value="us">United States</option><option value="ca">Canada</option>
+          </select>
+          <small className="field-help">National holidays only</small>
+        </div>}
         <div className="toggle-row"><span>Shade weekends</span><button aria-label="Toggle weekend shading" aria-pressed={settings.highlightWeekends} className={`switch ${settings.highlightWeekends ? "on" : ""}`} onClick={() => toggle("weekends", !settings.highlightWeekends, "1", "0")} type="button" /></div>
       </section>
 
@@ -87,11 +106,11 @@ export function CalendarToolbar({ settings, year, month }: Props) {
       </section>
 
       <div className="toolbar-actions">
-        <button className="button button-ink" type="button" onClick={() => window.print()}><Printer size={15} /> Print / save PDF</button>
+        <button className="button button-ink" type="button" onClick={print}><Printer size={15} /> Print / save PDF</button>
         <div className="download-wrap">
           <button className="button button-ghost" type="button" aria-expanded={downloadsOpen} onClick={() => setDownloadsOpen(!downloadsOpen)}><Download size={15} /> Download</button>
           {downloadsOpen && <div className="download-menu">
-            {(["pdf", "ics", "csv", "xlsx"] as const).map((format) => <a key={format} href={`${exportBase}${format}?${exportQuery}`}><Download size={14} /> {format === "ics" ? "Calendar events" : format === "xlsx" ? "Spreadsheet" : format.toUpperCase()} <small>{format}</small></a>)}
+            {(["pdf", "ics", "csv", "xlsx"] as const).map((format) => <a key={format} href={`${exportBase}${format}?${exportQuery}`} onClick={() => reportTelemetry("export", { format, surface: "calendar" })}><Download size={14} /> {format === "ics" ? "Calendar events" : format === "xlsx" ? "Spreadsheet" : format.toUpperCase()} <small>{format}</small></a>)}
           </div>}
         </div>
         <button className="button button-ghost" type="button" onClick={share}><Share2 size={15} /> Share link</button>

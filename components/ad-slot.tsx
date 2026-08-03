@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { reportTelemetry } from "@/lib/telemetry-client";
 
 export function AdSlot({ placement = "calendar_after" }: { placement?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -9,7 +10,7 @@ export function AdSlot({ placement = "calendar_after" }: { placement?: string })
     if (!element || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry?.isIntersecting) {
-        navigator.sendBeacon?.("/api/telemetry", JSON.stringify({ name: "ad_viewable", value: 1, path: location.pathname, placement }));
+        reportTelemetry("ad_viewable", { placement });
         observer.disconnect();
       }
     }, { threshold: 0.5 });

@@ -10,10 +10,12 @@ export function SiteHeader() {
         <nav className="main-nav" aria-label="Primary navigation">
           <Link href={`/calendar/${year}`}>Year calendar</Link>
           <Link href={`/calendar/${year}/${new Date().getUTCMonth() + 1}`}>Monthly calendar</Link>
-          <Link href="/#features">Features</Link>
+          <Link href="/make-calendar">Make a calendar</Link>
+          <Link href="/date-calculator">Calculators</Link>
+          <Link href="/holidays">Holidays</Link>
         </nav>
-        <Link className="button button-small button-ink" href={`/calendar/${year}/${new Date().getUTCMonth() + 1}`}>
-          Open calendar
+        <Link className="button button-small button-ink" href="/make-calendar">
+          Make a calendar
         </Link>
       </div>
     </header>

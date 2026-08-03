@@ -193,6 +193,8 @@ npm run dev
 
 Open `http://localhost:3000`. Useful routes include `/calendar/2026` and `/calendar/2026/7`.
 
+Production domain, indexing, telemetry retention, and launch checks are documented in [docs/deployment.md](docs/deployment.md).
+
 ## Validation
 
 ```bash

@@ -1,9 +1,16 @@
 export type WeekStart = 0 | 1;
 
+export type HolidayCountry = "us" | "ca";
+
+export type HolidayCategory = "national" | "regional" | "observance";
+
 export type Holiday = {
   date: string;
   name: string;
   observed?: boolean;
+  id?: string;
+  country?: HolidayCountry;
+  category?: HolidayCategory;
 };
 
 export type CalendarDay = {

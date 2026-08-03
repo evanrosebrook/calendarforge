@@ -6,11 +6,13 @@ type Props = {
   highlightWeekends?: boolean;
   title?: string;
   showNotes?: boolean;
+  dayNotes?: Record<string, string>;
+  theme?: "forge" | "linen" | "blueprint";
 };
 
-export function CalendarGrid({ calendar, compact = false, highlightWeekends = true, title, showNotes = false }: Props) {
+export function CalendarGrid({ calendar, compact = false, highlightWeekends = true, title, showNotes = false, dayNotes = {}, theme = "forge" }: Props) {
   return (
-    <article className={`calendar-sheet ${compact ? "compact" : ""} ${highlightWeekends ? "" : "no-weekends"}`}>
+    <article className={`calendar-sheet theme-${theme} ${compact ? "compact" : ""} ${highlightWeekends ? "" : "no-weekends"}`}>
       <header className="sheet-heading">
         <h2>{title || calendar.label}</h2>
         <p>{title ? calendar.label : "Plan with intention"}</p>
@@ -38,6 +40,7 @@ export function CalendarGrid({ calendar, compact = false, highlightWeekends = tr
                       {day.holidays.map((holiday) => <li key={`${holiday.date}-${holiday.name}`}>{holiday.name}</li>)}
                     </ul>
                   )}
+                  {day.inMonth && dayNotes[day.date] && <p className="day-note">{dayNotes[day.date]}</p>}
                 </td>
               ))}
             </tr>
