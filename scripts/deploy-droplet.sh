@@ -8,6 +8,7 @@ cd "$repo_root"
 ssh_host=${CALENDARFORGE_SSH_HOST:-calendarforge-droplet}
 remote_dir=${CALENDARFORGE_REMOTE_DIR:-/var/snap/docker/common/calendarforge}
 site_url=${NEXT_PUBLIC_SITE_URL:-https://calendarforge.net}
+analytics_id=${NEXT_PUBLIC_GA_MEASUREMENT_ID:-G-MMP15FDWR4}
 image_repository=${CALENDARFORGE_IMAGE_REPOSITORY:-calendarforge}
 build_attempts=${CALENDARFORGE_BUILD_ATTEMPTS:-2}
 
@@ -45,6 +46,11 @@ if [[ ! $build_attempts =~ ^[1-9][0-9]*$ ]]; then
   exit 1
 fi
 
+if [[ ! $analytics_id =~ ^G-[A-Z0-9]+$ ]]; then
+  echo "Invalid NEXT_PUBLIC_GA_MEASUREMENT_ID: $analytics_id" >&2
+  exit 1
+fi
+
 image_ref="${image_repository}:${version}"
 smoke_container="calendarforge-smoke-$$"
 
@@ -68,6 +74,7 @@ for ((attempt = 1; attempt <= build_attempts; attempt += 1)); do
   if DOCKER_DEFAULT_PLATFORM=linux/amd64 docker build \
     --platform linux/amd64 \
     --build-arg "NEXT_PUBLIC_SITE_URL=$site_url" \
+    --build-arg "NEXT_PUBLIC_GA_MEASUREMENT_ID=$analytics_id" \
     --tag "$image_ref" \
     .; then
     build_succeeded=1
@@ -112,7 +119,9 @@ for ((attempt = 1; attempt <= 30; attempt += 1)); do
   sleep 1
 done
 
-curl --fail --silent --show-error "http://127.0.0.1:${smoke_port}/" | grep -Fq "$site_url"
+smoke_home=$(curl --fail --silent --show-error "http://127.0.0.1:${smoke_port}/")
+grep -Fq "$site_url" <<<"$smoke_home"
+grep -Fq "$analytics_id" <<<"$smoke_home"
 curl --fail --silent --show-error --output /dev/null \
   "http://127.0.0.1:${smoke_port}/api/export/pdf?year=2026&month=8"
 cleanup_smoke_container
@@ -124,12 +133,13 @@ ssh "$ssh_host" "install -d -m 755 '$remote_dir'"
 remote_candidate="$remote_dir/compose.candidate-${version}.yaml"
 scp compose.prod.yaml "${ssh_host}:${remote_candidate}"
 
-ssh "$ssh_host" bash -s -- "$version" "$remote_dir" "$image_repository" <<'REMOTE_DEPLOY'
+ssh "$ssh_host" bash -s -- "$version" "$remote_dir" "$image_repository" "$analytics_id" <<'REMOTE_DEPLOY'
 set -Eeuo pipefail
 
 version=$1
 deploy_dir=$2
 image_repository=$3
+analytics_id=$4
 compose_candidate="$deploy_dir/compose.candidate-${version}.yaml"
 compose_file="$deploy_dir/compose.yaml"
 env_file="$deploy_dir/.env"
@@ -222,9 +232,15 @@ if [[ $running_image != "$image_repository:$version" ]]; then
   exit 1
 fi
 
-if ! curl --fail --silent --show-error \
+if ! live_home=$(curl --fail --silent --show-error \
   --resolve calendarforge.net:443:127.0.0.1 \
-  https://calendarforge.net/ | grep -Fq 'https://calendarforge.net'; then
+  https://calendarforge.net/); then
+  restore_previous || true
+  exit 1
+fi
+
+if ! grep -Fq 'https://calendarforge.net' <<<"$live_home" \
+  || ! grep -Fq "$analytics_id" <<<"$live_home"; then
   restore_previous || true
   exit 1
 fi

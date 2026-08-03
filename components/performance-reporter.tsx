@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { reportGooglePageView } from "@/lib/google-analytics";
 import { referringSource, reportTelemetry } from "@/lib/telemetry-client";
 
 export function PerformanceReporter() {
@@ -9,7 +10,9 @@ export function PerformanceReporter() {
   const previousPath = useRef<string | null>(null);
 
   useEffect(() => {
-    reportTelemetry("page_view", { source: previousPath.current ? "internal" : referringSource() });
+    const previous = previousPath.current;
+    reportTelemetry("page_view", { source: previous ? "internal" : referringSource() });
+    if (previous) reportGooglePageView(pathname, previous);
     previousPath.current = pathname;
   }, [pathname]);
 

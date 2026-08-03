@@ -1,6 +1,8 @@
+import { reportGoogleTelemetry } from "./google-analytics";
+
 export type TelemetryName = "ad_viewable" | "cls" | "export" | "lcp" | "page_view" | "print" | "share";
 
-type TelemetryDetails = {
+export type TelemetryDetails = {
   value?: number;
   placement?: string;
   format?: string;
@@ -9,6 +11,7 @@ type TelemetryDetails = {
 };
 
 export function reportTelemetry(name: TelemetryName, details: TelemetryDetails = {}) {
+  reportGoogleTelemetry(name, details);
   const event = {
     name,
     value: details.value ?? 1,

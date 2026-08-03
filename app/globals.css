@@ -188,6 +188,11 @@ button, select { cursor: pointer; }
 .content-note { margin-top: 28px; border-left: 3px solid var(--accent); padding: 17px 20px; background: var(--soft); }
 .content-note strong { font-size: 13px; }
 .content-note p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.legal-copy { max-width: 760px; }
+.legal-copy section { margin-top: 32px; }
+.legal-copy h2 { margin: 0 0 10px; font-family: Georgia, serif; font-size: 28px; font-weight: 500; letter-spacing: -.03em; }
+.legal-copy section p { color: var(--muted); line-height: 1.7; }
+.legal-copy a { color: var(--accent-dark); }
 .breadcrumb { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 28px; color: var(--muted); font-size: 12px; }
 .breadcrumb a:hover { color: var(--accent-dark); }
 .content-title-row { display: flex; justify-content: space-between; align-items: end; gap: 24px; }

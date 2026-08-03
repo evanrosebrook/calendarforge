@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry("/date-calculator/add-subtract", "monthly", 0.8),
     entry("/date-calculator/days-between", "monthly", 0.8),
     entry("/holidays", "monthly", 0.8),
+    entry("/privacy", "yearly", 0.2),
   ];
 
   for (const year of acquisitionYears) {

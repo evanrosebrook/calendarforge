@@ -10,6 +10,9 @@ NEXT_PUBLIC_SITE_URL=https://calendarforge.net
 
 Calendar Forge falls back to the production hostname supplied by Vercel and then to `http://localhost:3000` for local development. The configured origin is used for canonical URLs, `robots.txt`, and `sitemap.xml`.
 
+The production deployment also embeds the public GA4 measurement ID at build time. It defaults to
+Calendar Forge's production data stream and can be overridden with `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
+
 ## Before announcing the site
 
 1. Connect the chosen domain to the hosting provider and confirm HTTPS is active.
@@ -65,6 +68,12 @@ proxies the apex hostname to the loopback container.
 The application emits privacy-conscious structured events named `calendar_forge_metric`. Events include page views, print, share, export, performance, and ad-viewability signals. Paths never include query strings, and external attribution is reduced to the referring hostname.
 
 The default telemetry endpoint writes these events to application logs. Hosting logs are not guaranteed durable storage. Before relying on telemetry for reporting, configure the hosting provider's log drain to a retained destination or replace the body of `app/api/telemetry/route.ts` with a database or analytics-provider write. Do not send custom calendar titles, notes, full URLs, or query strings.
+
+The browser also sends page views and the controlled `calendar_export`, `calendar_print`,
+`calendar_share`, and `ad_viewable` events to GA4. Initial page loads preserve only recognized
+marketing attribution parameters. Client-side page views and product events use pathnames without
+query strings. In GA4 Enhanced Measurement, keep page-load measurement enabled and disable page
+changes based on browser history so query-only calendar customization does not inflate page views.
 
 ## Advertising
 

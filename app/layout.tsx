@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { PerformanceReporter } from "@/components/performance-reporter";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -7,6 +8,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: getSiteUrl(),
+  referrer: "strict-origin-when-cross-origin",
   title: { default: "Calendar Forge — Make space for what matters", template: "%s · Calendar Forge" },
   description: "Create clean, printable monthly and yearly calendars. Customize, share, print, and export without an account.",
   alternates: { canonical: "/" },
@@ -16,6 +18,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body>
         <SiteHeader />
         {children}
