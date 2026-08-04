@@ -3,6 +3,7 @@ import {
   adjustCalendarDate,
   calculateDateDifference,
   dateInTimeZone,
+  getDateFacts,
   getTodayFacts,
   parseIsoCalendarDate,
   parseSupportedTimeZone,
@@ -10,6 +11,21 @@ import {
 import { toIsoDate, utcDate } from "./calendar";
 
 describe("date calculators", () => {
+  it("derives stable facts for a dedicated date page", () => {
+    expect(getDateFacts(utcDate(2027, 3, 17))).toMatchObject({
+      isoDate: "2027-03-17",
+      longDate: "Wednesday, March 17, 2027",
+      weekday: "Wednesday",
+      dayOfYear: 76,
+      isoWeek: 11,
+      quarter: 1,
+      leapYear: false,
+      daysInYear: 365,
+      daysRemainingAfterDate: 289,
+    });
+    expect(getDateFacts(utcDate(2028, 12, 31))).toMatchObject({ dayOfYear: 366, quarter: 4, leapYear: true, daysRemainingAfterDate: 0 });
+  });
+
   it("accepts only real padded Gregorian dates", () => {
     expect(toIsoDate(parseIsoCalendarDate("2024-02-29")!)).toBe("2024-02-29");
     expect(parseIsoCalendarDate("2026-02-29")).toBeNull();

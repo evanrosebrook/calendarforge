@@ -15,9 +15,20 @@ Calendar Forge already provides:
 - Custom titles, notes areas, and shareable URL state.
 - PDF, ICS, CSV, and XLSX exports.
 
-## Recommended next batch
+## Delivery status (August 3, 2026)
 
-### 1. Holiday system and pages
+The first three roadmap batches are substantially shipped:
+
+- Holiday catalogs, country/year pages, individual holiday pages, calendar controls, and CSV/ICS downloads are live for the United States and Canada.
+- The custom calendar builder supports 1-, 3-, 6-, and 12-month ranges, per-day notes, three locales, three original themes, shareable URL state, print/PDF, SVG, ICS, CSV, and XLSX output.
+- Today, add/subtract, and days-between calculators are live and linked as a calculator cluster.
+- Privacy-safe first-party telemetry and GA4 measurement are live; Google Search Console ownership was verified on August 3, 2026.
+
+The next product batch is the indexable calendar-format family, starting with Monday-start monthly pages. Age and business-day calculators remain intentionally behind that acquisition work.
+
+## Completed batches
+
+### 1. Holiday system and pages — shipped
 
 Build:
 
@@ -41,7 +52,7 @@ The first implementation increment should include:
 - Calendar controls that preserve country and holiday type in URL state.
 - Tests for fixed, observed, and movable holidays.
 
-### 2. Dedicated custom calendar builder
+### 2. Dedicated custom calendar builder — shipped
 
 Create `/make-calendar` with:
 
@@ -56,7 +67,7 @@ Create `/make-calendar` with:
 
 The useful competitor pattern is a single place where users can alter calendar content and presentation while previewing the result. Calendar Forge should keep the interface more focused and accessible. Reference: [custom calendar maker](https://blankcalendarpages.com/make-calendar).
 
-### 3. Date-calculator cluster
+### 3. Date-calculator cluster — core shipped
 
 Ship these as a linked family:
 
@@ -67,6 +78,8 @@ Ship these as a linked family:
 - Later: `/date-calculator/business-days`
 
 Results should be shareable, printable, and explicit about timezone and inclusive/exclusive counting rules. References: [today](https://blankcalendarpages.com/todays-date), [add/subtract](https://blankcalendarpages.com/date-calculator/add-days), [days between](https://blankcalendarpages.com/date-calculator/days-between-dates), and [age calculator](https://blankcalendarpages.com/age-calculator).
+
+## Recommended next batch
 
 ### 4. Indexable calendar-format landing pages
 
@@ -83,9 +96,9 @@ Each page should provide useful server-rendered output, adjacent-date navigation
 
 ## Build order
 
-1. Holiday data model plus US and Canada pages.
-2. Dedicated custom calendar builder.
-3. Today, days-between, and add/subtract calculators.
+1. ~~Holiday data model plus US and Canada pages.~~
+2. ~~Dedicated custom calendar builder.~~
+3. ~~Today, days-between, and add/subtract calculators.~~
 4. Monday, holiday, portrait, weekly, and yearly landing-page families.
 5. Age and business-day calculators.
 

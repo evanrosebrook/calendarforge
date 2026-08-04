@@ -137,6 +137,8 @@ button, select { cursor: pointer; }
 .calendar-table tr:last-child td { border-bottom: 0; }
 .calendar-table .outside { color: #b2b3ad; background: #fbfaf5; }
 .calendar-table .weekend:not(.outside) { background: #f4f1e9; }
+.calendar-table .is-target { background: #fff0ec !important; box-shadow: inset 0 0 0 3px var(--accent); }
+.calendar-table .is-target .day-number { display: inline-grid; min-width: 28px; height: 28px; place-items: center; border-radius: 50%; background: var(--accent); color: white; }
 .calendar-sheet.no-weekends .calendar-table .weekend:not(.outside) { background: transparent; }
 .day-number { font-size: 13px; font-weight: 750; font-variant-numeric: tabular-nums; }
 .day-note { margin: 10px 0 0; color: var(--ink); font-size: 9px; line-height: 1.3; overflow-wrap: anywhere; white-space: pre-wrap; }
@@ -309,6 +311,58 @@ button, select { cursor: pointer; }
 .quick-date-panel a { font-size: 12px; font-weight: 750; }
 .quick-date-panel a:hover { color: var(--accent-dark); }
 
+.date-page { padding: 42px 0 90px; }
+.date-page-shell { max-width: 1080px; }
+.date-page-header { display: flex; justify-content: space-between; align-items: end; gap: 36px; }
+.date-page-header h1 { margin: 8px 0 15px; font-family: Georgia, serif; font-size: clamp(44px, 6vw, 68px); line-height: .98; letter-spacing: -.05em; font-weight: 500; }
+.date-page-header p { max-width: 760px; margin: 0; color: var(--muted); font-size: 18px; line-height: 1.6; }
+.date-stepper { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: center; margin: 35px 0 18px; border-block: 1px solid var(--line); padding: 13px 0; color: var(--muted); font-size: 12px; font-weight: 750; }
+.date-stepper a:nth-child(2) { color: var(--accent-dark); }
+.date-stepper a:last-child { text-align: right; }
+.date-stepper a:hover { color: var(--ink); }
+.date-summary-grid { display: grid; grid-template-columns: 280px 1fr; border: 1px solid var(--ink); background: var(--paper); }
+.date-tile { min-height: 305px; display: grid; place-content: center; text-align: center; border-right: 1px solid var(--ink); padding: 30px; }
+.date-tile > span { color: var(--accent-dark); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 850; }
+.date-tile > strong { margin: 2px 0 18px; font-family: Georgia, serif; font-size: 104px; line-height: .78; letter-spacing: -.07em; font-weight: 500; }
+.date-tile p { margin: 0; font-family: Georgia, serif; font-size: 25px; }
+.date-tile small { margin-top: 20px; color: var(--muted); font-size: 11px; font-weight: 750; }
+.date-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.date-stat-grid > div { min-height: 152px; display: flex; flex-direction: column; justify-content: space-between; padding: 25px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.date-stat-grid > div:nth-child(3n) { border-right: 0; }
+.date-stat-grid > div:nth-child(n+4) { border-bottom: 0; }
+.date-stat-grid span { color: var(--muted); text-transform: uppercase; letter-spacing: .11em; font-size: 9px; font-weight: 800; }
+.date-stat-grid strong { font-family: Georgia, serif; font-size: clamp(22px, 3vw, 34px); line-height: 1; font-weight: 500; overflow-wrap: anywhere; }
+.date-calendar-section { margin-top: 70px; }
+.date-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 20px; }
+.date-section-heading h2 { margin: 7px 0 0; font-family: Georgia, serif; font-size: 39px; letter-spacing: -.04em; font-weight: 500; }
+.date-section-heading p { max-width: 400px; margin: 0; color: var(--muted); line-height: 1.55; font-size: 13px; }
+.date-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px; }
+.date-detail-card { border: 1px solid var(--line); padding: 28px; background: var(--paper); }
+.date-detail-card h2 { margin: 8px 0 20px; font-family: Georgia, serif; font-size: 29px; letter-spacing: -.035em; font-weight: 500; }
+.date-detail-card > p { color: var(--muted); line-height: 1.6; }
+.date-detail-card dl { margin: 0; }
+.date-detail-card dl > div { display: flex; justify-content: space-between; gap: 20px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.date-detail-card dt { color: var(--muted); font-size: 12px; }
+.date-detail-card dd { margin: 0; text-align: right; font-size: 12px; font-weight: 750; }
+.date-holiday-list { margin: 0; padding: 0; list-style: none; }
+.date-holiday-list li { padding: 12px 0; border-bottom: 1px solid var(--line); font-weight: 750; }
+.date-holiday-list li span { display: block; margin-top: 4px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: 9px; }
+.daily-planner { margin-top: 70px; border: 1px solid var(--ink); background: var(--paper); }
+.daily-planner > header { display: flex; justify-content: space-between; align-items: end; gap: 20px; padding: 27px 30px 22px; border-bottom: 3px solid var(--ink); }
+.daily-planner > header h2 { margin: 6px 0 0; font-family: Georgia, serif; font-size: 38px; letter-spacing: -.04em; font-weight: 500; }
+.daily-planner > header > span { color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-size: 9px; font-weight: 800; }
+.daily-planner-grid { display: grid; grid-template-columns: 1.15fr .85fr; min-height: 520px; }
+.daily-planner h3 { margin: 0; font-family: Georgia, serif; font-size: 18px; font-weight: 500; font-style: italic; }
+.planner-schedule { padding: 24px 30px; border-right: 1px solid var(--ink); }
+.planner-schedule > div { height: 55px; border-bottom: 1px solid var(--line); }
+.planner-schedule > div span { display: inline-block; width: 55px; padding-top: 20px; color: var(--muted); font-size: 9px; font-weight: 750; }
+.planner-notes { display: grid; grid-template-rows: auto 1fr; }
+.planner-notes section { padding: 24px 30px; }
+.planner-notes section + section { border-top: 1px solid var(--ink); }
+.planner-notes ol { margin: 17px 0 0; padding-left: 25px; }
+.planner-notes li { height: 42px; border-bottom: 1px solid var(--line); }
+.planner-lines { height: calc(100% - 30px); margin-top: 15px; background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--line) 32px); }
+
 @media (max-width: 900px) {
   .main-nav { display: none; }
   .header-inner { justify-content: space-between; }
@@ -326,6 +380,12 @@ button, select { cursor: pointer; }
   .builder-toolbar { display: block; }
   .builder-toolbar .toolbar-section { padding: 10px 0 18px; margin-bottom: 10px; border-right: 0; border-bottom: 1px solid #cfcdc4; }
   .mini-grid { grid-template-columns: repeat(2, 1fr); }
+  .date-summary-grid { grid-template-columns: 240px 1fr; }
+  .date-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .date-stat-grid > div:nth-child(3n) { border-right: 1px solid var(--line); }
+  .date-stat-grid > div:nth-child(even) { border-right: 0; }
+  .date-stat-grid > div:nth-child(n+4) { border-bottom: 1px solid var(--line); }
+  .date-stat-grid > div:nth-child(n+5) { border-bottom: 0; }
   .feature-grid { grid-template-columns: 1fr 1fr; }
   .feature-card:not(:nth-child(3n+1)) { padding-left: 0; border-left: 0; }
   .feature-card:nth-child(even) { padding-left: 26px; border-left: 1px solid var(--line); }
@@ -377,6 +437,17 @@ button, select { cursor: pointer; }
   .mini-grid { grid-template-columns: 1fr; }
   .footer-note { text-align: left; }
   .country-card-grid { grid-template-columns: 1fr; }
+  .date-page { padding-top: 24px; }
+  .date-page-header, .date-section-heading { display: block; }
+  .date-page-header .page-title-actions { margin-top: 18px; }
+  .date-stepper { grid-template-columns: 1fr 1fr; }
+  .date-stepper a:nth-child(2) { display: none; }
+  .date-summary-grid { grid-template-columns: 1fr; }
+  .date-tile { min-height: 270px; border-right: 0; border-bottom: 1px solid var(--ink); }
+  .date-stat-grid > div { min-height: 120px; padding: 18px; }
+  .date-detail-grid, .daily-planner-grid { grid-template-columns: 1fr; }
+  .planner-schedule { border-right: 0; border-bottom: 1px solid var(--ink); }
+  .daily-planner > header { align-items: start; }
   .content-title-row { display: block; }
   .content-title-actions { justify-content: flex-start; margin-top: 22px; }
 }
@@ -401,4 +472,7 @@ button, select { cursor: pointer; }
   .year-sheet { padding: 0; }
   .mini-grid { gap: 13px; }
   .source-mark { display: block; }
+  .date-page { padding: 0; }
+  .date-page .breadcrumb, .date-page-header, .date-stepper, .date-summary-grid, .date-calendar-section, .date-detail-grid, .result-actions { display: none !important; }
+  .daily-planner { margin: 0; min-height: calc(100vh - .7in); }
 }

@@ -57,6 +57,19 @@ export type TodayFacts = {
   quickDates: Array<{ days: number; date: Date }>;
 };
 
+export type DateFacts = {
+  date: Date;
+  isoDate: string;
+  longDate: string;
+  weekday: string;
+  dayOfYear: number;
+  isoWeek: number;
+  quarter: 1 | 2 | 3 | 4;
+  leapYear: boolean;
+  daysInYear: number;
+  daysRemainingAfterDate: number;
+};
+
 export function parseIsoCalendarDate(value: string | undefined): Date | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value ?? "");
   if (!match) return null;
@@ -133,21 +146,38 @@ export function dateInTimeZone(now: Date, timeZone: SupportedTimeZone): Date {
 
 export function getTodayFacts(now: Date, timeZone: SupportedTimeZone): TodayFacts {
   const date = dateInTimeZone(now, timeZone);
-  const year = date.getUTCFullYear();
-  const startOfYear = utcDate(year, 1, 1);
-  const endOfYear = utcDate(year, 12, 31);
-  const dateFormatter = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+  const facts = getDateFacts(date);
   return {
     date,
-    isoDate: toIsoDate(date),
-    longDate: dateFormatter.format(date),
-    weekday: new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "UTC" }).format(date),
-    dayOfYear: Math.round((date.getTime() - startOfYear.getTime()) / DAY_MS) + 1,
-    isoWeek: isoWeekNumber(date),
-    leapYear: daysInMonth(year, 2) === 29,
-    daysRemainingAfterToday: Math.round((endOfYear.getTime() - date.getTime()) / DAY_MS),
+    isoDate: facts.isoDate,
+    longDate: facts.longDate,
+    weekday: facts.weekday,
+    dayOfYear: facts.dayOfYear,
+    isoWeek: facts.isoWeek,
+    leapYear: facts.leapYear,
+    daysRemainingAfterToday: facts.daysRemainingAfterDate,
     localDateTime: new Intl.DateTimeFormat("en-US", { dateStyle: "full", timeStyle: "long", timeZone }).format(now),
     quickDates: [7, 14, 30, 60, 90, 120].map((days) => ({ days, date: addUtcDays(date, days) })),
+  };
+}
+
+export function getDateFacts(date: Date): DateFacts {
+  const normalized = utcDate(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+  const year = normalized.getUTCFullYear();
+  const startOfYear = utcDate(year, 1, 1);
+  const endOfYear = utcDate(year, 12, 31);
+  const leapYear = daysInMonth(year, 2) === 29;
+  return {
+    date: normalized,
+    isoDate: toIsoDate(normalized),
+    longDate: new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(normalized),
+    weekday: new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "UTC" }).format(normalized),
+    dayOfYear: Math.round((normalized.getTime() - startOfYear.getTime()) / DAY_MS) + 1,
+    isoWeek: isoWeekNumber(normalized),
+    quarter: (Math.floor(normalized.getUTCMonth() / 3) + 1) as DateFacts["quarter"],
+    leapYear,
+    daysInYear: leapYear ? 366 : 365,
+    daysRemainingAfterDate: Math.round((endOfYear.getTime() - normalized.getTime()) / DAY_MS),
   };
 }
 

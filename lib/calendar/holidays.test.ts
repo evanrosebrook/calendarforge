@@ -4,6 +4,9 @@ import {
   getHolidayCatalog,
   getNationalHolidaysForRange,
   getUsFederalHolidays,
+  MAX_SUPPORTED_HOLIDAY_YEAR,
+  MIN_SUPPORTED_HOLIDAY_YEAR,
+  supportedHolidayYears,
 } from "./index";
 
 function occurrence(holidays: ReturnType<typeof getUsFederalHolidays>, id: string, observed = false) {
@@ -48,6 +51,13 @@ describe("national holiday catalogs", () => {
     expect(getUsFederalHolidays(1971)).not.toEqual([]);
     expect(getCanadaFederalHolidays(2100)).not.toEqual([]);
     expect(getCanadaFederalHolidays(2101)).toEqual([]);
+  });
+
+  it("enumerates every supported year for static holiday routes", () => {
+    const years = supportedHolidayYears();
+    expect(years).toHaveLength(MAX_SUPPORTED_HOLIDAY_YEAR - MIN_SUPPORTED_HOLIDAY_YEAR + 1);
+    expect(years[0]).toBe(MIN_SUPPORTED_HOLIDAY_YEAR);
+    expect(years.at(-1)).toBe(MAX_SUPPORTED_HOLIDAY_YEAR);
   });
 
   it("honors effective years for holidays added within the supported range", () => {

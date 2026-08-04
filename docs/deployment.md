@@ -22,6 +22,8 @@ Calendar Forge's production data stream and can be overridden with `NEXT_PUBLIC_
 5. Confirm `hello@calendarforge.net` can receive feedback.
 6. Smoke-test calendar PDF, ICS, CSV, XLSX, and builder SVG downloads against the production deployment.
 
+Record dated verification results and search/analytics baselines in [launch-status.md](launch-status.md). The durable checklist stays here; time-sensitive results belong in the launch status log.
+
 ## Container deployment
 
 Run the complete deployment pipeline from the repository root:

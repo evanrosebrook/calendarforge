@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { HOLIDAY_CATALOGS, MAX_SUPPORTED_HOLIDAY_YEAR, MIN_SUPPORTED_HOLIDAY_YEAR, getHolidayCatalog, getNationalHolidays, isSupportedHolidayYear, utcDate } from "@/lib/calendar";
+import { HOLIDAY_CATALOGS, MAX_SUPPORTED_HOLIDAY_YEAR, MIN_SUPPORTED_HOLIDAY_YEAR, getHolidayCatalog, getNationalHolidays, isSupportedHolidayYear, supportedHolidayYears, utcDate } from "@/lib/calendar";
 import { holidayExportPath } from "@/lib/navigation";
 
 type Props = { params: Promise<{ country: string; year: string }> };
+
+// Every supported holiday year is generated at build time so the production
+// container can remain read-only without Next.js attempting an on-demand write.
+export const dynamicParams = false;
 
 export function parseHolidayYear(value: string): number | null {
   const year = Number(value);
@@ -28,8 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export function generateStaticParams() {
-  const year = new Date().getUTCFullYear();
-  return HOLIDAY_CATALOGS.flatMap((catalog) => [year - 1, year, year + 1].map((value) => ({ country: catalog.slug, year: String(value) })));
+  return HOLIDAY_CATALOGS.flatMap((catalog) => supportedHolidayYears().map((year) => ({ country: catalog.slug, year: String(year) })));
 }
 
 export default async function CountryHolidayYearPage({ params }: Props) {

@@ -8,6 +8,13 @@ export function isSupportedHolidayYear(year: number): boolean {
   return Number.isInteger(year) && year >= MIN_SUPPORTED_HOLIDAY_YEAR && year <= MAX_SUPPORTED_HOLIDAY_YEAR;
 }
 
+export function supportedHolidayYears(): number[] {
+  return Array.from(
+    { length: MAX_SUPPORTED_HOLIDAY_YEAR - MIN_SUPPORTED_HOLIDAY_YEAR + 1 },
+    (_, index) => MIN_SUPPORTED_HOLIDAY_YEAR + index,
+  );
+}
+
 export type HolidayDefinition = {
   id: string;
   name: string;

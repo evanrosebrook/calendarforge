@@ -124,6 +124,13 @@ grep -Fq "$site_url" <<<"$smoke_home"
 grep -Fq "$analytics_id" <<<"$smoke_home"
 curl --fail --silent --show-error --output /dev/null \
   "http://127.0.0.1:${smoke_port}/api/export/pdf?year=2026&month=8"
+curl --fail --silent --show-error --output /dev/null \
+  "http://127.0.0.1:${smoke_port}/holidays/us/2047"
+if docker logs "$smoke_container" 2>&1 | grep -Fq 'Failed to update prerender cache'; then
+  docker logs "$smoke_container" >&2
+  echo "Read-only container attempted a prerender-cache write" >&2
+  exit 1
+fi
 cleanup_smoke_container
 
 echo "Transferring $image_ref"
@@ -248,6 +255,19 @@ fi
 if ! curl --fail --silent --show-error --output /dev/null \
   --resolve calendarforge.net:443:127.0.0.1 \
   'https://calendarforge.net/api/export/pdf?year=2026&month=8'; then
+  restore_previous || true
+  exit 1
+fi
+
+if ! curl --fail --silent --show-error --output /dev/null \
+  --resolve calendarforge.net:443:127.0.0.1 \
+  'https://calendarforge.net/holidays/us/2047'; then
+  restore_previous || true
+  exit 1
+fi
+
+if docker logs "$container_name" 2>&1 | grep -Fq 'Failed to update prerender cache'; then
+  docker logs --tail 100 "$container_name" >&2 || true
   restore_previous || true
   exit 1
 fi
