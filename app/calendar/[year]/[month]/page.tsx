@@ -66,7 +66,7 @@ export default async function MonthPage({ params, searchParams }: Props) {
               <div className="calendar-nav-title"><Link href={`/calendar/${date.year}${query}`}>View all of {date.year}</Link></div>
               <Link className="icon-button" href={`/calendar/${next.year}/${next.month}${query}`} aria-label="Next month"><ArrowRight size={17} /></Link>
             </nav>
-            <CalendarGrid calendar={calendar} compact={settings.density === "compact"} highlightWeekends={settings.highlightWeekends} title={settings.title} showNotes={settings.showNotes} />
+            <CalendarGrid calendar={calendar} compact={settings.density === "compact"} highlightWeekends={settings.highlightWeekends} linkDates title={settings.title} showNotes={settings.showNotes} />
             <AdSlot />
           </div>
         </div>

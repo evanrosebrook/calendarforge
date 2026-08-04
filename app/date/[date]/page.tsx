@@ -88,7 +88,7 @@ export default async function DatePage({ params }: Props) {
             <div><span className="page-kicker">In context</span><h2>{monthName} {year} calendar</h2></div>
             <p>The selected date is highlighted. US national holidays are shown when they occur.</p>
           </div>
-          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} />
+          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} linkDates />
         </section>
 
         <div className="date-detail-grid no-print">

@@ -34,7 +34,7 @@ export default function HomePage() {
           <div className="calendar-preview-wrap" aria-label="Calendar preview">
             <div className="paper-card">
               <div className="preview-stamp">Free<br />to use</div>
-              <CalendarGrid calendar={calendar} compact />
+              <CalendarGrid calendar={calendar} compact linkDates />
             </div>
           </div>
         </div>

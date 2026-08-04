@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CalendarMonth } from "@/lib/calendar";
 
 type Props = {
@@ -5,13 +6,14 @@ type Props = {
   compact?: boolean;
   highlightWeekends?: boolean;
   highlightDate?: string;
+  linkDates?: boolean;
   title?: string;
   showNotes?: boolean;
   dayNotes?: Record<string, string>;
   theme?: "forge" | "linen" | "blueprint";
 };
 
-export function CalendarGrid({ calendar, compact = false, highlightWeekends = true, highlightDate, title, showNotes = false, dayNotes = {}, theme = "forge" }: Props) {
+export function CalendarGrid({ calendar, compact = false, highlightWeekends = true, highlightDate, linkDates = false, title, showNotes = false, dayNotes = {}, theme = "forge" }: Props) {
   return (
     <article className={`calendar-sheet theme-${theme} ${compact ? "compact" : ""} ${highlightWeekends ? "" : "no-weekends"}`}>
       <header className="sheet-heading">
@@ -35,7 +37,11 @@ export function CalendarGrid({ calendar, compact = false, highlightWeekends = tr
                   className={`${day.inMonth ? "" : "outside"} ${day.isWeekend ? "weekend" : ""} ${day.date === highlightDate ? "is-target" : ""}`}
                   data-date={day.date}
                 >
-                  <time className="day-number" dateTime={day.date}>{day.day}</time>
+                  {day.inMonth && linkDates ? (
+                    <Link className="day-number-link" href={`/date/${day.date}`} aria-label={`View date guide for ${day.date}`}>
+                      <time className="day-number" dateTime={day.date}>{day.day}</time>
+                    </Link>
+                  ) : <time className="day-number" dateTime={day.date}>{day.day}</time>}
                   {day.holidays.length > 0 && (
                     <ul className="holiday-list">
                       {day.holidays.map((holiday) => <li key={`${holiday.date}-${holiday.name}`}>{holiday.name}</li>)}
