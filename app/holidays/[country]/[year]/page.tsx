@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { HOLIDAY_CATALOGS, MAX_SUPPORTED_HOLIDAY_YEAR, MIN_SUPPORTED_HOLIDAY_YEAR, getHolidayCatalog, getNationalHolidays, isSupportedHolidayYear, supportedHolidayYears, utcDate } from "@/lib/calendar";
 import { holidayExportPath } from "@/lib/navigation";
 
@@ -46,8 +47,13 @@ export default async function CountryHolidayYearPage({ params }: Props) {
 
   return (
     <main className="content-page">
+      <BreadcrumbStructuredData items={[
+        { name: "Calendar Forge", path: "/" },
+        { name: "Holidays", path: "/holidays" },
+        { name: `${catalog.name} holidays ${year}`, path: `/holidays/${catalog.slug}/${year}` },
+      ]} />
       <div className="shell content-shell">
-        <nav className="breadcrumb" aria-label="Breadcrumb"><Link href="/holidays">Holidays</Link><span>/</span><span>{catalog.name}</span></nav>
+        <nav className="breadcrumb" aria-label="Breadcrumb"><Link href="/holidays">Holidays</Link><span>/</span><span>{catalog.name} {year}</span></nav>
         <div className="content-title-row">
           <div><span className="page-kicker">{catalog.calendarLabel}</span><h1>{catalog.name} holidays {year}</h1></div>
           <div className="content-title-actions">
@@ -56,31 +62,35 @@ export default async function CountryHolidayYearPage({ params }: Props) {
             <a className="button button-ghost" href={holidayExportPath("ics", catalog.code, year)}>Download ICS</a>
           </div>
         </div>
-        <p className="content-intro">National dates and standard observed days for current-law calendar planning. Regional holidays are not included.</p>
+        <p className="content-intro">Plan around {year} {catalog.demonym} national holidays and standard observed days. Open any date for its weekday, week number, monthly calendar, and printable daily planner.</p>
         <nav className="year-switcher" aria-label="Holiday year navigation">
           {year > MIN_SUPPORTED_HOLIDAY_YEAR && <Link href={`/holidays/${catalog.slug}/${year - 1}`}>← {year - 1}</Link>}
           <span>{year}</span>
           {year < MAX_SUPPORTED_HOLIDAY_YEAR && <Link href={`/holidays/${catalog.slug}/${year + 1}`}>{year + 1} →</Link>}
         </nav>
-        <div className="table-scroll">
-          <table className="holiday-table">
-            <thead><tr><th>Date</th><th>Weekday</th><th>Holiday</th><th>Category</th></tr></thead>
-            <tbody>
-              {holidays.map((holiday) => {
-                const [dateYear, month, day] = holiday.date.split("-").map(Number);
-                const date = utcDate(dateYear!, month!, day!);
-                return (
-                  <tr key={`${holiday.date}-${holiday.id}-${holiday.observed ? "observed" : "actual"}`}>
-                    <td>{formatter.format(date)}</td>
-                    <td>{weekdayFormatter.format(date)}</td>
-                    <td><Link href={`/holidays/${catalog.slug}/holiday/${holiday.id}`}>{holiday.name}</Link></td>
-                    <td><span className="category-tag">National{holiday.observed ? " · Observed" : ""}</span></td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <section aria-labelledby="holiday-dates-title">
+          <h2 id="holiday-dates-title">{year} {catalog.demonym} holiday dates</h2>
+          <p>Each date opens a detailed date guide; each holiday name opens its multi-year holiday guide.</p>
+          <div className="table-scroll">
+            <table className="holiday-table">
+              <thead><tr><th>Date</th><th>Weekday</th><th>Holiday</th><th>Category</th></tr></thead>
+              <tbody>
+                {holidays.map((holiday) => {
+                  const [dateYear, month, day] = holiday.date.split("-").map(Number);
+                  const date = utcDate(dateYear!, month!, day!);
+                  return (
+                    <tr key={`${holiday.date}-${holiday.id}-${holiday.observed ? "observed" : "actual"}`}>
+                      <td><Link href={`/date/${holiday.date}`}>{formatter.format(date)}</Link></td>
+                      <td>{weekdayFormatter.format(date)}</td>
+                      <td><Link href={`/holidays/${catalog.slug}/holiday/${holiday.id}`}>{holiday.name}</Link></td>
+                      <td><span className="category-tag">National{holiday.observed ? " · Observed" : ""}</span></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
         <aside className="content-note"><strong>Observed dates</strong><p>{catalog.observedNote}</p></aside>
         <p className="source-copy">Coverage uses current national rules for planning dates from {MIN_SUPPORTED_HOLIDAY_YEAR} through {MAX_SUPPORTED_HOLIDAY_YEAR}; it is not a historical record. Source reference: <a href={catalog.sourceUrl} rel="noreferrer">{catalog.sourceLabel}</a>. Always confirm workplace closures with the relevant employer or authority.</p>
       </div>

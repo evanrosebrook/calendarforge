@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { HOLIDAY_CATALOGS, MAX_SUPPORTED_HOLIDAY_YEAR, MIN_SUPPORTED_HOLIDAY_YEAR, getHolidayCatalog, getHolidayDefinition, getHolidayOccurrences, toIsoDate, utcDate } from "@/lib/calendar";
 
 type Props = { params: Promise<{ country: string; holiday: string }> };
@@ -40,6 +41,12 @@ export default async function HolidayDetailPage({ params }: Props) {
 
   return (
     <main className="content-page">
+      <BreadcrumbStructuredData items={[
+        { name: "Calendar Forge", path: "/" },
+        { name: "Holidays", path: "/holidays" },
+        { name: `${catalog.name} holidays`, path: `/holidays/${catalog.slug}/${today.getUTCFullYear()}` },
+        { name: holiday.name, path: `/holidays/${catalog.slug}/holiday/${holiday.id}` },
+      ]} />
       <div className="shell content-shell narrow-content">
         <nav className="breadcrumb" aria-label="Breadcrumb"><Link href="/holidays">Holidays</Link><span>/</span><Link href={`/holidays/${catalog.slug}/${today.getUTCFullYear()}`}>{catalog.name}</Link><span>/</span><span>{holiday.name}</span></nav>
         <span className="page-kicker">{catalog.demonym} national holiday</span>
@@ -50,7 +57,7 @@ export default async function HolidayDetailPage({ params }: Props) {
           <ol className="occurrence-list">
             {occurrences.map((occurrence) => {
               const [year, month, day] = occurrence.date.split("-").map(Number);
-              return <li key={`${occurrence.date}-${occurrence.observed ? "observed" : "actual"}`}><Link href={`/holidays/${catalog.slug}/${year}`}>{formatter.format(utcDate(year!, month!, day!))}</Link>{occurrence.observed && <span>Observed day</span>}</li>;
+              return <li key={`${occurrence.date}-${occurrence.observed ? "observed" : "actual"}`}><Link href={`/date/${occurrence.date}`}>{formatter.format(utcDate(year!, month!, day!))}</Link>{occurrence.observed && <span>Observed day</span>}</li>;
             })}
           </ol>
         </section>

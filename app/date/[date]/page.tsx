@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarGrid } from "@/components/calendar-grid";
 import { PageActions } from "@/components/page-actions";
-import { addUtcDays, createCalendarMonth, getNationalHolidaysForRange, toIsoDate, utcDate } from "@/lib/calendar";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { addUtcDays, createCalendarMonth, getHolidayCatalog, getNationalHolidaysForRange, toIsoDate, utcDate } from "@/lib/calendar";
 import { calculateDateDifference, getDateFacts, parseIsoCalendarDate } from "@/lib/date-calculators";
 
 export const dynamic = "force-dynamic";
@@ -49,6 +50,12 @@ export default async function DatePage({ params }: Props) {
 
   return (
     <main className="date-page">
+      <BreadcrumbStructuredData items={[
+        { name: "Calendar Forge", path: "/" },
+        { name: `${year} calendar`, path: `/calendar/${year}` },
+        { name: `${monthName} ${year}`, path: `/calendar/${year}/${month}` },
+        { name: facts.longDate, path: `/date/${facts.isoDate}` },
+      ]} />
       <div className="shell date-page-shell">
         <nav className="breadcrumb no-print" aria-label="Breadcrumb"><Link href="/today">Today</Link><span>/</span><span>{facts.isoDate}</span></nav>
         <header className="date-page-header">
@@ -105,7 +112,10 @@ export default async function DatePage({ params }: Props) {
           <section className="date-detail-card">
             <span className="result-kicker">Holiday check</span>
             <h2>{holidaysOnDate.length ? "National holidays on this date" : "No national holiday listed"}</h2>
-            {holidaysOnDate.length ? <ul className="date-holiday-list">{holidaysOnDate.map((holiday) => <li key={`${holiday.country}-${holiday.name}`}>{holiday.name} <span>{holiday.country === "us" ? "United States" : "Canada"}</span></li>)}</ul> : <p>Calendar Forge does not list a US or Canadian national holiday on this date. Regional holidays and informal observances may still apply.</p>}
+            {holidaysOnDate.length ? <ul className="date-holiday-list">{holidaysOnDate.map((holiday) => {
+              const catalog = getHolidayCatalog(holiday.country);
+              return <li key={`${holiday.country}-${holiday.name}`}><Link href={`/holidays/${catalog?.slug ?? holiday.country}/holiday/${holiday.id}`}>{holiday.name}</Link> <span>{holiday.country === "us" ? "United States" : "Canada"}</span></li>;
+            })}</ul> : <p>Calendar Forge does not list a US or Canadian national holiday on this date. Regional holidays and informal observances may still apply.</p>}
             <div className="inline-actions"><Link className="text-link" href={`/holidays/us/${year}`}>US holidays</Link><Link className="text-link" href={`/holidays/canada/${year}`}>Canada holidays</Link></div>
           </section>
         </div>

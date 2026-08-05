@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { HOLIDAY_CATALOGS, MAX_SUPPORTED_HOLIDAY_YEAR, MIN_SUPPORTED_HOLIDAY_YEAR, getNationalHolidays } from "@/lib/calendar";
 
 export const metadata: Metadata = {
@@ -13,6 +14,10 @@ export default function HolidaysPage() {
 
   return (
     <main className="content-page">
+      <BreadcrumbStructuredData items={[
+        { name: "Calendar Forge", path: "/" },
+        { name: "Holidays", path: "/holidays" },
+      ]} />
       <div className="shell content-shell">
         <span className="page-kicker">Holiday calendars</span>
         <h1>National holidays, clearly dated.</h1>

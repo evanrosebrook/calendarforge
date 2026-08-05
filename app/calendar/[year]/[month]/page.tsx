@@ -6,6 +6,7 @@ import { CalendarGrid } from "@/components/calendar-grid";
 import { CalendarToolbar } from "@/components/calendar-toolbar";
 import { ArrowLeft, ArrowRight } from "@/components/icons";
 import { PageActions } from "@/components/page-actions";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { createCalendarMonth } from "@/lib/calendar";
 import { adjacentMonth, queryString } from "@/lib/navigation";
 import { holidaysForSettings, parseSettings, type SearchParams } from "@/lib/settings";
@@ -52,6 +53,11 @@ export default async function MonthPage({ params, searchParams }: Props) {
 
   return (
     <main className="calendar-page">
+      <BreadcrumbStructuredData items={[
+        { name: "Calendar Forge", path: "/" },
+        { name: `${date.year} calendar`, path: `/calendar/${date.year}` },
+        { name: calendar.label, path: `/calendar/${date.year}/${date.month}` },
+      ]} />
       <style>{`@page { size: ${settings.paper} ${settings.orientation}; margin: .35in; }`}</style>
       <div className="shell">
         <div className="page-title-row">
