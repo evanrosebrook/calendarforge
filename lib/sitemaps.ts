@@ -14,6 +14,7 @@ const STATIC_PATHS = [
   "/date-calculator",
   "/date-calculator/add-subtract",
   "/date-calculator/days-between",
+  "/date-calculator/business-days",
   "/privacy",
 ] as const;
 

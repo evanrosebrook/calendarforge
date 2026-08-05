@@ -132,6 +132,7 @@ export default async function DatePage({ params }: Props) {
           <Link className="button button-ink" href={`/calendar/${year}/${month}`}>Customize this month</Link>
           <Link className="button button-ghost" href={`/date-calculator/add-subtract?date=${facts.isoDate}`}>Add or subtract time</Link>
           <Link className="button button-ghost" href={`/date-calculator/days-between?start=${facts.isoDate}`}>Calculate days between</Link>
+          <Link className="button button-ghost" href={`/date-calculator/business-days?mode=shift&date=${facts.isoDate}`}>Add business days</Link>
         </div>
       </div>
     </main>

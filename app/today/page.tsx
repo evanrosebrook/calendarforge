@@ -69,7 +69,7 @@ export default async function TodayPage({ searchParams }: Props) {
             <ul>{facts.quickDates.map((item) => <li key={item.days}><span>{item.days} days</span><Link href={`/calendar/${item.date.getUTCFullYear()}/${item.date.getUTCMonth() + 1}`}>{formatCalendarDate(item.date, "medium")}</Link></li>)}</ul>
           </section>
         </div>
-        <div className="result-actions no-print"><Link className="button button-ghost" href={`/calendar/${year}/${Number(month)}`}>Open this month</Link><Link className="button button-ghost" href={`/date-calculator/add-subtract?date=${toIsoDate(facts.date)}`}>Add or subtract from today</Link></div>
+        <div className="result-actions no-print"><Link className="button button-ghost" href={`/calendar/${year}/${Number(month)}`}>Open this month</Link><Link className="button button-ghost" href={`/date-calculator/add-subtract?date=${toIsoDate(facts.date)}`}>Add or subtract from today</Link><Link className="button button-ghost" href={`/date-calculator/business-days?mode=shift&date=${toIsoDate(facts.date)}`}>Add business days</Link></div>
       </div>
     </main>
   );

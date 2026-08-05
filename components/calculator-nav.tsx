@@ -3,6 +3,7 @@ import Link from "next/link";
 const ITEMS = [
   { href: "/date-calculator/days-between", label: "Days between" },
   { href: "/date-calculator/add-subtract", label: "Add or subtract" },
+  { href: "/date-calculator/business-days", label: "Business days" },
   { href: "/today", label: "Today" },
 ] as const;
 

@@ -37,6 +37,7 @@ describe("search sitemaps", () => {
       "https://calendarforge.net/date-calculator",
       "https://calendarforge.net/date-calculator/add-subtract",
       "https://calendarforge.net/date-calculator/days-between",
+      "https://calendarforge.net/date-calculator/business-days",
       "https://calendarforge.net/privacy",
     ]);
   });

@@ -22,6 +22,12 @@ const CALCULATORS = [
     copy: "Shift a date by years, months, weeks, and days with predictable leap-year and month-end handling.",
   },
   {
+    href: "/date-calculator/business-days",
+    kicker: "Plan working deadlines",
+    title: "Business days",
+    copy: "Count or shift working days while excluding weekends and verified U.S. or Canadian national holidays.",
+  },
+  {
     href: "/today",
     kicker: "Date reference",
     title: "Today",
@@ -39,7 +45,7 @@ export default function DateCalculatorPage() {
           <h1>Useful date answers, without guesswork.</h1>
           <p>Every calculation uses calendar dates directly, stays explicit about counting rules, and can be bookmarked or shared.</p>
         </header>
-        <div className="calculator-card-grid">
+        <div className="calculator-card-grid calculator-card-grid-four">
           {CALCULATORS.map((calculator) => (
             <article className="calculator-card" key={calculator.href}>
               <span>{calculator.kicker}</span>
