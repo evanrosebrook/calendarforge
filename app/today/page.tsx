@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalculatorNav } from "@/components/calculator-nav";
 import { toIsoDate } from "@/lib/calendar";
 import { SUPPORTED_TIME_ZONES, formatCalendarDate, getTodayFacts, parseSupportedTimeZone } from "@/lib/date-calculators";
 import type { SearchParams } from "@/lib/settings";
@@ -28,7 +27,6 @@ export default async function TodayPage({ searchParams }: Props) {
   return (
     <main className="calculator-page">
       <div className="shell calculator-shell">
-        <CalculatorNav current="/today" />
         <header className="calculator-hero compact">
           <span className="page-kicker">Today’s date</span>
           <h1>{facts.longDate}</h1>

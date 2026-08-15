@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalculatorNav } from "@/components/calculator-nav";
 import { addUtcDays, toIsoDate } from "@/lib/calendar";
 import { calculateDateDifference, formatCalendarDate, parseIsoCalendarDate } from "@/lib/date-calculators";
 import type { SearchParams } from "@/lib/settings";
@@ -45,7 +44,6 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
   return (
     <main className="calculator-page">
       <div className="shell calculator-shell">
-        <CalculatorNav current="/date-calculator/days-between" />
         <header className="calculator-hero compact">
           <span className="page-kicker">Date-to-date calculator</span>
           <h1>Days between dates</h1>

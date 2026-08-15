@@ -10,11 +10,15 @@ export type SitemapFamily = (typeof SITEMAP_FAMILIES)[number];
 const STATIC_PATHS = [
   "/",
   "/make-calendar",
+  "/fiscal-calendar",
   "/today",
   "/date-calculator",
+  "/date-calculator/days-until",
   "/date-calculator/add-subtract",
   "/date-calculator/days-between",
   "/date-calculator/business-days",
+  "/days-until/christmas",
+  "/days-until/easter",
   "/privacy",
 ] as const;
 
@@ -35,6 +39,7 @@ export function sitemapUrls(family: SitemapFamily, now = new Date()): string[] {
     return years.flatMap((year) => [
       absoluteSiteUrl(`/calendar/${year}`),
       ...Array.from({ length: 12 }, (_, index) => absoluteSiteUrl(`/calendar/${year}/${index + 1}`)),
+      absoluteSiteUrl(`/moon-phases/${year}`),
     ]);
   }
 

@@ -56,7 +56,7 @@ function lastWeekday(year: number, month: number, weekday: number): Date {
   return addUtcDays(last, -offset);
 }
 
-function easterSunday(year: number): Date {
+export function easterSunday(year: number): Date {
   const a = year % 19;
   const b = Math.floor(year / 100);
   const c = year % 100;

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalculatorNav } from "@/components/calculator-nav";
 import { toIsoDate, utcDate } from "@/lib/calendar";
 import { adjustCalendarDate, calculateDateDifference, formatCalendarDate, parseBoundedAmount, parseIsoCalendarDate, type DateOperation } from "@/lib/date-calculators";
 import type { SearchParams } from "@/lib/settings";
@@ -36,7 +35,6 @@ export default async function AddSubtractPage({ searchParams }: Props) {
   return (
     <main className="calculator-page">
       <div className="shell calculator-shell">
-        <CalculatorNav current="/date-calculator/add-subtract" />
         <header className="calculator-hero compact">
           <span className="page-kicker">Date arithmetic</span>
           <h1>Add or subtract dates</h1>

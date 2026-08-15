@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalculatorNav } from "@/components/calculator-nav";
 
 export const metadata: Metadata = {
   title: "Date Calculators",
-  description: "Count days between dates, add or subtract calendar time, and inspect today's date in an explicit timezone.",
+  description: "Count down to a date, compare dates, add or subtract calendar time, and inspect today's date in an explicit timezone.",
   alternates: { canonical: "/date-calculator" },
 };
 
 const CALCULATORS = [
+  {
+    href: "/date-calculator/days-until",
+    kicker: "Count down to a date",
+    title: "How many days until?",
+    copy: "Count calendar days, full weeks, and Monday–Friday weekdays until any target date with a shareable result.",
+  },
   {
     href: "/date-calculator/days-between",
     kicker: "Compare two dates",
@@ -39,7 +44,6 @@ export default function DateCalculatorPage() {
   return (
     <main className="calculator-page">
       <div className="shell calculator-shell">
-        <CalculatorNav />
         <header className="calculator-hero">
           <span className="page-kicker">Date calculators</span>
           <h1>Useful date answers, without guesswork.</h1>

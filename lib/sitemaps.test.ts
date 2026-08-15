@@ -33,20 +33,25 @@ describe("search sitemaps", () => {
     expect(sitemapUrls("static", now)).toEqual([
       "https://calendarforge.net/",
       "https://calendarforge.net/make-calendar",
+      "https://calendarforge.net/fiscal-calendar",
       "https://calendarforge.net/today",
       "https://calendarforge.net/date-calculator",
+      "https://calendarforge.net/date-calculator/days-until",
       "https://calendarforge.net/date-calculator/add-subtract",
       "https://calendarforge.net/date-calculator/days-between",
       "https://calendarforge.net/date-calculator/business-days",
+      "https://calendarforge.net/days-until/christmas",
+      "https://calendarforge.net/days-until/easter",
       "https://calendarforge.net/privacy",
     ]);
   });
 
   it("keeps the first publication year and grows three years ahead", () => {
     expect(sitemapLastYear(now)).toBe(2029);
-    expect(sitemapUrls("calendars", now)).toHaveLength(5 * 13);
+    expect(sitemapUrls("calendars", now)).toHaveLength(5 * 14);
     expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2025/1");
     expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2029/12");
+    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/moon-phases/2026");
   });
 
   it("includes holiday hubs, country years, and holiday entities", () => {

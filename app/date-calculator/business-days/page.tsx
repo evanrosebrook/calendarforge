@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalculatorNav } from "@/components/calculator-nav";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import {
@@ -47,7 +46,6 @@ export default async function BusinessDaysPage({ searchParams }: Props) {
         { name: "Business days calculator", path: "/date-calculator/business-days" },
       ]} />
       <div className="shell calculator-shell">
-        <CalculatorNav current="/date-calculator/business-days" />
         <div className="calculator-hero-row">
           <header className="calculator-hero compact">
             <span className="page-kicker">Working-day arithmetic</span>
