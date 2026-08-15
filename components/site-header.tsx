@@ -7,6 +7,7 @@ const CALCULATORS = [
   { href: "/date-calculator/days-between", label: "Days between" },
   { href: "/date-calculator/add-subtract", label: "Add or subtract" },
   { href: "/date-calculator/business-days", label: "Business days" },
+  { href: "/date-calculator/age", label: "Age calculator" },
   { href: "/today", label: "Today" },
 ] as const;
 

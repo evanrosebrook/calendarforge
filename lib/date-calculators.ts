@@ -70,6 +70,15 @@ export type DateFacts = {
   daysRemainingAfterDate: number;
 };
 
+export type AgeResult = {
+  age: CalendarDuration;
+  totalDays: number;
+  bornWeekday: string;
+  nextBirthday: Date | null;
+  daysUntilNextBirthday: number | null;
+  birthdayToday: boolean;
+};
+
 export function parseIsoCalendarDate(value: string | undefined): Date | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value ?? "");
   if (!match) return null;
@@ -108,6 +117,28 @@ export function calculateDateDifference(start: Date, end: Date, inclusive = fals
     earlier,
     later,
     inclusive,
+  };
+}
+
+export function calculateAge(birthDate: Date, asOfDate: Date): AgeResult | null {
+  const birth = utcDate(birthDate.getUTCFullYear(), birthDate.getUTCMonth() + 1, birthDate.getUTCDate());
+  const asOf = utcDate(asOfDate.getUTCFullYear(), asOfDate.getUTCMonth() + 1, asOfDate.getUTCDate());
+  if (asOf.getTime() < birth.getTime()) return null;
+
+  const difference = calculateDateDifference(birth, asOf);
+  const birthdayThisYear = birthdayInYear(birth, asOf.getUTCFullYear());
+  const birthdayToday = birthdayThisYear.getTime() === asOf.getTime();
+  const nextBirthday = birthdayThisYear.getTime() >= asOf.getTime()
+    ? birthdayThisYear
+    : asOf.getUTCFullYear() < MAX_YEAR ? birthdayInYear(birth, asOf.getUTCFullYear() + 1) : null;
+
+  return {
+    age: difference.duration,
+    totalDays: difference.totalDays,
+    bornWeekday: new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "UTC" }).format(birth),
+    nextBirthday,
+    daysUntilNextBirthday: nextBirthday ? Math.round((nextBirthday.getTime() - asOf.getTime()) / DAY_MS) : null,
+    birthdayToday,
   };
 }
 
@@ -203,6 +234,11 @@ function countWeekdays(earlier: Date, later: Date, inclusive: boolean): number {
     if (weekday !== 0 && weekday !== 6) result += 1;
   }
   return result;
+}
+
+function birthdayInYear(birthDate: Date, year: number): Date {
+  const month = birthDate.getUTCMonth() + 1;
+  return utcDate(year, month, Math.min(birthDate.getUTCDate(), daysInMonth(year, month)));
 }
 
 function decomposeCalendarDuration(start: Date, end: Date): CalendarDuration {

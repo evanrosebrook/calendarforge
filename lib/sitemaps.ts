@@ -17,6 +17,7 @@ const STATIC_PATHS = [
   "/date-calculator/add-subtract",
   "/date-calculator/days-between",
   "/date-calculator/business-days",
+  "/date-calculator/age",
   "/days-until/christmas",
   "/days-until/easter",
   "/privacy",
@@ -39,6 +40,7 @@ export function sitemapUrls(family: SitemapFamily, now = new Date()): string[] {
     return years.flatMap((year) => [
       absoluteSiteUrl(`/calendar/${year}`),
       ...Array.from({ length: 12 }, (_, index) => absoluteSiteUrl(`/calendar/${year}/${index + 1}`)),
+      ...Array.from({ length: 12 }, (_, index) => absoluteSiteUrl(`/calendar/monday-start/${year}/${index + 1}`)),
       absoluteSiteUrl(`/moon-phases/${year}`),
     ]);
   }

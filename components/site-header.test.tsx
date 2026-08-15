@@ -16,6 +16,7 @@ describe("site header", () => {
     expect(html).toContain('href="/date-calculator">All date calculators</a>');
     expect(html).toContain('href="/date-calculator/days-until">Days until</a>');
     expect(html).toContain('href="/date-calculator/business-days">Business days</a>');
+    expect(html).toContain('href="/date-calculator/age">Age calculator</a>');
     expect(html).toContain('href="/today">Today</a>');
   });
 });

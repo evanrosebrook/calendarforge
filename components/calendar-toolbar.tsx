@@ -2,13 +2,14 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
+import type { WeekStart } from "@/lib/calendar";
 import type { CalendarSettings } from "@/lib/settings";
 import { reportTelemetry } from "@/lib/telemetry-client";
 import { Download, Printer, Share2 } from "./icons";
 
-type Props = { settings: CalendarSettings; year: number; month?: number };
+type Props = { settings: CalendarSettings; year: number; month?: number; defaultFirstDayOfWeek?: WeekStart };
 
-export function CalendarToolbar({ settings, year, month }: Props) {
+export function CalendarToolbar({ settings, year, month, defaultFirstDayOfWeek = 0 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -48,6 +49,7 @@ export function CalendarToolbar({ settings, year, month }: Props) {
 
   const exportBase = `/api/export/`;
   const exportQuery = new URLSearchParams(searchParams.toString());
+  if (defaultFirstDayOfWeek === 1 && !exportQuery.has("start")) exportQuery.set("start", "monday");
   exportQuery.set("year", String(year));
   if (month) exportQuery.set("month", String(month));
 
@@ -56,8 +58,8 @@ export function CalendarToolbar({ settings, year, month }: Props) {
       <section className="toolbar-section">
         <span className="toolbar-label">Week layout</span>
         <div className="segmented">
-          <button className={settings.firstDayOfWeek === 0 ? "active" : ""} onClick={() => update("start")} type="button">Sunday</button>
-          <button className={settings.firstDayOfWeek === 1 ? "active" : ""} onClick={() => update("start", "monday")} type="button">Monday</button>
+          <button className={settings.firstDayOfWeek === 0 ? "active" : ""} onClick={() => update("start", defaultFirstDayOfWeek === 0 ? undefined : "sunday")} type="button">Sunday</button>
+          <button className={settings.firstDayOfWeek === 1 ? "active" : ""} onClick={() => update("start", defaultFirstDayOfWeek === 1 ? undefined : "monday")} type="button">Monday</button>
         </div>
         <div className="toggle-row"><span>Week numbers</span><button aria-label="Toggle week numbers" aria-pressed={settings.showWeekNumbers} className={`switch ${settings.showWeekNumbers ? "on" : ""}`} onClick={() => toggle("weekNumbers", !settings.showWeekNumbers)} type="button" /></div>
         <div className="toggle-row"><span>National holidays</span><button aria-label="Toggle national holidays" aria-pressed={settings.showHolidays} className={`switch ${settings.showHolidays ? "on" : ""}`} onClick={() => toggle("holidays", !settings.showHolidays, "1", "0")} type="button" /></div>

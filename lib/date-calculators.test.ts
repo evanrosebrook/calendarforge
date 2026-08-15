@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   adjustCalendarDate,
+  calculateAge,
   calculateDateDifference,
   dateInTimeZone,
   getDateFacts,
@@ -46,6 +47,27 @@ describe("date calculators", () => {
     expect(calculateDateDifference(second, first)).toMatchObject({ direction: -1, totalDays: 11 });
     expect(calculateDateDifference(first, first)).toMatchObject({ direction: 0, totalDays: 0, weekdays: 0 });
     expect(calculateDateDifference(first, first, true)).toMatchObject({ totalDays: 1, weekdays: 0 });
+  });
+
+  it("calculates age, lifetime days, and the next birthday", () => {
+    expect(calculateAge(utcDate(1990, 5, 20), utcDate(2026, 8, 14))).toMatchObject({
+      age: { years: 36, months: 2, days: 25 },
+      totalDays: 13235,
+      bornWeekday: "Sunday",
+      daysUntilNextBirthday: 279,
+      birthdayToday: false,
+    });
+    expect(toIsoDate(calculateAge(utcDate(1990, 5, 20), utcDate(2026, 8, 14))!.nextBirthday!)).toBe("2027-05-20");
+  });
+
+  it("uses February 28 as the non-leap anniversary for leap-day birthdays", () => {
+    const result = calculateAge(utcDate(2000, 2, 29), utcDate(2025, 2, 28));
+    expect(result).toMatchObject({ age: { years: 25, months: 0, days: 0 }, birthdayToday: true, daysUntilNextBirthday: 0 });
+    expect(toIsoDate(result!.nextBirthday!)).toBe("2025-02-28");
+  });
+
+  it("rejects an as-of date before the birth date", () => {
+    expect(calculateAge(utcDate(2026, 8, 15), utcDate(2026, 8, 14))).toBeNull();
   });
 
   it("decomposes calendar spans with month-end clamping", () => {

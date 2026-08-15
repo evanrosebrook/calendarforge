@@ -8,6 +8,12 @@ describe("calendar holiday settings", () => {
     expect(holidaysForSettings(settings, 2026, 2026)).toContainEqual(expect.objectContaining({ id: "independence-day", country: "us" }));
   });
 
+  it("supports a route-specific Monday default with an explicit Sunday override", () => {
+    expect(parseSettings({}, 1).firstDayOfWeek).toBe(1);
+    expect(parseSettings({ start: "sunday" }, 1).firstDayOfWeek).toBe(0);
+    expect(parseSettings({ start: "monday" }).firstDayOfWeek).toBe(1);
+  });
+
   it("parses and serializes the selected Canadian national scope", () => {
     const settings = parseSettings({ country: "ca", scope: "national" });
     const params = settingsToParams(settings);

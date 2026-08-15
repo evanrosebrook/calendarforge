@@ -23,14 +23,14 @@ function stringParam(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export function parseSettings(params: SearchParams): CalendarSettings {
+export function parseSettings(params: SearchParams, defaultFirstDayOfWeek: WeekStart = 0): CalendarSettings {
   const start = stringParam(params.start);
   const orientation = stringParam(params.orientation);
   const paper = stringParam(params.paper);
   const density = stringParam(params.density);
   const title = stringParam(params.title)?.trim().slice(0, 80) ?? "";
   return {
-    firstDayOfWeek: start === "monday" ? 1 : 0,
+    firstDayOfWeek: start === "monday" ? 1 : start === "sunday" ? 0 : defaultFirstDayOfWeek,
     showWeekNumbers: stringParam(params.weekNumbers) === "1",
     showHolidays: stringParam(params.holidays) !== "0",
     holidayCountry: stringParam(params.country) === "ca" ? "ca" : "us",

@@ -40,17 +40,19 @@ The following checks passed against `https://calendarforge.net`:
 
 The smoke test found runtime prerender-cache write failures for supported holiday years that were not generated during the build. The production container is intentionally read-only, so those writes cannot succeed. The remediation prebuilds every supported U.S. and Canadian holiday year (1971–2100) and disables ungenerated dynamic parameters for that route. This preserves the read-only deployment model and keeps acquisition limited through the sitemap rather than runtime route availability.
 
-The remediation passed a local production-image smoke test under the same read-only, memory, CPU, PID, and temporary-filesystem constraints used in production. Boundary years 1971 and 2100 and a non-acquisition year all returned HTTP 200 without cache-write errors. Production deployment is pending approval.
+The remediation passed a local production-image smoke test under the same read-only, memory, CPU, PID, and temporary-filesystem constraints used in production. Boundary years 1971 and 2100 and a non-acquisition year all returned HTTP 200 without cache-write errors. The remediation was deployed, and the production container was healthy during the August 14 review.
 
 ## Follow-up checkpoints
 
 ### August 10, 2026
 
-- Indexed pages:
-- Search impressions/clicks:
-- Sitemap status:
-- Crawl or page-indexing issues:
-- GA4 users, sessions, and exports:
+- Review completed August 14. Search Console indexing data was last updated August 6; performance data was current through August 12.
+- Indexed pages: 1,345 indexed; 2,064 not indexed.
+- Search impressions/clicks: 16,418 impressions and 19 clicks, 0.1% CTR, average position 19.4. The available property history covered August 2–12.
+- Sitemap status: `/sitemap.xml` succeeded, was submitted August 4, was last read August 9, and reported 1,939 discovered URLs before the August 14 route additions.
+- Crawl or page-indexing issues: 1,057 discovered but not indexed; 275 crawled but not indexed; 727 alternate pages with a proper canonical; three API URLs blocked by `robots.txt`; two customized pages excluded by `noindex`. The alternate and noindex groups match intentional URL-state handling. Home, August 2026 calendar, 2026 U.S. holidays, and 2026 moon phases all passed URL inspection as indexed HTTPS pages; the three structured pages each had one valid breadcrumb item.
+- GA4 users, sessions, and exports: last seven days showed 73 active users, 76 new users, 82 sessions, 332 events, and zero key events. The available 28-day/property-lifetime event report showed 137 users, 147 sessions, 576 events, one `calendar_export`, and one `calendar_share`.
+- Acquisition signal: GA4 attributed 25 sessions to organic search in the last seven days. Search Console's leading page was `/today` with 442 impressions; date-guide pages produced most recorded clicks.
 
 ### August 17, 2026
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Date Calculators",
-  description: "Count down to a date, compare dates, add or subtract calendar time, and inspect today's date in an explicit timezone.",
+  description: "Calculate age, count down to a date, compare dates, add or subtract calendar time, and inspect today's date in an explicit timezone.",
   alternates: { canonical: "/date-calculator" },
 };
 
@@ -31,6 +31,12 @@ const CALCULATORS = [
     kicker: "Plan working deadlines",
     title: "Business days",
     copy: "Count or shift working days while excluding weekends and verified U.S. or Canadian national holidays.",
+  },
+  {
+    href: "/date-calculator/age",
+    kicker: "Measure a lifetime",
+    title: "Age calculator",
+    copy: "Calculate exact age in years, months, and days, total days lived, and the countdown to the next birthday.",
   },
   {
     href: "/today",

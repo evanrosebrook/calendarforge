@@ -40,6 +40,7 @@ describe("search sitemaps", () => {
       "https://calendarforge.net/date-calculator/add-subtract",
       "https://calendarforge.net/date-calculator/days-between",
       "https://calendarforge.net/date-calculator/business-days",
+      "https://calendarforge.net/date-calculator/age",
       "https://calendarforge.net/days-until/christmas",
       "https://calendarforge.net/days-until/easter",
       "https://calendarforge.net/privacy",
@@ -48,9 +49,10 @@ describe("search sitemaps", () => {
 
   it("keeps the first publication year and grows three years ahead", () => {
     expect(sitemapLastYear(now)).toBe(2029);
-    expect(sitemapUrls("calendars", now)).toHaveLength(5 * 14);
+    expect(sitemapUrls("calendars", now)).toHaveLength(5 * 26);
     expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2025/1");
     expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2029/12");
+    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/monday-start/2029/12");
     expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/moon-phases/2026");
   });
 

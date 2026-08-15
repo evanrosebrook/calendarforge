@@ -15,16 +15,18 @@ Calendar Forge already provides:
 - Custom titles, notes areas, and shareable URL state.
 - PDF, ICS, CSV, and XLSX exports.
 
-## Delivery status (August 3, 2026)
+## Delivery status (August 14, 2026)
 
 The first three roadmap batches are substantially shipped:
 
 - Holiday catalogs, country/year pages, individual holiday pages, calendar controls, and CSV/ICS downloads are live for the United States and Canada.
 - The custom calendar builder supports 1-, 3-, 6-, and 12-month ranges, per-day notes, three locales, three original themes, shareable URL state, print/PDF, SVG, ICS, CSV, and XLSX output.
-- Today, add/subtract, and days-between calculators are live and linked as a calculator cluster.
+- Today, add/subtract, days-between, days-until, and business-day calculators are live; the age calculator is implemented in the current release.
+- Fiscal calendars, annual moon-phase calendars with ICS export, and indexable event countdowns are live.
+- Monday-start monthly pages are implemented in the current release with dedicated canonical routes, navigation, sitemap coverage, printing, and downloads.
 - Privacy-safe first-party telemetry and GA4 measurement are live; Google Search Console ownership was verified on August 3, 2026.
 
-The next product batch is the indexable calendar-format family, starting with Monday-start monthly pages. Age and business-day calculators remain intentionally behind that acquisition work.
+Google Search Console reported 1,345 indexed pages, 16,418 impressions, and 19 clicks during the August 14 review. The next product work should improve click-through and page quality for demonstrated queries while completing only the calendar-format pages with distinct utility.
 
 ## Completed batches
 
@@ -67,7 +69,7 @@ Create `/make-calendar` with:
 
 The useful competitor pattern is a single place where users can alter calendar content and presentation while previewing the result. Calendar Forge should keep the interface more focused and accessible. Reference: [custom calendar maker](https://blankcalendarpages.com/make-calendar).
 
-### 3. Date-calculator cluster — core shipped
+### 3. Date-calculator cluster — shipped
 
 Ship these as a linked family:
 
@@ -75,17 +77,19 @@ Ship these as a linked family:
 - `/date-calculator/add-subtract`
 - `/date-calculator/days-between`
 - `/date-calculator/age`
-- Later: `/date-calculator/business-days`
+- `/date-calculator/business-days`
+- `/date-calculator/days-until`
+- `/days-until/[event]`
 
 Results should be shareable, printable, and explicit about timezone and inclusive/exclusive counting rules. References: [today](https://blankcalendarpages.com/todays-date), [add/subtract](https://blankcalendarpages.com/date-calculator/add-days), [days between](https://blankcalendarpages.com/date-calculator/days-between-dates), and [age calculator](https://blankcalendarpages.com/age-calculator).
 
-## Recommended next batch
+## Current acquisition batch
 
 ### 4. Indexable calendar-format landing pages
 
-Important user intents should have explicit routes rather than relying only on query strings:
+Important user intents should have explicit routes rather than relying only on query strings. The Monday-start family is shipped; the remaining candidates should be added only when the generated layout is materially different:
 
-- `/calendar/monday-start/[year]/[month]`
+- ~~`/calendar/monday-start/[year]/[month]`~~
 - `/calendar/with-holidays/[country]/[year]/[month]`
 - `/calendar/portrait/[year]/[month]`
 - `/weekly-calendar/[year]/[month]`
@@ -94,13 +98,22 @@ Important user intents should have explicit routes rather than relying only on q
 
 Each page should provide useful server-rendered output, adjacent-date navigation, relevant customization, and internal links to related formats. References: [Monday calendar](https://blankcalendarpages.com/monday-calendar), [vertical calendar](https://blankcalendarpages.com/vertical-calendar), [weekly calendar](https://blankcalendarpages.com/weekly-calendar), and [yearly calendar](https://blankcalendarpages.com/yearly-calendar).
 
+## Recommended next work
+
+1. Improve titles, descriptions, and internal links for high-impression, low-click queries and pages identified in Search Console, starting with Today, date guides, and date-difference intent.
+2. Monitor the discovered/crawled-not-indexed pool before materially expanding the date sitemap.
+3. Complete the most differentiated format routes: holiday calendars, weekly calendars, and yearly calendars.
+4. Add portrait and daily-planner landing pages only when their server-rendered output is meaningfully different from existing calendar and date-guide pages.
+
 ## Build order
 
 1. ~~Holiday data model plus US and Canada pages.~~
 2. ~~Dedicated custom calendar builder.~~
 3. ~~Today, days-between, and add/subtract calculators.~~
-4. Monday, holiday, portrait, weekly, and yearly landing-page families.
-5. Age and business-day calculators.
+4. ~~Monday-start monthly landing-page family.~~
+5. ~~Age and business-day calculators.~~
+6. Search-result CTR and internal-link improvements based on measured queries.
+7. Holiday, weekly, yearly, portrait, and daily-planner landing-page families.
 
 ## Deferred work
 
