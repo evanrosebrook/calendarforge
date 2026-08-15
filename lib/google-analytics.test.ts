@@ -45,6 +45,39 @@ describe("Google Analytics telemetry", () => {
     });
     expect(buildGoogleTelemetryEvent(
       "G-MMP15FDWR4",
+      "calculator_result",
+      { surface: "days_between", placement: "private_input" },
+      "https://calendarforge.net",
+      "/date-calculator/days-between?start=private",
+      "Days between",
+    )).toEqual({
+      name: "calculator_result",
+      parameters: {
+        send_to: "G-MMP15FDWR4",
+        page_location: "https://calendarforge.net/date-calculator/days-between",
+        page_title: "Days between",
+        surface: "days_between",
+      },
+    });
+    expect(buildGoogleTelemetryEvent(
+      "G-MMP15FDWR4",
+      "date_guide_action",
+      { surface: "date_guide", placement: "print_planner" },
+      "https://calendarforge.net",
+      "/date/2026-08-05",
+      "August 5, 2026",
+    )).toEqual({
+      name: "date_guide_action",
+      parameters: {
+        send_to: "G-MMP15FDWR4",
+        page_location: "https://calendarforge.net/date/2026-08-05",
+        page_title: "August 5, 2026",
+        surface: "date_guide",
+        placement: "print_planner",
+      },
+    });
+    expect(buildGoogleTelemetryEvent(
+      "G-MMP15FDWR4",
       "lcp",
       { value: 1200 },
       "https://calendarforge.net",

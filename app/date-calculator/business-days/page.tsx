@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import {
@@ -116,6 +117,7 @@ function BetweenCalculator({ params, region, today }: { params: SearchParams; re
             : outsideHolidayRange
               ? <CalculatorError title="Holiday data is unavailable for part of this range." copy={`Choose dates from ${MIN_SUPPORTED_HOLIDAY_YEAR} through ${MAX_SUPPORTED_HOLIDAY_YEAR}, or select Weekends only.`} />
               : result && <>
+                {submitted && <CalculatorResultTelemetry surface="business_days" />}
                 <span className="result-kicker">Workdays in this range</span>
                 <h2>{pluralize(result.businessDays, "business day")}</h2>
                 <p className="result-summary">From <strong>{formatCalendarDate(start)}</strong> through <strong>{formatCalendarDate(end)}</strong>. {endpointSummary(includeStart, includeEnd)}</p>
@@ -136,6 +138,7 @@ function ShiftCalculator({ params, region, today }: { params: SearchParams; regi
   const includeStart = valueOf(params.includeStart) === "1";
   const start = parseIsoCalendarDate(dateValue);
   const result = start && amount !== null ? shiftBusinessDays(start, amount, direction, region, includeStart) : null;
+  const submitted = params.date !== undefined || params.days !== undefined;
   const outsideHolidayRange = Boolean(start && region !== "weekends" && (
     start.getUTCFullYear() < MIN_SUPPORTED_HOLIDAY_YEAR
       || start.getUTCFullYear() > MAX_SUPPORTED_HOLIDAY_YEAR
@@ -160,6 +163,7 @@ function ShiftCalculator({ params, region, today }: { params: SearchParams; regi
           : outsideHolidayRange
             ? <CalculatorError title="The calculation leaves the verified holiday range." copy={`Reduce the shift, choose dates from ${MIN_SUPPORTED_HOLIDAY_YEAR} through ${MAX_SUPPORTED_HOLIDAY_YEAR}, or select Weekends only.`} />
             : result && <>
+              {submitted && <CalculatorResultTelemetry surface="business_days" />}
               <span className="result-kicker">Calculated business date</span>
               <h2>{formatCalendarDate(result.target)}</h2>
               <p className="result-summary">{direction === "add" ? "Adding" : "Subtracting"} <strong>{pluralize(amount, "business day")}</strong> {direction === "add" ? "to" : "from"} {formatCalendarDate(start)}. The starting date {includeStart ? "can count as day one" : "is not counted"}.</p>

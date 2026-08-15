@@ -100,10 +100,21 @@ Each page should provide useful server-rendered output, adjacent-date navigation
 
 ## Recommended next work
 
-1. Improve titles, descriptions, and internal links for high-impression, low-click queries and pages identified in Search Console, starting with Today, date guides, and date-difference intent.
-2. Monitor the discovered/crawled-not-indexed pool before materially expanding the date sitemap.
-3. Complete the most differentiated format routes: holiday calendars, weekly calendars, and yearly calendars.
+1. Ship and measure the current CTR and activation improvements for Today, date guides, and date-difference intent.
+2. Hold the sitemap and route-family footprint steady through August 28, 2026 while the changes accumulate two weeks of Search Console and GA4 data.
+3. If the measurement gate passes, complete the most differentiated format routes: holiday calendars, weekly calendars, and yearly calendars.
 4. Add portrait and daily-planner landing pages only when their server-rendered output is meaningfully different from existing calendar and date-guide pages.
+
+### Growth measurement gate — August 14–28, 2026
+
+Do not add new sitemap families during this window. At the August 28 review, compare the post-change period with the August 2–12 baseline and record:
+
+- Search Console CTR for date-guide pages already averaging on page one, with a target of at least 1% once a page has enough impressions to be directional.
+- Organic landings on `/today`, `/date/[date]`, and `/date-calculator/days-between`, including position and CTR changes by query intent.
+- The path from an organic landing to `date_guide_action` or `calculator_result`, then to the `calendar_export`, `calendar_print`, or `calendar_share` key events.
+- Indexed and discovered-but-not-indexed totals, confirming that the existing footprint is being absorbed before expansion resumes.
+
+Do not optimize the age calculator or Monday-start pages based on the current sample. Revisit them after the gate only if they have accumulated enough impressions or activation events to support a decision.
 
 ## Build order
 

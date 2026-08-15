@@ -1,6 +1,6 @@
 import { reportGoogleTelemetry } from "./google-analytics";
 
-export type TelemetryName = "ad_viewable" | "cls" | "export" | "lcp" | "page_view" | "print" | "share";
+export type TelemetryName = "ad_viewable" | "calculator_result" | "cls" | "date_guide_action" | "export" | "lcp" | "page_view" | "print" | "share";
 
 export type TelemetryDetails = {
   value?: number;

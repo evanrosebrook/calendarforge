@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
 import { toIsoDate, utcDate } from "@/lib/calendar";
 import { adjustCalendarDate, calculateDateDifference, formatCalendarDate, parseBoundedAmount, parseIsoCalendarDate, type DateOperation } from "@/lib/date-calculators";
 import type { SearchParams } from "@/lib/settings";
@@ -31,6 +32,7 @@ export default async function AddSubtractPage({ searchParams }: Props) {
   const base = parseIsoCalendarDate(dateValue);
   const result = base ? adjustCalendarDate(base, values, operation) : null;
   const totalDays = base && result ? calculateDateDifference(base, result).totalDays : null;
+  const submitted = Object.keys(params).length > 0;
 
   return (
     <main className="calculator-page">
@@ -55,6 +57,7 @@ export default async function AddSubtractPage({ searchParams }: Props) {
 
           <section className="calculator-results" aria-live="polite">
             {!base ? <div className="calculator-error"><strong>Enter a valid starting date.</strong><p>The supported range is year 0001 through 9999.</p></div> : !result ? <div className="calculator-error"><strong>The result is outside the supported range.</strong><p>Reduce the adjustment so the result remains between years 0001 and 9999.</p></div> : <>
+              {submitted && <CalculatorResultTelemetry surface="add_subtract" />}
               <span className="result-kicker">Result</span>
               <h2>{formatCalendarDate(result)}</h2>
               <p className="result-summary"><strong>{operation === "add" ? "Added to" : "Subtracted from"}</strong> {formatCalendarDate(base)}.</p>

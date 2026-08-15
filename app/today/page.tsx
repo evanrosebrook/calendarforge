@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageActions } from "@/components/page-actions";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { toIsoDate } from "@/lib/calendar";
 import { SUPPORTED_TIME_ZONES, formatCalendarDate, getTodayFacts, parseSupportedTimeZone } from "@/lib/date-calculators";
 import type { SearchParams } from "@/lib/settings";
@@ -7,7 +9,7 @@ import type { SearchParams } from "@/lib/settings";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Today's Date",
+  title: "Today's Date — Day, Week Number & Date Formats",
   description: "See today's date, local time, day and week numbers, date formats, and quick future dates in an explicit timezone.",
   alternates: { canonical: "/today" },
 };
@@ -26,12 +28,20 @@ export default async function TodayPage({ searchParams }: Props) {
 
   return (
     <main className="calculator-page">
+      <BreadcrumbStructuredData items={[
+        { name: "Calendar Forge", path: "/" },
+        { name: "Date calculators", path: "/date-calculator" },
+        { name: "Today's date", path: "/today" },
+      ]} />
       <div className="shell calculator-shell">
-        <header className="calculator-hero compact">
-          <span className="page-kicker">Today’s date</span>
-          <h1>{facts.longDate}</h1>
-          <p>Showing the calendar date for <strong>{SUPPORTED_TIME_ZONES.find((zone) => zone.id === timeZone)?.label}</strong>. The timezone is explicit so the answer does not depend on the server’s location.</p>
-        </header>
+        <div className="calculator-hero-row">
+          <header className="calculator-hero compact">
+            <span className="page-kicker">Today’s date</span>
+            <h1>{facts.longDate}</h1>
+            <p>Showing the calendar date for <strong>{SUPPORTED_TIME_ZONES.find((zone) => zone.id === timeZone)?.label}</strong>. The timezone is explicit so the answer does not depend on the server’s location.</p>
+          </header>
+          <PageActions />
+        </div>
 
         <form className="timezone-form no-print" action="/today" method="get">
           <label htmlFor="today-timezone">Timezone</label>
@@ -67,7 +77,7 @@ export default async function TodayPage({ searchParams }: Props) {
             <ul>{facts.quickDates.map((item) => <li key={item.days}><span>{item.days} days</span><Link href={`/calendar/${item.date.getUTCFullYear()}/${item.date.getUTCMonth() + 1}`}>{formatCalendarDate(item.date, "medium")}</Link></li>)}</ul>
           </section>
         </div>
-        <div className="result-actions no-print"><Link className="button button-ghost" href={`/calendar/${year}/${Number(month)}`}>Open this month</Link><Link className="button button-ghost" href={`/date-calculator/add-subtract?date=${toIsoDate(facts.date)}`}>Add or subtract from today</Link><Link className="button button-ghost" href={`/date-calculator/business-days?mode=shift&date=${toIsoDate(facts.date)}`}>Add business days</Link></div>
+        <div className="result-actions no-print"><Link className="button button-ghost" href={`/date/${facts.isoDate}`}>Open today’s date guide</Link><Link className="button button-ghost" href={`/calendar/${year}/${Number(month)}`}>Open this month</Link><Link className="button button-ghost" href={`/date-calculator/days-between?start=${facts.isoDate}`}>Days from today</Link><Link className="button button-ghost" href={`/date-calculator/add-subtract?date=${toIsoDate(facts.date)}`}>Add or subtract from today</Link><Link className="button button-ghost" href={`/date-calculator/business-days?mode=shift&date=${toIsoDate(facts.date)}`}>Add business days</Link><Link className="button button-ghost" href="/date-calculator/age">Calculate an age</Link></div>
       </div>
     </main>
   );

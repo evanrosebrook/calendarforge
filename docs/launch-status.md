@@ -53,6 +53,9 @@ The remediation passed a local production-image smoke test under the same read-o
 - Crawl or page-indexing issues: 1,057 discovered but not indexed; 275 crawled but not indexed; 727 alternate pages with a proper canonical; three API URLs blocked by `robots.txt`; two customized pages excluded by `noindex`. The alternate and noindex groups match intentional URL-state handling. Home, August 2026 calendar, 2026 U.S. holidays, and 2026 moon phases all passed URL inspection as indexed HTTPS pages; the three structured pages each had one valid breadcrumb item.
 - GA4 users, sessions, and exports: last seven days showed 73 active users, 76 new users, 82 sessions, 332 events, and zero key events. The available 28-day/property-lifetime event report showed 137 users, 147 sessions, 576 events, one `calendar_export`, and one `calendar_share`.
 - Acquisition signal: GA4 attributed 25 sessions to organic search in the last seven days. Search Console's leading page was `/today` with 442 impressions; date-guide pages produced most recorded clicks.
+- Growth decision: hold new sitemap families through August 28 while measuring the CTR and activation changes to Today, date guides, and days-between pages. The success criteria are recorded in `docs/product-roadmap.md`.
+- Analytics configuration: `calendar_export` and `calendar_share` were marked as GA4 key events. `calendar_print` was predeclared as a code-generated key event with no default monetary value so it will be counted when the instrumented action first arrives.
+- Growth instrumentation prepared in the current worktree: privacy-safe `date_guide_action` and `calculator_result` events, with only allowlisted action/surface labels and no date values, query strings, titles, or user-entered content.
 
 ### August 17, 2026
 

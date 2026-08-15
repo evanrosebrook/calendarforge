@@ -18,13 +18,26 @@ declare global {
 
 const googleEventNames: Partial<Record<TelemetryName, string>> = {
   ad_viewable: "ad_viewable",
+  calculator_result: "calculator_result",
+  date_guide_action: "date_guide_action",
   export: "calendar_export",
   print: "calendar_print",
   share: "calendar_share",
 };
 
 const allowedFormats = new Set(["pdf", "svg", "ics", "csv", "xlsx"]);
-const allowedSurfaces = new Set(["builder", "calendar", "page_actions"]);
+const allowedPlacements = new Set(["business_days", "calendar_after", "days_between", "open_calendar", "print_planner", "year_after"]);
+const allowedSurfaces = new Set([
+  "add_subtract",
+  "age",
+  "builder",
+  "business_days",
+  "calendar",
+  "date_guide",
+  "days_between",
+  "days_until",
+  "page_actions",
+]);
 
 export function isGoogleAnalyticsMeasurementId(value: string): boolean {
   return /^G-[A-Z0-9]+$/.test(value);
@@ -68,8 +81,7 @@ export function buildGoogleTelemetryEvent(
   };
   if (details.format && allowedFormats.has(details.format)) parameters.format = details.format;
   if (details.surface && allowedSurfaces.has(details.surface)) parameters.surface = details.surface;
-  const placement = safeDimension(details.placement);
-  if (placement) parameters.placement = placement;
+  if (details.placement && allowedPlacements.has(details.placement)) parameters.placement = details.placement;
   return { name: googleName, parameters };
 }
 
@@ -96,9 +108,4 @@ export function reportGoogleTelemetry(name: TelemetryName, details: TelemetryDet
     document.title,
   );
   if (event) window.gtag("event", event.name, event.parameters);
-}
-
-function safeDimension(value: string | undefined): string | undefined {
-  if (!value || !/^[a-z0-9_-]{1,50}$/i.test(value)) return undefined;
-  return value;
 }

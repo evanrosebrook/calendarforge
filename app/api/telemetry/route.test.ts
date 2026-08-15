@@ -32,12 +32,30 @@ describe("telemetry endpoint", () => {
     expect(response.status).toBe(400);
   });
 
+  it("accepts privacy-safe activation events without calculator inputs", async () => {
+    const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const response = await POST(request({
+      name: "calculator_result",
+      value: 1,
+      path: "/date-calculator/age?birth=private",
+      surface: "age",
+    }));
+
+    expect(response.status).toBe(204);
+    expect(info).toHaveBeenCalledWith("calendar_forge_metric", expect.objectContaining({
+      name: "calculator_result",
+      path: "/date-calculator/age",
+      surface: "age",
+    }));
+  });
+
   it("drops unapproved event dimensions", async () => {
     const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
     const response = await POST(request({
       name: "page_view",
       value: 1,
       path: "/today",
+      placement: "private_input",
       format: "html",
       surface: "private_notes",
       source: "https://example.com/private?q=secret",
@@ -46,6 +64,7 @@ describe("telemetry endpoint", () => {
     expect(response.status).toBe(204);
     expect(info).toHaveBeenCalledWith("calendar_forge_metric", expect.objectContaining({
       path: "/today",
+      placement: undefined,
       format: undefined,
       surface: undefined,
       source: undefined,

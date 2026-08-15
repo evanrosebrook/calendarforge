@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
 import { CountdownResult } from "@/components/countdown-result";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
@@ -26,6 +27,7 @@ export default async function DaysUntilPage({ searchParams }: Props) {
   const defaultTarget = popularTargets.find(({ event }) => event.id === "christmas")?.isoDate ?? "";
   const targetValue = valueOf(params.target) ?? defaultTarget;
   const target = parseIsoCalendarDate(targetValue);
+  const submitted = params.start !== undefined || params.target !== undefined;
 
   return (
     <main className="calculator-page">
@@ -61,7 +63,7 @@ export default async function DaysUntilPage({ searchParams }: Props) {
 
           {!start || !target
             ? <section className="calculator-results" aria-live="polite"><div className="calculator-error"><strong>Enter two valid dates.</strong><p>Dates must use the Gregorian calendar and fall between years 0001 and 9999.</p></div></section>
-            : <CountdownResult start={start} target={target} />}
+            : <>{submitted && <CalculatorResultTelemetry surface="days_until" />}<CountdownResult start={start} target={target} /></>}
         </div>
 
         <section className="calculator-explainer no-print">

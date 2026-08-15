@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CalendarDays, Check, FileText, Grid2X2, Printer, Share2, Sparkles } from "@/components/icons";
 import { CalendarGrid } from "@/components/calendar-grid";
-import { createCalendarMonth, getUsFederalHolidaysForRange } from "@/lib/calendar";
+import { createCalendarMonth, getUsFederalHolidaysForRange, toIsoDate, utcDate } from "@/lib/calendar";
 
 export default function HomePage() {
   const now = new Date();
@@ -12,6 +12,7 @@ export default function HomePage() {
     month,
     holidays: getUsFederalHolidaysForRange(year, year),
   });
+  const today = toIsoDate(utcDate(year, month, now.getUTCDate()));
 
   return (
     <main>
@@ -53,6 +54,20 @@ export default function HomePage() {
             <Feature number="04" icon={<FileText size={21} />} title="Export what you need" copy="Download clean PDF, calendar, CSV, or spreadsheet files from one normalized calendar." />
             <Feature number="05" icon={<Share2 size={21} />} title="Share the exact view" copy="Every setting lives in the URL. Copy it once and collaborators see the same calendar." />
             <Feature number="06" icon={<Sparkles size={21} />} title="Nothing in the way" copy="No account, no paywall, and no ads in anything you print or export." />
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-rule">
+        <div className="shell">
+          <div className="section-heading">
+            <div><span className="eyebrow">Popular date tools</span><h2>Start with the answer<br />you need today.</h2></div>
+            <p>Check the current date, inspect a specific day, or calculate the exact distance between two dates.</p>
+          </div>
+          <div className="calculator-card-grid">
+            <article className="calculator-card"><span>Current date</span><h2>Today’s date</h2><p>See today’s weekday, ISO week number, date formats, and useful future dates in an explicit timezone.</p><Link className="text-link" href="/today">See today’s date →</Link></article>
+            <article className="calculator-card"><span>Date reference</span><h2>Today’s date guide</h2><p>Open the full guide for today with numeric formats, holidays, a monthly calendar, and a printable daily planner.</p><Link className="text-link" href={`/date/${today}`}>Open today’s guide →</Link></article>
+            <article className="calculator-card"><span>Date calculator</span><h2>Days between dates</h2><p>Count exact calendar days, weekdays, full weeks, and calendar duration with explicit endpoint rules.</p><Link className="text-link" href={`/date-calculator/days-between?start=${today}`}>Calculate days →</Link></article>
           </div>
         </div>
       </section>

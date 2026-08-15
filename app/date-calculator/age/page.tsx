@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { daysInMonth, toIsoDate, utcDate } from "@/lib/calendar";
@@ -29,6 +30,7 @@ export default async function AgeCalculatorPage({ searchParams }: Props) {
   const asOf = parseIsoCalendarDate(asOfValue);
   const result = birth && asOf ? calculateAge(birth, asOf) : null;
   const reversed = Boolean(birth && asOf && asOf.getTime() < birth.getTime());
+  const submitted = params.birth !== undefined || params.asOf !== undefined;
 
   return (
     <main className="calculator-page">
@@ -60,6 +62,7 @@ export default async function AgeCalculatorPage({ searchParams }: Props) {
               : reversed || !result
                 ? <CalculatorError title="The birth date comes after the as-of date." copy="Choose an as-of date on or after the date of birth." />
                 : <>
+                  {submitted && <CalculatorResultTelemetry surface="age" />}
                   <span className="result-kicker">Exact age on {formatCalendarDate(asOf, "medium")}</span>
                   <h2>{durationLabel(result.age)}</h2>
                   <p className="result-summary">Born on <strong>{formatCalendarDate(birth)}</strong>, a {result.bornWeekday}.</p>

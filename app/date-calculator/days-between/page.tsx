@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { PageActions } from "@/components/page-actions";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { addUtcDays, toIsoDate } from "@/lib/calendar";
 import { calculateDateDifference, formatCalendarDate, parseIsoCalendarDate } from "@/lib/date-calculators";
 import type { SearchParams } from "@/lib/settings";
 
 export const metadata: Metadata = {
-  title: "Days Between Dates Calculator",
-  description: "Calculate calendar days, weekdays, weeks, and calendar duration between two dates with clear endpoint rules.",
+  title: "Days Between Dates Calculator — Count Days & Weekdays",
+  description: "Count the exact number of days between two dates, including weekdays, full weeks, calendar years and months, and optional inclusive endpoints.",
   alternates: { canonical: "/date-calculator/days-between" },
 };
 
@@ -40,15 +43,24 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
   const start = parseIsoCalendarDate(startValue);
   const end = parseIsoCalendarDate(endValue);
   const result = start && end ? calculateDateDifference(start, end, inclusive) : null;
+  const submitted = params.start !== undefined || params.end !== undefined;
 
   return (
     <main className="calculator-page">
+      <BreadcrumbStructuredData items={[
+        { name: "Calendar Forge", path: "/" },
+        { name: "Date calculators", path: "/date-calculator" },
+        { name: "Days between dates", path: "/date-calculator/days-between" },
+      ]} />
       <div className="shell calculator-shell">
-        <header className="calculator-hero compact">
-          <span className="page-kicker">Date-to-date calculator</span>
-          <h1>Days between dates</h1>
-          <p>Count the distance between two Gregorian calendar dates. Weekdays mean Monday through Friday and do not exclude holidays.</p>
-        </header>
+        <div className="calculator-hero-row">
+          <header className="calculator-hero compact">
+            <span className="page-kicker">Date-to-date calculator</span>
+            <h1>Days between dates</h1>
+            <p>Count the exact distance between two Gregorian calendar dates. Weekdays mean Monday through Friday and do not exclude holidays.</p>
+          </header>
+          <PageActions />
+        </div>
         <div className="calculator-workspace">
           <form className="calculator-form" action="/date-calculator/days-between" method="get">
             <div className="calculator-field"><label htmlFor="start-date">Start date</label><input id="start-date" name="start" type="date" min="0001-01-01" max="9999-12-31" defaultValue={startValue} required /></div>
@@ -59,6 +71,7 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
 
           <section className="calculator-results" aria-live="polite">
             {!result ? <div className="calculator-error"><strong>Enter two valid dates.</strong><p>Dates must use the Gregorian calendar and fall between years 0001 and 9999.</p></div> : <>
+              {submitted && <CalculatorResultTelemetry surface="days_between" />}
               <span className="result-kicker">{result.direction < 0 ? "The end date comes before the start date" : inclusive ? "Counting both endpoints" : "Excluding the start date"}</span>
               <h2>{result.totalDays.toLocaleString("en-US")} {result.totalDays === 1 ? "day" : "days"}</h2>
               <p className="result-summary">From <strong>{formatCalendarDate(start!)}</strong> to <strong>{formatCalendarDate(end!)}</strong>.</p>
@@ -75,6 +88,14 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
             </>}
           </section>
         </div>
+        <section className="calculator-explainer no-print">
+          <div><span className="page-kicker">Counting rules</span><h2>How the date difference is calculated</h2></div>
+          <div className="calculator-explainer-grid">
+            <article><h3>Calendar days</h3><p>Standard mode excludes the earlier date and includes the later date. Inclusive mode counts both endpoints.</p></article>
+            <article><h3>Weekdays</h3><p>Monday through Friday are counted separately. For holiday-aware deadlines, use the <Link href="/date-calculator/business-days">business days calculator</Link>.</p></article>
+            <article><h3>Related calculations</h3><p>Start with <Link href="/today">today’s date</Link>, calculate an <Link href="/date-calculator/age">exact age</Link>, or <Link href="/date-calculator/add-subtract">add time to a date</Link>.</p></article>
+          </div>
+        </section>
       </div>
     </main>
   );

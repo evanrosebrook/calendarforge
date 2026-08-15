@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarGrid } from "@/components/calendar-grid";
+import { DateGuideActions } from "@/components/date-guide-actions";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { addUtcDays, createCalendarMonth, getHolidayCatalog, getNationalHolidaysForRange, toIsoDate, utcDate } from "@/lib/calendar";
@@ -16,9 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const date = parseIsoCalendarDate(value);
   if (!date) return { title: "Date not found" };
   const facts = getDateFacts(date);
+  const label = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(date);
+  const usNumeric = numericDate(date, "us");
+  const internationalNumeric = numericDate(date, "international");
   return {
-    title: `${facts.longDate}: Day of Week, Week Number & Countdown`,
-    description: `${facts.longDate} is a ${facts.weekday} in ISO week ${facts.isoWeek}. See its day number, countdown, holidays, monthly calendar, and printable daily planner.`,
+    title: `${label} (${usNumeric}): Day, Week & Calendar`,
+    description: `${label} is a ${facts.weekday}. It is ${usNumeric} in U.S. format and ${internationalNumeric} in day-first format. See its week number, countdown, holidays, and calendar.`,
     alternates: { canonical: `/date/${facts.isoDate}` },
   };
 }
@@ -47,6 +51,8 @@ export default async function DatePage({ params }: Props) {
   const relative = calculateDateDifference(today, date);
   const previousDate = toIsoDate(addUtcDays(date, -1));
   const nextDate = toIsoDate(addUtcDays(date, 1));
+  const usNumeric = numericDate(date, "us");
+  const internationalNumeric = numericDate(date, "international");
 
   return (
     <main className="date-page">
@@ -90,22 +96,17 @@ export default async function DatePage({ params }: Props) {
           </div>
         </section>
 
-        <section className="date-calendar-section">
-          <div className="date-section-heading no-print">
-            <div><span className="page-kicker">In context</span><h2>{monthName} {year} calendar</h2></div>
-            <p>The selected date is highlighted. US national holidays are shown when they occur.</p>
-          </div>
-          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} linkDates />
-        </section>
+        <DateGuideActions isoDate={facts.isoDate} year={year} month={month} />
 
         <div className="date-detail-grid no-print">
           <section className="date-detail-card">
             <span className="result-kicker">Date formats</span>
             <h2>{monthName} {date.getUTCDate()} written four ways</h2>
+            <p className="date-format-answer"><strong>{usNumeric}</strong> means {monthName} {date.getUTCDate()}, {year} in U.S. month-first notation. The same date is <strong>{internationalNumeric}</strong> in day-first notation.</p>
             <dl>
               <Format label="ISO 8601" value={facts.isoDate} />
-              <Format label="US numeric" value={`${String(month).padStart(2, "0")}/${String(date.getUTCDate()).padStart(2, "0")}/${year}`} />
-              <Format label="International" value={`${String(date.getUTCDate()).padStart(2, "0")}/${String(month).padStart(2, "0")}/${year}`} />
+              <Format label="US numeric" value={usNumeric} />
+              <Format label="International" value={internationalNumeric} />
               <Format label="Long form" value={facts.longDate} />
             </dl>
           </section>
@@ -119,6 +120,14 @@ export default async function DatePage({ params }: Props) {
             <div className="inline-actions"><Link className="text-link" href={`/holidays/us/${year}`}>US holidays</Link><Link className="text-link" href={`/holidays/canada/${year}`}>Canada holidays</Link></div>
           </section>
         </div>
+
+        <section className="date-calendar-section">
+          <div className="date-section-heading no-print">
+            <div><span className="page-kicker">In context</span><h2>{monthName} {year} calendar</h2></div>
+            <p>The selected date is highlighted. US national holidays are shown when they occur.</p>
+          </div>
+          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} linkDates />
+        </section>
 
         <section className="daily-planner" aria-labelledby="daily-planner-title">
           <header><div><span className="page-kicker">Printable daily planner</span><h2 id="daily-planner-title">Plan {formatShortDate(date)}</h2></div><span>{facts.weekday} · Week {facts.isoWeek}</span></header>
@@ -146,6 +155,13 @@ function relativeLabel(direction: -1 | 0 | 1, days: number): string {
 
 function formatShortDate(date: Date): string {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(date);
+}
+
+function numericDate(date: Date, format: "us" | "international"): string {
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const year = date.getUTCFullYear();
+  return format === "us" ? `${month}/${day}/${year}` : `${day}/${month}/${year}`;
 }
 
 function DateStat({ label, value }: { label: string; value: string }) {
