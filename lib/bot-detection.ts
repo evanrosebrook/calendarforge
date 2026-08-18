@@ -1,11 +1,14 @@
-export const ABUSIVE_CRAWLER_USER_AGENT_SOURCE = String.raw`(?:meta-externalagent|claudebot)`;
-export const AUTOMATED_USER_AGENT_SOURCE = String.raw`(?:bot\b|crawler\b|spider\b|slurp\b|headlesschrome|lighthouse)`;
+export const TRAINING_CRAWLER_USER_AGENT_SOURCE = String.raw`(?:meta-externalagent|claudebot)`;
+export const AUTOMATED_USER_AGENT_SOURCE = String.raw`(?:meta-externalagent|bot\b|crawler\b|spider\b|slurp\b|headlesschrome|lighthouse)`;
 
-const abusiveCrawlerPattern = new RegExp(ABUSIVE_CRAWLER_USER_AGENT_SOURCE, "i");
+const trainingCrawlerPattern = new RegExp(TRAINING_CRAWLER_USER_AGENT_SOURCE, "i");
 const automatedUserAgentPattern = new RegExp(AUTOMATED_USER_AGENT_SOURCE, "i");
 
-export function isAbusiveCrawlerUserAgent(value: string): boolean {
-  return abusiveCrawlerPattern.test(value);
+export type TrainingCrawler = "claudebot" | "meta-externalagent";
+
+export function getTrainingCrawler(value: string): TrainingCrawler | null {
+  if (!trainingCrawlerPattern.test(value)) return null;
+  return /meta-externalagent/i.test(value) ? "meta-externalagent" : "claudebot";
 }
 
 export function isLikelyAutomatedUserAgent(value: string): boolean {

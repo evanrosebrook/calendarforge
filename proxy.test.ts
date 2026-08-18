@@ -1,14 +1,34 @@
 import { NextRequest } from "next/server";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { resetTrainingCrawlerRateLimits, TRAINING_CRAWLER_BURST } from "./lib/crawler-rate-limit";
 import { proxy } from "./proxy";
 
 describe("crawler proxy", () => {
-  it("blocks abusive crawlers before rendering application routes", () => {
+  beforeEach(() => {
+    resetTrainingCrawlerRateLimits();
+    vi.spyOn(Date, "now").mockReturnValue(1_000);
+  });
+
+  afterEach(() => vi.restoreAllMocks());
+
+  it("allows training crawlers to render application routes", () => {
+    expect(proxy(request("meta-externalagent/1.1")).status).toBe(200);
+    expect(proxy(request("ClaudeBot/1.0")).status).toBe(200);
+  });
+
+  it("rate limits a crawler family after its global burst", () => {
+    for (let requestNumber = 0; requestNumber < TRAINING_CRAWLER_BURST; requestNumber += 1) {
+      expect(proxy(request("meta-externalagent/1.1")).status).toBe(200);
+    }
     const response = proxy(request("meta-externalagent/1.1"));
 
-    expect(response.status).toBe(403);
+    expect(response.status).toBe(429);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
+    expect(response.headers.get("retry-after")).toBe("1");
+  });
+
+  it("enforces the robots API boundary for training crawlers", () => {
+    expect(proxy(request("ClaudeBot/1.0", "/api/export/pdf")).status).toBe(403);
   });
 
   it("allows people and search-engine crawlers", () => {
@@ -17,8 +37,8 @@ describe("crawler proxy", () => {
   });
 });
 
-function request(userAgent: string): NextRequest {
-  return new NextRequest("https://calendarforge.net/today", {
+function request(userAgent: string, pathname = "/today"): NextRequest {
+  return new NextRequest(`https://calendarforge.net${pathname}`, {
     headers: { "User-Agent": userAgent },
   });
 }

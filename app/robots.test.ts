@@ -2,11 +2,13 @@ import { describe, expect, it } from "vitest";
 import robots from "./robots";
 
 describe("robots policy", () => {
-  it("denies abusive crawlers while preserving normal search discovery", () => {
+  it("allows controlled training and search discovery while excluding APIs", () => {
     expect(robots().rules).toEqual([
       {
         userAgent: ["meta-externalagent", "ClaudeBot"],
-        disallow: "/",
+        allow: "/",
+        disallow: "/api/",
+        crawlDelay: 1,
       },
       {
         userAgent: "*",

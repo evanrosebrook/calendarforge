@@ -1,16 +1,26 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { isAbusiveCrawlerUserAgent } from "@/lib/bot-detection";
+import { getTrainingCrawler } from "@/lib/bot-detection";
+import { consumeTrainingCrawlerRequest } from "@/lib/crawler-rate-limit";
 
 export function proxy(request: NextRequest) {
-  if (!isAbusiveCrawlerUserAgent(request.headers.get("user-agent") ?? "")) {
-    return NextResponse.next();
+  const crawler = getTrainingCrawler(request.headers.get("user-agent") ?? "");
+  if (!crawler) return NextResponse.next();
+
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    return new NextResponse(null, {
+      status: 403,
+      headers: { "Cache-Control": "no-store" },
+    });
   }
 
+  const rateLimit = consumeTrainingCrawlerRequest(crawler);
+  if (rateLimit.allowed) return NextResponse.next();
+
   return new NextResponse(null, {
-    status: 403,
+    status: 429,
     headers: {
       "Cache-Control": "no-store",
-      "X-Robots-Tag": "noindex, nofollow",
+      "Retry-After": String(rateLimit.retryAfterSeconds),
     },
   });
 }

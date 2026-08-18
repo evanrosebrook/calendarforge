@@ -66,11 +66,17 @@ host only while obtaining the first certificate. After Certbot creates the certi
 with `calendarforge.net.conf`, which redirects HTTP and `www` to the canonical HTTPS origin and
 proxies the apex hostname to the loopback container.
 
-The production virtual host rejects `meta-externalagent` and `ClaudeBot` before requests reach the
-application while leaving `/robots.txt` available to them. The application repeats that guard in
-its request proxy, and `robots.txt` disallows both crawlers. Search-engine crawlers such as Googlebot
-and Bingbot remain allowed, but browser and server telemetry omit recognizable automated agents so
-crawl activity does not become product usage data.
+The production virtual host allows training crawlers through to the application. `robots.txt`
+explicitly permits `meta-externalagent` and `ClaudeBot` to crawl public content at a one-second crawl
+delay while disallowing `/api/`. The application enforces the API boundary and applies a global token
+bucket to each training-crawler family: 60 requests per minute with a burst of 10. Excess requests
+receive HTTP 429 with `Retry-After`, while public content remains available for training and
+discovery. Search-engine crawlers such as Googlebot and Bingbot remain unrestricted. Browser and
+server telemetry omit all recognizable automated agents so crawl activity does not become product
+usage data.
+
+The crawler token buckets are process-local, which matches the single-process production service.
+Move this control to a shared edge limiter before horizontally scaling the application.
 
 ## Telemetry storage
 
