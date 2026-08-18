@@ -1,4 +1,5 @@
 import { reportGoogleTelemetry } from "./google-analytics";
+import { isLikelyAutomatedUserAgent } from "./bot-detection";
 
 export type TelemetryName = "ad_viewable" | "calculator_result" | "cls" | "date_guide_action" | "export" | "lcp" | "page_view" | "print" | "share";
 
@@ -11,6 +12,7 @@ export type TelemetryDetails = {
 };
 
 export function reportTelemetry(name: TelemetryName, details: TelemetryDetails = {}) {
+  if (isLikelyAutomatedUserAgent(navigator.userAgent)) return;
   reportGoogleTelemetry(name, details);
   const event = {
     name,

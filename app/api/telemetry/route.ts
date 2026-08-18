@@ -1,9 +1,14 @@
+import { isLikelyAutomatedUserAgent } from "@/lib/bot-detection";
+
 const allowedMetrics = new Set(["lcp", "cls", "ad_viewable", "calculator_result", "date_guide_action", "page_view", "print", "share", "export"]);
 const allowedFormats = new Set(["pdf", "svg", "ics", "csv", "xlsx"]);
 const allowedPlacements = new Set(["business_days", "calendar_after", "days_between", "open_calendar", "print_planner", "year_after"]);
 const allowedSurfaces = new Set(["add_subtract", "age", "builder", "business_days", "calendar", "date_guide", "days_between", "days_until", "page_actions"]);
 
 export async function POST(request: Request) {
+  if (isLikelyAutomatedUserAgent(request.headers.get("user-agent") ?? "")) {
+    return new Response(null, { status: 204, headers: { "Cache-Control": "no-store" } });
+  }
   const contentLength = Number(request.headers.get("content-length") ?? 0);
   if (Number.isFinite(contentLength) && contentLength > 2_048) return new Response(null, { status: 413 });
   try {

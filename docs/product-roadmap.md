@@ -114,6 +114,8 @@ Do not add new sitemap families during this window. At the August 28 review, com
 - The path from an organic landing to `date_guide_action` or `calculator_result`, then to the `calendar_export`, `calendar_print`, or `calendar_share` key events.
 - Indexed and discovered-but-not-indexed totals, confirming that the existing footprint is being absorbed before expansion resumes.
 
+The August 17 early checkpoint showed strong index absorption (2,294 indexed pages, up 949 from the August 14 review) but no CTR improvement yet: the August 14–16 period produced 5 clicks from 6,599 impressions at 0.08% CTR. Keep the gate in place while a focused date-guide title and description experiment accumulates data and the crawler-filtering maintenance release removes known analytics contamination.
+
 Do not optimize the age calculator or Monday-start pages based on the current sample. Revisit them after the gate only if they have accumulated enough impressions or activation events to support a decision.
 
 ## Build order

@@ -34,9 +34,10 @@ npm run deploy:droplet
 
 The script runs tests and lint, builds an AMD64 image with the public origin embedded, runs a
 constrained local smoke test, streams the versioned image over SSH, validates the Compose file on
-the droplet, and waits for production health and export probes. It records both the active version
-and the immediately previous deployment. If rollout validation fails, it restores the previous
-Compose definition and image automatically.
+the droplet, installs the versioned Apache virtual host after a successful syntax check, and waits
+for production health and export probes. It records both the active version and the immediately
+previous application and Apache configurations. If rollout validation fails, it restores the
+previous Compose definition, image, and Apache configuration automatically.
 
 By default, versions combine a UTC timestamp, the Git revision, and a `-dirty` suffix when the
 working tree is not clean. Dirty deployments emit a warning because the image cannot be recreated
@@ -64,6 +65,12 @@ The production Apache configurations live in `deploy/apache`. Enable the bootstr
 host only while obtaining the first certificate. After Certbot creates the certificate, replace it
 with `calendarforge.net.conf`, which redirects HTTP and `www` to the canonical HTTPS origin and
 proxies the apex hostname to the loopback container.
+
+The production virtual host rejects `meta-externalagent` and `ClaudeBot` before requests reach the
+application while leaving `/robots.txt` available to them. The application repeats that guard in
+its request proxy, and `robots.txt` disallows both crawlers. Search-engine crawlers such as Googlebot
+and Bingbot remain allowed, but browser and server telemetry omit recognizable automated agents so
+crawl activity does not become product usage data.
 
 ## Telemetry storage
 

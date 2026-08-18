@@ -8,9 +8,9 @@ vi.mock("next/navigation", () => ({
 import DatePage, { generateMetadata } from "./page";
 
 describe("date guide search intent", () => {
-  it("publishes long and numeric date formats in search metadata", async () => {
+  it("answers day-of-week intent while preserving numeric date formats in search metadata", async () => {
     await expect(generateMetadata({ params: Promise.resolve({ date: "2026-08-05" }) })).resolves.toMatchObject({
-      title: "August 5, 2026 (08/05/2026): Day, Week & Calendar",
+      title: { absolute: "August 5, 2026 Is a Wednesday | Calendar Forge" },
       description: expect.stringContaining("05/08/2026 in day-first format"),
       alternates: { canonical: "/date/2026-08-05" },
     });
@@ -25,5 +25,16 @@ describe("date guide search intent", () => {
     expect(html).toContain('href="/date-calculator/days-between?start=2026-08-05"');
     expect(html).toContain('href="/date-calculator/business-days?mode=shift&amp;date=2026-08-05"');
     expect(html).toContain("Print daily planner");
+  });
+
+  it("links only to holiday years that production can serve", async () => {
+    const supported = renderToStaticMarkup(await DatePage({ params: Promise.resolve({ date: "2100-08-05" }) }));
+    const unsupported = renderToStaticMarkup(await DatePage({ params: Promise.resolve({ date: "2101-08-05" }) }));
+
+    expect(supported).toContain('href="/holidays/us/2100"');
+    expect(supported).toContain('href="/holidays/canada/2100"');
+    expect(unsupported).not.toContain('href="/holidays/us/2101"');
+    expect(unsupported).not.toContain('href="/holidays/canada/2101"');
+    expect(unsupported).toContain("Holiday calendars cover planning years 1971 through 2100.");
   });
 });

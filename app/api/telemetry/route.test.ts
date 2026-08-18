@@ -70,12 +70,24 @@ describe("telemetry endpoint", () => {
       source: undefined,
     }));
   });
+
+  it("silently drops automated traffic before logging", async () => {
+    const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const response = await POST(request(
+      { name: "page_view", value: 1, path: "/date/2026-08-21" },
+      "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    ));
+
+    expect(response.status).toBe(204);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(info).not.toHaveBeenCalled();
+  });
 });
 
-function request(body: Record<string, unknown>): Request {
+function request(body: Record<string, unknown>, userAgent = "Mozilla/5.0 Chrome/145.0.0.0"): Request {
   return new Request("http://localhost/api/telemetry", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "User-Agent": userAgent },
     body: JSON.stringify(body),
   });
 }

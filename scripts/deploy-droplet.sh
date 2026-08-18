@@ -138,7 +138,9 @@ docker save "$image_ref" | gzip -1 | ssh "$ssh_host" 'gunzip | docker load'
 
 ssh "$ssh_host" "install -d -m 755 '$remote_dir'"
 remote_candidate="$remote_dir/compose.candidate-${version}.yaml"
+remote_apache_candidate="$remote_dir/apache.candidate-${version}.conf"
 scp compose.prod.yaml "${ssh_host}:${remote_candidate}"
+scp deploy/apache/calendarforge.net.conf "${ssh_host}:${remote_apache_candidate}"
 
 ssh "$ssh_host" bash -s -- "$version" "$remote_dir" "$image_repository" "$analytics_id" <<'REMOTE_DEPLOY'
 set -Eeuo pipefail
@@ -148,16 +150,20 @@ deploy_dir=$2
 image_repository=$3
 analytics_id=$4
 compose_candidate="$deploy_dir/compose.candidate-${version}.yaml"
+apache_candidate="$deploy_dir/apache.candidate-${version}.conf"
 compose_file="$deploy_dir/compose.yaml"
 env_file="$deploy_dir/.env"
 env_candidate="$deploy_dir/.env.candidate-${version}"
 compose_before="$deploy_dir/.compose.before-${version}.yaml"
 env_before="$deploy_dir/.env.before-${version}"
+apache_before="$deploy_dir/.apache.before-${version}.conf"
 compose_rollback="$deploy_dir/compose.rollback.yaml"
 env_rollback="$deploy_dir/.env.rollback"
+apache_rollback="$deploy_dir/apache.rollback.conf"
+apache_site=/etc/apache2/sites-available/calendarforge.net.conf
 container_name=calendarforge-calendarforge-1
 
-for command_name in curl docker flock; do
+for command_name in apache2ctl curl docker flock install systemctl; do
   command -v "$command_name" >/dev/null 2>&1 || {
     echo "Required remote command not found: $command_name" >&2
     exit 1
@@ -171,7 +177,7 @@ if ! flock -n 9; then
 fi
 
 cleanup_candidates() {
-  rm -f "$compose_candidate" "$env_candidate" "$compose_before" "$env_before"
+  rm -f "$compose_candidate" "$apache_candidate" "$env_candidate" "$compose_before" "$env_before" "$apache_before"
 }
 trap cleanup_candidates EXIT
 
@@ -193,6 +199,11 @@ if [[ -f $env_file ]]; then
 elif [[ -n $previous_version ]]; then
   printf 'CALENDARFORGE_VERSION=%s\n' "$previous_version" > "$env_before"
 fi
+if [[ ! -f $apache_site ]]; then
+  echo "Apache site configuration is missing: $apache_site" >&2
+  exit 1
+fi
+cp -a "$apache_site" "$apache_before"
 
 install -m 644 "$compose_candidate" "$compose_file"
 install -m 600 "$env_candidate" "$env_file"
@@ -208,17 +219,37 @@ wait_for_health() {
   return 1
 }
 
+restore_apache() {
+  if [[ -f $apache_before ]]; then
+    install -m 644 "$apache_before" "$apache_site"
+    apache2ctl configtest
+    systemctl reload apache2
+  fi
+}
+
 restore_previous() {
+  local restore_failed=0
+
   echo "Restoring the previous deployment" >&2
+  if ! restore_apache; then
+    echo "Failed to restore the previous Apache configuration" >&2
+    restore_failed=1
+  fi
+
   if [[ -f $compose_before && -f $env_before ]]; then
-    install -m 644 "$compose_before" "$compose_file"
-    install -m 600 "$env_before" "$env_file"
-    docker compose --env-file "$env_file" -f "$compose_file" up -d --no-build --force-recreate
-    wait_for_health
+    if ! install -m 644 "$compose_before" "$compose_file" \
+      || ! install -m 600 "$env_before" "$env_file" \
+      || ! docker compose --env-file "$env_file" -f "$compose_file" up -d --no-build --force-recreate \
+      || ! wait_for_health; then
+      echo "Failed to restore the previous application deployment" >&2
+      restore_failed=1
+    fi
   else
     echo "No previous deployment snapshot is available" >&2
-    return 1
+    restore_failed=1
   fi
+
+  return "$restore_failed"
 }
 
 if ! docker compose --env-file "$env_file" -f "$compose_file" up -d --no-build --force-recreate; then
@@ -235,6 +266,14 @@ fi
 running_image=$(docker inspect "$container_name" --format '{{.Config.Image}}')
 if [[ $running_image != "$image_repository:$version" ]]; then
   echo "Expected $image_repository:$version, found $running_image" >&2
+  restore_previous || true
+  exit 1
+fi
+
+if ! install -m 644 "$apache_candidate" "$apache_site" \
+  || ! apache2ctl configtest \
+  || ! systemctl reload apache2; then
+  echo "Apache configuration rollout failed" >&2
   restore_previous || true
   exit 1
 fi
@@ -275,6 +314,7 @@ fi
 if [[ -f $compose_before && -f $env_before ]]; then
   install -m 644 "$compose_before" "$compose_rollback"
   install -m 600 "$env_before" "$env_rollback"
+  install -m 644 "$apache_before" "$apache_rollback"
 fi
 
 echo "Deployed $image_repository:$version"

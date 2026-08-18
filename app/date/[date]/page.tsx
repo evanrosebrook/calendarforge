@@ -5,7 +5,17 @@ import { CalendarGrid } from "@/components/calendar-grid";
 import { DateGuideActions } from "@/components/date-guide-actions";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
-import { addUtcDays, createCalendarMonth, getHolidayCatalog, getNationalHolidaysForRange, toIsoDate, utcDate } from "@/lib/calendar";
+import {
+  MAX_SUPPORTED_HOLIDAY_YEAR,
+  MIN_SUPPORTED_HOLIDAY_YEAR,
+  addUtcDays,
+  createCalendarMonth,
+  getHolidayCatalog,
+  getNationalHolidaysForRange,
+  isSupportedHolidayYear,
+  toIsoDate,
+  utcDate,
+} from "@/lib/calendar";
 import { calculateDateDifference, getDateFacts, parseIsoCalendarDate } from "@/lib/date-calculators";
 
 export const dynamic = "force-dynamic";
@@ -21,8 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const usNumeric = numericDate(date, "us");
   const internationalNumeric = numericDate(date, "international");
   return {
-    title: `${label} (${usNumeric}): Day, Week & Calendar`,
-    description: `${label} is a ${facts.weekday}. It is ${usNumeric} in U.S. format and ${internationalNumeric} in day-first format. See its week number, countdown, holidays, and calendar.`,
+    title: { absolute: `${label} Is a ${facts.weekday} | Calendar Forge` },
+    description: `${label} is a ${facts.weekday} in ISO week ${facts.isoWeek}. It is ${usNumeric} in U.S. format and ${internationalNumeric} in day-first format. See countdown and calendar.`,
     alternates: { canonical: `/date/${facts.isoDate}` },
   };
 }
@@ -36,6 +46,7 @@ export default async function DatePage({ params }: Props) {
   const year = date.getUTCFullYear();
   const month = date.getUTCMonth() + 1;
   const monthName = new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(date);
+  const supportsHolidayYear = isSupportedHolidayYear(year);
   const nationalHolidays = [
     ...getNationalHolidaysForRange("us", year, year),
     ...getNationalHolidaysForRange("ca", year, year),
@@ -117,7 +128,9 @@ export default async function DatePage({ params }: Props) {
               const catalog = getHolidayCatalog(holiday.country);
               return <li key={`${holiday.country}-${holiday.name}`}><Link href={`/holidays/${catalog?.slug ?? holiday.country}/holiday/${holiday.id}`}>{holiday.name}</Link> <span>{holiday.country === "us" ? "United States" : "Canada"}</span></li>;
             })}</ul> : <p>Calendar Forge does not list a US or Canadian national holiday on this date. Regional holidays and informal observances may still apply.</p>}
-            <div className="inline-actions"><Link className="text-link" href={`/holidays/us/${year}`}>US holidays</Link><Link className="text-link" href={`/holidays/canada/${year}`}>Canada holidays</Link></div>
+            {supportsHolidayYear
+              ? <div className="inline-actions"><Link className="text-link" href={`/holidays/us/${year}`}>US holidays</Link><Link className="text-link" href={`/holidays/canada/${year}`}>Canada holidays</Link></div>
+              : <p className="source-copy">Holiday calendars cover planning years {MIN_SUPPORTED_HOLIDAY_YEAR} through {MAX_SUPPORTED_HOLIDAY_YEAR}.</p>}
           </section>
         </div>
 
