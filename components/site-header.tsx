@@ -22,6 +22,7 @@ export function SiteHeader() {
     { href: `/calendar/${year}`, label: "Year calendar" },
     { href: `/calendar/monday-start/${year}/${month}`, label: "Monday-start calendar" },
     { href: "/fiscal-calendar", label: "Fiscal calendar" },
+    { href: "/shift-calendar", label: "Shift calendar" },
     { href: "/holidays", label: "Holiday calendars" },
     { href: `/moon-phases/${year}`, label: "Moon phases" },
   ] as const;

@@ -9,5 +9,6 @@ describe("home acquisition links", () => {
     expect(html).toContain('href="/today"');
     expect(html).toMatch(/href="\/date\/\d{4}-\d{2}-\d{2}"/);
     expect(html).toMatch(/href="\/date-calculator\/days-between\?start=\d{4}-\d{2}-\d{2}"/);
+    expect(html).toMatch(/href="\/shift-calendar\?startDate=\d{4}-\d{2}-\d{2}&amp;pattern=4-4&amp;months=3"/);
   });
 });

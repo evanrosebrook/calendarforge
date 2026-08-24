@@ -64,10 +64,11 @@ export default function HomePage() {
             <div><span className="eyebrow">Popular date tools</span><h2>Start with the answer<br />you need today.</h2></div>
             <p>Check the current date, inspect a specific day, or calculate the exact distance between two dates.</p>
           </div>
-          <div className="calculator-card-grid">
+          <div className="calculator-card-grid calculator-card-grid-four">
             <article className="calculator-card"><span>Current date</span><h2>Today’s date</h2><p>See today’s weekday, ISO week number, date formats, and useful future dates in an explicit timezone.</p><Link className="text-link" href="/today">See today’s date →</Link></article>
             <article className="calculator-card"><span>Date reference</span><h2>Today’s date guide</h2><p>Open the full guide for today with numeric formats, holidays, a monthly calendar, and a printable daily planner.</p><Link className="text-link" href={`/date/${today}`}>Open today’s guide →</Link></article>
             <article className="calculator-card"><span>Date calculator</span><h2>Days between dates</h2><p>Count exact calendar days, weekdays, full weeks, and calendar duration with explicit endpoint rules.</p><Link className="text-link" href={`/date-calculator/days-between?start=${today}`}>Calculate days →</Link></article>
+            <article className="calculator-card"><span>Work schedule</span><h2>Shift calendar</h2><p>Turn a 4-on/4-off, 2-on/2-off, 7-on/7-off, or custom rotation into a printable and shareable calendar.</p><Link className="text-link" href={`/shift-calendar?startDate=${today}&pattern=4-4&months=3`}>Build a shift calendar →</Link></article>
           </div>
         </div>
       </section>

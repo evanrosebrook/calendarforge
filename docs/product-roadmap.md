@@ -15,7 +15,7 @@ Calendar Forge already provides:
 - Custom titles, notes areas, and shareable URL state.
 - PDF, ICS, CSV, and XLSX exports.
 
-## Delivery status (August 14, 2026)
+## Delivery status (August 24, 2026)
 
 The first three roadmap batches are substantially shipped:
 
@@ -23,6 +23,7 @@ The first three roadmap batches are substantially shipped:
 - The custom calendar builder supports 1-, 3-, 6-, and 12-month ranges, per-day notes, three locales, three original themes, shareable URL state, print/PDF, SVG, ICS, CSV, and XLSX output.
 - Today, add/subtract, days-between, days-until, and business-day calculators are live; the age calculator is implemented in the current release.
 - Fiscal calendars, annual moon-phase calendars with ICS export, and indexable event countdowns are live.
+- A single canonical shift-calendar generator supports preset and custom rotations, printable previews, shareable URL state, and ICS/CSV exports without creating a year-specific route family.
 - Monday-start monthly pages are implemented in the current release with dedicated canonical routes, navigation, sitemap coverage, printing, and downloads.
 - Privacy-safe first-party telemetry and GA4 measurement are live; Google Search Console ownership was verified on August 3, 2026.
 
@@ -100,10 +101,10 @@ Each page should provide useful server-rendered output, adjacent-date navigation
 
 ## Recommended next work
 
-1. Ship and measure the current CTR and activation improvements for Today, date guides, and date-difference intent.
-2. Hold the sitemap and route-family footprint steady through August 28, 2026 while the changes accumulate two weeks of Search Console and GA4 data.
-3. If the measurement gate passes, complete the most differentiated format routes: holiday calendars, weekly calendars, and yearly calendars.
-4. Add portrait and daily-planner landing pages only when their server-rendered output is meaningfully different from existing calendar and date-guide pages.
+1. Measure shift-calendar generation, export, print, and share activation alongside the existing Today, date-guide, and date-calculator funnels.
+2. Keep the acquisition footprint bounded to the current year plus two years while Google reprocesses the crawl repair and the crawled-currently-not-indexed backlog.
+3. Improve titles and on-page utility for date guides already ranking on page one before expanding to another generated route family.
+4. Revisit weekly or yearly calendar tools only after indexing stabilizes and a distinct user need is demonstrated.
 
 ### Growth measurement gate — August 14–28, 2026
 
@@ -126,7 +127,8 @@ Do not optimize the age calculator or Monday-start pages based on the current sa
 4. ~~Monday-start monthly landing-page family.~~
 5. ~~Age and business-day calculators.~~
 6. Search-result CTR and internal-link improvements based on measured queries.
-7. Holiday, weekly, yearly, portrait, and daily-planner landing-page families.
+7. ~~Single-page rotating-shift calendar generator.~~
+8. Holiday, weekly, yearly, portrait, and daily-planner landing-page families only after the indexing gate.
 
 ## Deferred work
 

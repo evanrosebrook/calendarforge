@@ -17,6 +17,7 @@ export function SiteFooter() {
           <Link href={`/calendar/monday-start/${year}/${month}`}>Monday-start calendar</Link>
           <Link href="/make-calendar">Make a calendar</Link>
           <Link href="/fiscal-calendar">Fiscal calendar</Link>
+          <Link href="/shift-calendar">Shift calendar</Link>
           <Link href={`/moon-phases/${year}`}>Moon phases</Link>
           <Link href="/date-calculator">Calculators</Link>
           <Link href="/holidays">Holidays</Link>

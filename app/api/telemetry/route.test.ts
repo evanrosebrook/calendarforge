@@ -49,6 +49,13 @@ describe("telemetry endpoint", () => {
     }));
   });
 
+  it("accepts shift calendar activation without schedule inputs", async () => {
+    const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const response = await POST(request({ name: "calculator_result", value: 1, path: "/shift-calendar?startDate=private", surface: "shift_calendar" }));
+    expect(response.status).toBe(204);
+    expect(info).toHaveBeenCalledWith("calendar_forge_metric", expect.objectContaining({ path: "/shift-calendar", surface: "shift_calendar" }));
+  });
+
   it("drops unapproved event dimensions", async () => {
     const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
     const response = await POST(request({

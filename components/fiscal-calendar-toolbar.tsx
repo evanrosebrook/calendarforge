@@ -40,14 +40,14 @@ export function FiscalCalendarToolbar({ state }: Props) {
         setToast("Fiscal calendar link copied");
         window.setTimeout(() => setToast(""), 2200);
       }
-      reportTelemetry("share", { surface: "fiscal-calendar" });
+      reportTelemetry("share", { surface: "fiscal_calendar" });
     } catch {
       // The native share sheet was dismissed.
     }
   }
 
   function print() {
-    reportTelemetry("print", { surface: "fiscal-calendar" });
+    reportTelemetry("print", { surface: "fiscal_calendar" });
     window.print();
   }
 
@@ -121,7 +121,7 @@ export function FiscalCalendarToolbar({ state }: Props) {
 
       <div className="toolbar-actions">
         <button className="button button-ink" type="button" onClick={print}><Printer size={15} /> Print / save PDF</button>
-        <a className="button button-ghost" href={`/api/fiscal-calendar/csv?${exportQuery}`} onClick={() => reportTelemetry("export", { format: "csv", surface: "fiscal-calendar" })}><Download size={15} /> Download CSV</a>
+        <a className="button button-ghost" href={`/api/fiscal-calendar/csv?${exportQuery}`} onClick={() => reportTelemetry("export", { format: "csv", surface: "fiscal_calendar" })}><Download size={15} /> Download CSV</a>
         <button className="button button-ghost" type="button" onClick={share}><Share2 size={15} /> Share link</button>
       </div>
       {toast && <div className="toast" role="status">{toast}</div>}

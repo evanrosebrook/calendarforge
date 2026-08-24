@@ -335,6 +335,25 @@ button, select { cursor: pointer; }
 .fiscal-period-table td:first-child { color: var(--accent-dark); }
 .period-coverage { display: inline-flex; border: 1px solid var(--line); border-radius: 100px; padding: 4px 7px; color: var(--muted); background: var(--canvas); font-size: 8px; font-weight: 800; white-space: nowrap; }
 .period-coverage.partial { border-color: #e2a89e; color: var(--accent-dark); background: #fff0ec; }
+.shift-count-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.shift-overview { padding: 24px 27px 18px; }
+.shift-overview-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; border-bottom: 3px solid var(--ink); padding-bottom: 13px; }
+.shift-overview-heading span { color: var(--muted); font-size: 8px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+.shift-overview-heading h2 { margin: 2px 0 0; font-family: Georgia, serif; font-size: 36px; font-weight: 500; letter-spacing: -.04em; }
+.shift-overview-heading p { margin: 0; color: var(--muted); font-size: 10px; font-weight: 700; }
+.shift-legend { display: flex; justify-content: flex-end; gap: 15px; margin: 11px 0 14px; color: var(--muted); font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.shift-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.shift-legend i { display: block; width: 13px; height: 13px; border: 1px solid var(--line); }
+.shift-legend .shift-work, .shift-mini-calendar td.shift-work:not(.range-outside) { background: #e77360; color: #fff; }
+.shift-legend .shift-off, .shift-mini-calendar td.shift-off:not(.range-outside) { background: #eceae2; color: var(--ink); }
+.shift-month-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 19px; }
+.shift-month-grid.range-1 { grid-template-columns: minmax(280px, 470px); justify-content: center; }
+.shift-mini-calendar { min-width: 0; break-inside: avoid; }
+.shift-mini-calendar > header { border-top: 2px solid var(--ink); padding-top: 7px; margin-bottom: 5px; }
+.shift-mini-calendar > header h3 { margin: 0; font-family: Georgia, serif; font-size: 17px; font-weight: 500; letter-spacing: -.025em; }
+.shift-mini-calendar .mini-table th { height: 18px; font-size: 7px; }
+.shift-mini-calendar .mini-table td { height: 24px; border: 2px solid var(--paper); font-size: 9px; font-weight: 750; }
+.shift-mini-calendar .mini-table .range-outside { color: #c9c9c3; background: #f5f4ef; }
 .calendar-sheet.theme-linen { --ink: #30281f; --muted: #776b5c; --line: #cfc5b4; --paper: #fffdf6; --accent: #95643d; --accent-dark: #765436; background-color: #fffdf6; }
 .calendar-sheet.theme-linen .calendar-table .weekend:not(.outside) { background: #f1ebdd; }
 .calendar-sheet.theme-blueprint { --ink: #122e4d; --muted: #526c85; --line: #a5b8ca; --paper: #f8fbfe; --accent: #2c70ae; --accent-dark: #1e4f8a; background-color: #f8fbfe; }
@@ -574,6 +593,10 @@ button, select { cursor: pointer; }
   .fiscal-quarter-months { grid-template-columns: 1fr; padding-top: 6px; }
   .fiscal-period-heading { display: block; }
   .fiscal-period-heading p { margin-top: 8px; text-align: left; }
+  .shift-overview { padding: 17px; }
+  .shift-overview-heading { display: block; }
+  .shift-overview-heading p { margin-top: 5px; }
+  .shift-month-grid { grid-template-columns: 1fr; }
   .calculator-nav { margin-bottom: 28px; }
   .calculator-hero-row { display: block; }
   .calculator-hero-row .page-title-actions { margin: -14px 0 25px; }
@@ -640,6 +663,9 @@ button, select { cursor: pointer; }
   .fiscal-period-table { min-width: 0; }
   .fiscal-period-heading h2 { font-size: 25px; }
   .fiscal-period-table th, .fiscal-period-table td { padding: 7px 9px; }
+  .shift-overview { border: 0; box-shadow: none; padding: 0; }
+  .shift-month-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+  .shift-mini-calendar .mini-table td { height: 19px; }
   .calendar-table td { height: var(--cell-min); }
   .year-sheet { padding: 0; }
   .mini-grid { gap: 13px; }

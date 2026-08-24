@@ -36,7 +36,9 @@ const allowedSurfaces = new Set([
   "date_guide",
   "days_between",
   "days_until",
+  "fiscal_calendar",
   "page_actions",
+  "shift_calendar",
 ]);
 
 export function isGoogleAnalyticsMeasurementId(value: string): boolean {

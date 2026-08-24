@@ -46,17 +46,17 @@ describe("Google Analytics telemetry", () => {
     expect(buildGoogleTelemetryEvent(
       "G-MMP15FDWR4",
       "calculator_result",
-      { surface: "days_between", placement: "private_input" },
+      { surface: "shift_calendar", placement: "private_input" },
       "https://calendarforge.net",
-      "/date-calculator/days-between?start=private",
-      "Days between",
+      "/shift-calendar?startDate=private",
+      "Shift calendar",
     )).toEqual({
       name: "calculator_result",
       parameters: {
         send_to: "G-MMP15FDWR4",
-        page_location: "https://calendarforge.net/date-calculator/days-between",
-        page_title: "Days between",
-        surface: "days_between",
+        page_location: "https://calendarforge.net/shift-calendar",
+        page_title: "Shift calendar",
+        surface: "shift_calendar",
       },
     });
     expect(buildGoogleTelemetryEvent(

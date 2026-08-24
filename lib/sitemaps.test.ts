@@ -34,6 +34,7 @@ describe("search sitemaps", () => {
       "https://calendarforge.net/",
       "https://calendarforge.net/make-calendar",
       "https://calendarforge.net/fiscal-calendar",
+      "https://calendarforge.net/shift-calendar",
       "https://calendarforge.net/today",
       "https://calendarforge.net/date-calculator",
       "https://calendarforge.net/date-calculator/days-until",

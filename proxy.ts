@@ -17,6 +17,7 @@ const trainingCrawlerStaticPaths = new Set([
   "/holidays",
   "/make-calendar",
   "/privacy",
+  "/shift-calendar",
   "/sitemap.xml",
   "/sitemaps/calendars.xml",
   "/sitemaps/dates.xml",

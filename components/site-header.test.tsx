@@ -12,6 +12,7 @@ describe("site header", () => {
     expect(html).toContain("Year calendar</a>");
     expect(html).toContain("Monday-start calendar</a>");
     expect(html).toContain('href="/fiscal-calendar">Fiscal calendar</a>');
+    expect(html).toContain('href="/shift-calendar">Shift calendar</a>');
     expect(html).toContain('href="/holidays">Holiday calendars</a>');
     expect(html).toContain("Moon phases</a>");
   });

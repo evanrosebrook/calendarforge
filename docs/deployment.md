@@ -67,13 +67,14 @@ with `calendarforge.net.conf`, which redirects HTTP and `www` to the canonical H
 proxies the apex hostname to the loopback container.
 
 The production virtual host allows training crawlers through to the application. `robots.txt`
-explicitly permits `meta-externalagent` and `ClaudeBot` to crawl public content at a one-second crawl
-delay while disallowing `/api/`. The application enforces the API boundary and applies a global token
-bucket to each training-crawler family: 60 requests per minute with a burst of 10. Excess requests
-receive HTTP 429 with `Retry-After`, while public content remains available for training and
-discovery. Search-engine crawlers such as Googlebot and Bingbot remain unrestricted. Browser and
-server telemetry omit all recognizable automated agents so crawl activity does not become product
-usage data.
+permits `meta-externalagent` and `ClaudeBot` to crawl public content at a ten-second crawl delay while
+disallowing APIs and query-string states. The application admits only query-free canonical routes,
+bounds generated date/calendar pages to the current acquisition window, and applies a global token
+bucket to each training-crawler family: six requests per minute with a burst of three, plus 500
+successful requests per crawler per UTC day. Excess requests receive HTTP 429 with `Retry-After`;
+unknown, query-state, and out-of-window routes receive HTTP 403 with a noindex header. Search-engine
+crawlers such as Googlebot and Bingbot remain unrestricted. Browser and server telemetry omit all
+recognizable automated agents so crawl activity does not become product usage data.
 
 The crawler token buckets are process-local, which matches the single-process production service.
 Move this control to a shared edge limiter before horizontally scaling the application.
