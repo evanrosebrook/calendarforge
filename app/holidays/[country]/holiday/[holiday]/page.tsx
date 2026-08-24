@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { isAcquisitionYear } from "@/lib/acquisition";
 import { HOLIDAY_CATALOGS, MAX_SUPPORTED_HOLIDAY_YEAR, MIN_SUPPORTED_HOLIDAY_YEAR, getHolidayCatalog, getHolidayDefinition, getHolidayOccurrences, toIsoDate, utcDate } from "@/lib/calendar";
 
 type Props = { params: Promise<{ country: string; holiday: string }> };
@@ -57,7 +58,8 @@ export default async function HolidayDetailPage({ params }: Props) {
           <ol className="occurrence-list">
             {occurrences.map((occurrence) => {
               const [year, month, day] = occurrence.date.split("-").map(Number);
-              return <li key={`${occurrence.date}-${occurrence.observed ? "observed" : "actual"}`}><Link href={`/date/${occurrence.date}`}>{formatter.format(utcDate(year!, month!, day!))}</Link>{occurrence.observed && <span>Observed day</span>}</li>;
+              const label = formatter.format(utcDate(year!, month!, day!));
+              return <li key={`${occurrence.date}-${occurrence.observed ? "observed" : "actual"}`}>{isAcquisitionYear(year!) ? <Link href={`/date/${occurrence.date}`}>{label}</Link> : <span>{label}</span>}{occurrence.observed && <span>Observed day</span>}</li>;
             })}
           </ol>
         </section>

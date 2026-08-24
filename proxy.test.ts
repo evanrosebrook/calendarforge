@@ -6,7 +6,7 @@ import { proxy } from "./proxy";
 describe("crawler proxy", () => {
   beforeEach(() => {
     resetTrainingCrawlerRateLimits();
-    vi.spyOn(Date, "now").mockReturnValue(1_000);
+    vi.spyOn(Date, "now").mockReturnValue(Date.UTC(2026, 7, 24));
   });
 
   afterEach(() => vi.restoreAllMocks());
@@ -24,11 +24,16 @@ describe("crawler proxy", () => {
 
     expect(response.status).toBe(429);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(response.headers.get("retry-after")).toBe("1");
+    expect(response.headers.get("retry-after")).toBe("10");
   });
 
-  it("enforces the robots API boundary for training crawlers", () => {
+  it("allows only canonical acquisition routes for training crawlers", () => {
     expect(proxy(request("ClaudeBot/1.0", "/api/export/pdf")).status).toBe(403);
+    expect(proxy(request("ClaudeBot/1.0", "/date/2866-09-16")).status).toBe(403);
+    expect(proxy(request("ClaudeBot/1.0", "/calendar/2029/1")).status).toBe(403);
+    expect(proxy(request("ClaudeBot/1.0", "/date-calculator/add-subtract?date=2866-09-16")).status).toBe(403);
+    expect(proxy(request("ClaudeBot/1.0", "/date/2028-02-29")).status).toBe(200);
+    expect(proxy(request("ClaudeBot/1.0", "/holidays/us/holiday/independence-day")).status).toBe(200);
   });
 
   it("allows people and search-engine crawlers", () => {
@@ -37,8 +42,8 @@ describe("crawler proxy", () => {
   });
 });
 
-function request(userAgent: string, pathname = "/today"): NextRequest {
-  return new NextRequest(`https://calendarforge.net${pathname}`, {
+function request(userAgent: string, path = "/today"): NextRequest {
+  return new NextRequest(`https://calendarforge.net${path}`, {
     headers: { "User-Agent": userAgent },
   });
 }

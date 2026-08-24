@@ -7,8 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: ["meta-externalagent", "ClaudeBot"],
         allow: "/",
-        disallow: "/api/",
-        crawlDelay: 1,
+        disallow: ["/api/", "/*?*"],
+        crawlDelay: 10,
       },
       {
         userAgent: "*",

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CalendarMonth } from "@/lib/calendar";
 
-export function MiniCalendar({ calendar, query = "", highlightWeekends = true }: { calendar: CalendarMonth; query?: string; highlightWeekends?: boolean }) {
+export function MiniCalendar({ calendar, query = "", highlightWeekends = true, linkDates = true }: { calendar: CalendarMonth; query?: string; highlightWeekends?: boolean; linkDates?: boolean }) {
   return (
     <article className="mini-calendar">
       <div className="mini-title">
@@ -16,7 +16,7 @@ export function MiniCalendar({ calendar, query = "", highlightWeekends = true }:
               {week.weekNumber !== undefined && <td className="week-col">{week.weekNumber}</td>}
               {week.days.map((day) => (
                 <td key={day.date} className={`${day.inMonth ? "" : "outside"} ${day.isWeekend && highlightWeekends ? "weekend" : ""} ${day.holidays.length ? "has-holiday" : ""}`}>
-                  {day.inMonth ? <Link className="mini-day-link" href={`/date/${day.date}`} aria-label={`View date guide for ${day.date}`}>{day.day}</Link> : day.day}
+                  {day.inMonth && linkDates ? <Link className="mini-day-link" href={`/date/${day.date}`} aria-label={`View date guide for ${day.date}`}>{day.day}</Link> : day.day}
                 </td>
               ))}
             </tr>

@@ -1,7 +1,6 @@
 import { HOLIDAY_CATALOGS } from "./calendar";
+import { acquisitionLastYear, acquisitionYears } from "./acquisition";
 import { absoluteSiteUrl } from "./site-url";
-
-export const SITEMAP_FIRST_YEAR = 2025;
 
 export const SITEMAP_FAMILIES = ["static", "calendars", "holidays", "dates"] as const;
 
@@ -24,7 +23,7 @@ const STATIC_PATHS = [
 ] as const;
 
 export function sitemapLastYear(now = new Date()): number {
-  return now.getUTCFullYear() + 3;
+  return acquisitionLastYear(now);
 }
 
 export function sitemapIndexUrls(): string[] {
@@ -32,7 +31,7 @@ export function sitemapIndexUrls(): string[] {
 }
 
 export function sitemapUrls(family: SitemapFamily, now = new Date()): string[] {
-  const years = inclusiveYears(SITEMAP_FIRST_YEAR, sitemapLastYear(now));
+  const years = acquisitionYears(now);
 
   if (family === "static") return STATIC_PATHS.map(absoluteSiteUrl);
 
@@ -73,10 +72,6 @@ export function sitemapXmlResponse(xml: string): Response {
       "Content-Type": "application/xml; charset=utf-8",
     },
   });
-}
-
-function inclusiveYears(first: number, last: number): number[] {
-  return Array.from({ length: Math.max(0, last - first + 1) }, (_, index) => first + index);
 }
 
 function datePathsForYear(year: number): string[] {

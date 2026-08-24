@@ -5,6 +5,7 @@ import { CalendarGrid } from "@/components/calendar-grid";
 import { DateGuideActions } from "@/components/date-guide-actions";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { isAcquisitionYear, robotsForYear } from "@/lib/acquisition";
 import {
   MAX_SUPPORTED_HOLIDAY_YEAR,
   MIN_SUPPORTED_HOLIDAY_YEAR,
@@ -34,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: { absolute: `${label} Is a ${facts.weekday} | Calendar Forge` },
     description: `${label} is a ${facts.weekday} in ISO week ${facts.isoWeek}. It is ${usNumeric} in U.S. format and ${internationalNumeric} in day-first format. See countdown and calendar.`,
     alternates: { canonical: `/date/${facts.isoDate}` },
+    robots: robotsForYear(date.getUTCFullYear()),
   };
 }
 
@@ -60,8 +62,10 @@ export default async function DatePage({ params }: Props) {
   const now = new Date();
   const today = utcDate(now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate());
   const relative = calculateDateDifference(today, date);
-  const previousDate = toIsoDate(addUtcDays(date, -1));
-  const nextDate = toIsoDate(addUtcDays(date, 1));
+  const previous = addUtcDays(date, -1);
+  const next = addUtcDays(date, 1);
+  const previousDate = toIsoDate(previous);
+  const nextDate = toIsoDate(next);
   const usNumeric = numericDate(date, "us");
   const internationalNumeric = numericDate(date, "international");
 
@@ -85,9 +89,13 @@ export default async function DatePage({ params }: Props) {
         </header>
 
         <nav className="date-stepper no-print" aria-label="Adjacent dates">
-          <Link href={`/date/${previousDate}`}>← {formatShortDate(addUtcDays(date, -1))}</Link>
+          {isAcquisitionYear(previous.getUTCFullYear())
+            ? <Link href={`/date/${previousDate}`}>← {formatShortDate(previous)}</Link>
+            : <span>← {formatShortDate(previous)}</span>}
           <Link href={`/calendar/${year}/${month}`}>Open {monthName} calendar</Link>
-          <Link href={`/date/${nextDate}`}>{formatShortDate(addUtcDays(date, 1))} →</Link>
+          {isAcquisitionYear(next.getUTCFullYear())
+            ? <Link href={`/date/${nextDate}`}>{formatShortDate(next)} →</Link>
+            : <span>{formatShortDate(next)} →</span>}
         </nav>
 
         <section className="date-summary-grid" aria-label="Date summary">
@@ -139,7 +147,7 @@ export default async function DatePage({ params }: Props) {
             <div><span className="page-kicker">In context</span><h2>{monthName} {year} calendar</h2></div>
             <p>The selected date is highlighted. US national holidays are shown when they occur.</p>
           </div>
-          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} linkDates />
+          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} linkDates={isAcquisitionYear(year)} />
         </section>
 
         <section className="daily-planner" aria-labelledby="daily-planner-title">

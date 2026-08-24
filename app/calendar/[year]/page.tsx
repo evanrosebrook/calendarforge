@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight } from "@/components/icons";
 import { MiniCalendar } from "@/components/mini-calendar";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { isAcquisitionYear, robotsForYear } from "@/lib/acquisition";
 import { createCalendarYear } from "@/lib/calendar";
 import { queryString } from "@/lib/navigation";
 import { holidaysForSettings, parseSettings, type SearchParams } from "@/lib/settings";
@@ -26,7 +27,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     title: `${year} Printable Calendar`,
     description: `View, customize, print, and download a complete ${year} calendar with holidays and optional week numbers.`,
     alternates: { canonical: `/calendar/${year}` },
-    robots: customized ? { index: false, follow: true } : undefined,
+    robots: robotsForYear(year, customized),
   };
 }
 
@@ -44,6 +45,7 @@ export default async function YearPage({ params, searchParams }: Props) {
     holidays: holidaysForSettings(settings, year, year),
   });
   const query = queryString(rawSearchParams);
+  const acquisitionPage = isAcquisitionYear(year);
 
   return (
     <main className="calendar-page">
@@ -61,14 +63,18 @@ export default async function YearPage({ params, searchParams }: Props) {
           <CalendarToolbar settings={settings} year={year} />
           <div className="calendar-stage">
             <nav className="calendar-nav no-print" aria-label="Year navigation">
-              <Link className="icon-button" href={`/calendar/${year - 1}${query}`} aria-label="Previous year"><ArrowLeft size={17} /></Link>
+              {!acquisitionPage || isAcquisitionYear(year - 1)
+                ? <Link className="icon-button" href={`/calendar/${year - 1}${query}`} aria-label="Previous year"><ArrowLeft size={17} /></Link>
+                : <span className="icon-button" aria-hidden="true"><ArrowLeft size={17} /></span>}
               <div className="calendar-nav-title">Twelve months. One clear view.</div>
-              <Link className="icon-button" href={`/calendar/${year + 1}${query}`} aria-label="Next year"><ArrowRight size={17} /></Link>
+              {!acquisitionPage || isAcquisitionYear(year + 1)
+                ? <Link className="icon-button" href={`/calendar/${year + 1}${query}`} aria-label="Next year"><ArrowRight size={17} /></Link>
+                : <span className="icon-button" aria-hidden="true"><ArrowRight size={17} /></span>}
             </nav>
             <article className={`calendar-sheet year-sheet ${settings.highlightWeekends ? "" : "no-weekends"}`}>
               <header className="sheet-heading"><h2>{settings.title || year}</h2><p>Year at a glance</p></header>
               <div className="mini-grid">
-                {calendars.map((calendar) => <MiniCalendar key={calendar.month} calendar={calendar} query={query} highlightWeekends={settings.highlightWeekends} />)}
+                {calendars.map((calendar) => <MiniCalendar key={calendar.month} calendar={calendar} query={query} highlightWeekends={settings.highlightWeekends} linkDates={acquisitionPage} />)}
               </div>
               <p className="source-mark">Made with Calendar Forge</p>
             </article>

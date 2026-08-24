@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { getNationalHolidays } from "@/lib/calendar";
 import DatePage from "@/app/date/[date]/page";
-import CountryHolidayYearPage from "./[country]/[year]/page";
+import CountryHolidayYearPage, { generateMetadata as generateHolidayYearMetadata } from "./[country]/[year]/page";
 import HolidayDetailPage from "./[country]/holiday/[holiday]/page";
 
 describe("holiday internal links", () => {
@@ -28,7 +28,25 @@ describe("holiday internal links", () => {
 
       expect(html).toContain('href="/date/2027-07-04"');
       expect(html).toContain('href="/date/2027-07-05"');
+      expect(html).toContain('href="/date/2028-07-04"');
+      expect(html).not.toContain('href="/date/2029-07-04"');
       expect(html).toContain('"@type":"BreadcrumbList"');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("contains holiday year pages outside the acquisition window", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-08-04T12:00:00Z"));
+
+    try {
+      await expect(generateHolidayYearMetadata({ params: Promise.resolve({ country: "us", year: "2025" }) })).resolves.toMatchObject({
+        robots: { index: false, follow: false },
+      });
+      await expect(generateHolidayYearMetadata({ params: Promise.resolve({ country: "us", year: "2028" }) })).resolves.toMatchObject({
+        robots: undefined,
+      });
     } finally {
       vi.useRealTimers();
     }

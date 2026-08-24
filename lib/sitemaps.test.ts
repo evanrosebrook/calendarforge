@@ -47,30 +47,31 @@ describe("search sitemaps", () => {
     ]);
   });
 
-  it("keeps the first publication year and grows three years ahead", () => {
-    expect(sitemapLastYear(now)).toBe(2029);
-    expect(sitemapUrls("calendars", now)).toHaveLength(5 * 26);
-    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2025/1");
-    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2029/12");
-    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/monday-start/2029/12");
+  it("publishes the current year plus two years", () => {
+    expect(sitemapLastYear(now)).toBe(2028);
+    expect(sitemapUrls("calendars", now)).toHaveLength(3 * 26);
+    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2026/1");
+    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/2028/12");
+    expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/calendar/monday-start/2028/12");
+    expect(sitemapUrls("calendars", now)).not.toContain("https://calendarforge.net/calendar/2029/12");
     expect(sitemapUrls("calendars", now)).toContain("https://calendarforge.net/moon-phases/2026");
   });
 
   it("includes holiday hubs, country years, and holiday entities", () => {
     const urls = sitemapUrls("holidays", now);
     expect(urls).toContain("https://calendarforge.net/holidays");
-    expect(urls).toContain("https://calendarforge.net/holidays/us/2029");
-    expect(urls).toContain("https://calendarforge.net/holidays/canada/2025");
+    expect(urls).toContain("https://calendarforge.net/holidays/us/2028");
+    expect(urls).toContain("https://calendarforge.net/holidays/canada/2026");
     expect(urls).toContain("https://calendarforge.net/holidays/us/holiday/independence-day");
     expect(urls).toContain("https://calendarforge.net/holidays/canada/holiday/canada-day");
   });
 
-  it("includes every valid date from 2025 through 2029, including leap day", () => {
+  it("includes every valid date from 2026 through 2028, including leap day", () => {
     const urls = sitemapUrls("dates", now);
-    expect(urls).toHaveLength(1826);
-    expect(urls[0]).toBe("https://calendarforge.net/date/2025-01-01");
+    expect(urls).toHaveLength(1096);
+    expect(urls[0]).toBe("https://calendarforge.net/date/2026-01-01");
     expect(urls).toContain("https://calendarforge.net/date/2028-02-29");
-    expect(urls.at(-1)).toBe("https://calendarforge.net/date/2029-12-31");
+    expect(urls.at(-1)).toBe("https://calendarforge.net/date/2028-12-31");
   });
 
   it("renders valid sitemap index and URL-set envelopes", () => {

@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Download } from "@/components/icons";
 import { MoonPhaseMiniCalendar } from "@/components/moon-phase-mini-calendar";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { isAcquisitionYear, robotsForYear } from "@/lib/acquisition";
 import { createCalendarYear, utcDate } from "@/lib/calendar";
 import { MOON_PHASE_DETAILS, getMoonPhases, isSupportedMoonPhaseYear, moonPhasesByDate, supportedMoonPhaseYears } from "@/lib/moon-phases";
 
@@ -28,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Moon Phases ${year} — Printable Lunar Calendar`,
     description: `See every ${year} new moon, first quarter, full moon, and last quarter in UTC on a printable twelve-month calendar.`,
     alternates: { canonical: `/moon-phases/${year}` },
+    robots: robotsForYear(year),
   };
 }
 
@@ -41,6 +43,7 @@ export default async function MoonPhasesPage({ params }: Props) {
   const supportedYears = supportedMoonPhaseYears();
   const firstYear = supportedYears[0]!;
   const lastYear = supportedYears.at(-1)!;
+  const acquisitionPage = isAcquisitionYear(year);
   const dateFormatter = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", weekday: "short", timeZone: "UTC" });
   const timeFormatter = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "UTC" });
 
@@ -65,9 +68,9 @@ export default async function MoonPhasesPage({ params }: Props) {
         </div>
 
         <nav className="calendar-nav no-print" aria-label="Moon phase year navigation">
-          {year > firstYear ? <Link className="icon-button" href={`/moon-phases/${year - 1}`} aria-label="Previous year"><ArrowLeft size={17} /></Link> : <span />}
+          {year > firstYear && (!acquisitionPage || isAcquisitionYear(year - 1)) ? <Link className="icon-button" href={`/moon-phases/${year - 1}`} aria-label="Previous year"><ArrowLeft size={17} /></Link> : <span />}
           <div className="calendar-nav-title">Four principal phases · exact UTC times below</div>
-          {year < lastYear ? <Link className="icon-button" href={`/moon-phases/${year + 1}`} aria-label="Next year"><ArrowRight size={17} /></Link> : <span />}
+          {year < lastYear && (!acquisitionPage || isAcquisitionYear(year + 1)) ? <Link className="icon-button" href={`/moon-phases/${year + 1}`} aria-label="Next year"><ArrowRight size={17} /></Link> : <span />}
         </nav>
 
         <article className="calendar-sheet year-sheet moon-year-sheet">
@@ -99,7 +102,7 @@ export default async function MoonPhasesPage({ params }: Props) {
                       return (
                         <li key={event.instant}>
                           <span className={`moon-phase-glyph phase-${event.id}`} aria-hidden="true">{event.symbol}</span>
-                          <span><strong>{event.name}</strong><Link href={`/date/${event.date}`}>{dateFormatter.format(utcDate(year, calendar.month, Number(event.date.slice(8, 10))))}</Link></span>
+                          <span><strong>{event.name}</strong>{acquisitionPage ? <Link href={`/date/${event.date}`}>{dateFormatter.format(utcDate(year, calendar.month, Number(event.date.slice(8, 10))))}</Link> : <span>{dateFormatter.format(utcDate(year, calendar.month, Number(event.date.slice(8, 10))))}</span>}</span>
                           <time dateTime={event.instant}>{timeFormatter.format(instant)} UTC</time>
                         </li>
                       );

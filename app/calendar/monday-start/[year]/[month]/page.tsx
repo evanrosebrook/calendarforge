@@ -7,6 +7,7 @@ import { CalendarToolbar } from "@/components/calendar-toolbar";
 import { ArrowLeft, ArrowRight } from "@/components/icons";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { isAcquisitionYear, robotsForYear } from "@/lib/acquisition";
 import { createCalendarMonth } from "@/lib/calendar";
 import { adjacentMonth, queryString } from "@/lib/navigation";
 import { holidaysForSettings, parseSettings, type SearchParams } from "@/lib/settings";
@@ -29,7 +30,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     title: `${label} Monday-Start Calendar`,
     description: `Print and download a ${label} calendar with Monday as the first day of the week. Add holidays, week numbers, notes, and weekend shading.`,
     alternates: { canonical: `/calendar/monday-start/${date.year}/${date.month}` },
-    robots: customized ? { index: false, follow: true } : undefined,
+    robots: robotsForYear(date.year, customized),
   };
 }
 
@@ -49,6 +50,7 @@ export default async function MondayStartMonthPage({ params, searchParams }: Pro
   const previous = adjacentMonth(date.year, date.month, -1);
   const next = adjacentMonth(date.year, date.month, 1);
   const query = queryString(rawSearchParams);
+  const acquisitionPage = isAcquisitionYear(date.year);
 
   return (
     <main className="calendar-page">
@@ -67,11 +69,15 @@ export default async function MondayStartMonthPage({ params, searchParams }: Pro
           <CalendarToolbar settings={settings} year={date.year} month={date.month} defaultFirstDayOfWeek={1} />
           <div className="calendar-stage">
             <nav className="calendar-nav no-print" aria-label="Month navigation">
-              <Link className="icon-button" href={`/calendar/monday-start/${previous.year}/${previous.month}${query}`} aria-label="Previous month"><ArrowLeft size={17} /></Link>
+              {!acquisitionPage || isAcquisitionYear(previous.year)
+                ? <Link className="icon-button" href={`/calendar/monday-start/${previous.year}/${previous.month}${query}`} aria-label="Previous month"><ArrowLeft size={17} /></Link>
+                : <span className="icon-button" aria-hidden="true"><ArrowLeft size={17} /></span>}
               <div className="calendar-nav-title"><Link href={`/calendar/${date.year}/${date.month}`}>Open Sunday-start version</Link> · <Link href={`/calendar/${date.year}`}>View {date.year}</Link></div>
-              <Link className="icon-button" href={`/calendar/monday-start/${next.year}/${next.month}${query}`} aria-label="Next month"><ArrowRight size={17} /></Link>
+              {!acquisitionPage || isAcquisitionYear(next.year)
+                ? <Link className="icon-button" href={`/calendar/monday-start/${next.year}/${next.month}${query}`} aria-label="Next month"><ArrowRight size={17} /></Link>
+                : <span className="icon-button" aria-hidden="true"><ArrowRight size={17} /></span>}
             </nav>
-            <CalendarGrid calendar={calendar} compact={settings.density === "compact"} highlightWeekends={settings.highlightWeekends} linkDates title={settings.title} showNotes={settings.showNotes} />
+            <CalendarGrid calendar={calendar} compact={settings.density === "compact"} highlightWeekends={settings.highlightWeekends} linkDates={acquisitionPage} title={settings.title} showNotes={settings.showNotes} />
             <AdSlot />
           </div>
         </div>

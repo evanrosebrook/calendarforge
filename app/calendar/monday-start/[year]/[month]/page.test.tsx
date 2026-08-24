@@ -33,5 +33,8 @@ describe("Monday-start monthly calendar", () => {
     await expect(generateMetadata({ ...base, searchParams: Promise.resolve({ holidays: "0" }) })).resolves.toMatchObject({
       robots: { index: false, follow: true },
     });
+    await expect(generateMetadata({ params: Promise.resolve({ year: "2101", month: "8" }), searchParams: Promise.resolve({}) })).resolves.toMatchObject({
+      robots: { index: false, follow: false },
+    });
   });
 });

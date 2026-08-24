@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { isAcquisitionYear, robotsForYear } from "@/lib/acquisition";
 import { HOLIDAY_CATALOGS, MAX_SUPPORTED_HOLIDAY_YEAR, MIN_SUPPORTED_HOLIDAY_YEAR, getHolidayCatalog, getNationalHolidays, isSupportedHolidayYear, supportedHolidayYears, utcDate } from "@/lib/calendar";
 import { holidayExportPath } from "@/lib/navigation";
 
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${values.catalog.name} Holidays ${values.year}`,
     description: `${values.year} ${values.catalog.demonym} national holiday dates, weekdays, observed days, and printable calendar links.`,
     alternates: { canonical: `/holidays/${values.catalog.slug}/${values.year}` },
+    robots: robotsForYear(values.year),
   };
 }
 
@@ -44,6 +46,7 @@ export default async function CountryHolidayYearPage({ params }: Props) {
   const formatter = new Intl.DateTimeFormat(catalog.locale, { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
   const weekdayFormatter = new Intl.DateTimeFormat(catalog.locale, { weekday: "long", timeZone: "UTC" });
   const countryParam = catalog.code === "ca" ? "&country=ca" : "";
+  const acquisitionPage = isAcquisitionYear(year);
 
   return (
     <main className="content-page">
@@ -64,9 +67,13 @@ export default async function CountryHolidayYearPage({ params }: Props) {
         </div>
         <p className="content-intro">Plan around {year} {catalog.demonym} national holidays and standard observed days. Open any date for its weekday, week number, monthly calendar, and printable daily planner.</p>
         <nav className="year-switcher" aria-label="Holiday year navigation">
-          {year > MIN_SUPPORTED_HOLIDAY_YEAR && <Link href={`/holidays/${catalog.slug}/${year - 1}`}>← {year - 1}</Link>}
+          {year > MIN_SUPPORTED_HOLIDAY_YEAR && (!acquisitionPage || isAcquisitionYear(year - 1))
+            ? <Link href={`/holidays/${catalog.slug}/${year - 1}`}>← {year - 1}</Link>
+            : <span />}
           <span>{year}</span>
-          {year < MAX_SUPPORTED_HOLIDAY_YEAR && <Link href={`/holidays/${catalog.slug}/${year + 1}`}>{year + 1} →</Link>}
+          {year < MAX_SUPPORTED_HOLIDAY_YEAR && (!acquisitionPage || isAcquisitionYear(year + 1))
+            ? <Link href={`/holidays/${catalog.slug}/${year + 1}`}>{year + 1} →</Link>
+            : <span />}
         </nav>
         <section aria-labelledby="holiday-dates-title">
           <h2 id="holiday-dates-title">{year} {catalog.demonym} holiday dates</h2>
@@ -80,7 +87,7 @@ export default async function CountryHolidayYearPage({ params }: Props) {
                   const date = utcDate(dateYear!, month!, day!);
                   return (
                     <tr key={`${holiday.date}-${holiday.id}-${holiday.observed ? "observed" : "actual"}`}>
-                      <td><Link href={`/date/${holiday.date}`}>{formatter.format(date)}</Link></td>
+                      <td>{acquisitionPage ? <Link href={`/date/${holiday.date}`}>{formatter.format(date)}</Link> : formatter.format(date)}</td>
                       <td>{weekdayFormatter.format(date)}</td>
                       <td><Link href={`/holidays/${catalog.slug}/holiday/${holiday.id}`}>{holiday.name}</Link></td>
                       <td><span className="category-tag">National{holiday.observed ? " · Observed" : ""}</span></td>

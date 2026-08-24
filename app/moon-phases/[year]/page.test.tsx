@@ -7,7 +7,7 @@ afterEach(() => {
 });
 
 describe("annual moon phase page", () => {
-  it("generates only the bounded acquisition years", () => {
+  it("generates the supported calculation years", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-08-05T12:00:00Z"));
     expect(generateStaticParams()).toEqual([
@@ -34,6 +34,9 @@ describe("annual moon phase page", () => {
     await expect(generateMetadata({ params: Promise.resolve({ year: "2026" }) })).resolves.toMatchObject({
       title: "Moon Phases 2026 — Printable Lunar Calendar",
       alternates: { canonical: "/moon-phases/2026" },
+    });
+    await expect(generateMetadata({ params: Promise.resolve({ year: "2029" }) })).resolves.toMatchObject({
+      robots: { index: false, follow: false },
     });
     expect(parseMoonPhaseYear("2024")).toBeNull();
     expect(parseMoonPhaseYear("not-a-year")).toBeNull();
