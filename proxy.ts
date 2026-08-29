@@ -20,7 +20,6 @@ const trainingCrawlerStaticPaths = new Set([
   "/shift-calendar",
   "/sitemap.xml",
   "/sitemaps/calendars.xml",
-  "/sitemaps/dates.xml",
   "/sitemaps/holidays.xml",
   "/sitemaps/static.xml",
   "/today",
@@ -29,9 +28,6 @@ const trainingCrawlerStaticPaths = new Set([
 export function isTrainingCrawlerPathAllowed(pathname: string): boolean {
   if (trainingCrawlerStaticPaths.has(pathname)) return true;
   if (/^\/holidays\/(?:us|canada)\/holiday\/[a-z0-9-]+$/.test(pathname)) return true;
-
-  const date = pathname.match(/^\/date\/(\d{4})-\d{2}-\d{2}$/);
-  if (date) return isAcquisitionYear(Number(date[1]));
 
   const calendar = pathname.match(/^\/calendar\/(?:monday-start\/)?(\d{4})(?:\/(?:[1-9]|1[0-2]))?$/);
   if (calendar) return isAcquisitionYear(Number(calendar[1]));

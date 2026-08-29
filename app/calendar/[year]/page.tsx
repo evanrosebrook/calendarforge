@@ -74,7 +74,7 @@ export default async function YearPage({ params, searchParams }: Props) {
             <article className={`calendar-sheet year-sheet ${settings.highlightWeekends ? "" : "no-weekends"}`}>
               <header className="sheet-heading"><h2>{settings.title || year}</h2><p>Year at a glance</p></header>
               <div className="mini-grid">
-                {calendars.map((calendar) => <MiniCalendar key={calendar.month} calendar={calendar} query={query} highlightWeekends={settings.highlightWeekends} linkDates={acquisitionPage} />)}
+                {calendars.map((calendar) => <MiniCalendar key={calendar.month} calendar={calendar} query={query} highlightWeekends={settings.highlightWeekends} linkDates={false} />)}
               </div>
               <p className="source-mark">Made with Calendar Forge</p>
             </article>

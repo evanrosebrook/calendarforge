@@ -31,7 +31,7 @@ export function CountdownResult({ start, target, calculatorHref }: Props) {
       </div>
       <p className="calculation-note">Calendar-day distance is absolute: it excludes the earlier date and includes the later date. Weekdays use the same endpoints, count Monday through Friday, and do not remove holidays.</p>
       <div className="result-actions no-print">
-        <Link className="button button-ghost" href={`/date/${toIsoDate(target)}`}>Open target date</Link>
+        <Link className="button button-ghost" href={`/date/${toIsoDate(target)}`} rel="nofollow">Open target date</Link>
         {calculatorHref && <Link className="button button-ghost" href={calculatorHref}>Change the dates</Link>}
       </div>
     </section>

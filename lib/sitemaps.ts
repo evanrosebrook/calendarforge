@@ -2,7 +2,7 @@ import { HOLIDAY_CATALOGS } from "./calendar";
 import { acquisitionLastYear, acquisitionYears } from "./acquisition";
 import { absoluteSiteUrl } from "./site-url";
 
-export const SITEMAP_FAMILIES = ["static", "calendars", "holidays", "dates"] as const;
+export const SITEMAP_FAMILIES = ["static", "calendars", "holidays"] as const;
 
 export type SitemapFamily = (typeof SITEMAP_FAMILIES)[number];
 
@@ -45,17 +45,13 @@ export function sitemapUrls(family: SitemapFamily, now = new Date()): string[] {
     ]);
   }
 
-  if (family === "holidays") {
-    return [
-      absoluteSiteUrl("/holidays"),
-      ...years.flatMap((year) => HOLIDAY_CATALOGS.map((catalog) => absoluteSiteUrl(`/holidays/${catalog.slug}/${year}`))),
-      ...HOLIDAY_CATALOGS.flatMap((catalog) =>
-        catalog.holidays.map((holiday) => absoluteSiteUrl(`/holidays/${catalog.slug}/holiday/${holiday.id}`)),
-      ),
-    ];
-  }
-
-  return years.flatMap((year) => datePathsForYear(year).map(absoluteSiteUrl));
+  return [
+    absoluteSiteUrl("/holidays"),
+    ...years.flatMap((year) => HOLIDAY_CATALOGS.map((catalog) => absoluteSiteUrl(`/holidays/${catalog.slug}/${year}`))),
+    ...HOLIDAY_CATALOGS.flatMap((catalog) =>
+      catalog.holidays.map((holiday) => absoluteSiteUrl(`/holidays/${catalog.slug}/holiday/${holiday.id}`)),
+    ),
+  ];
 }
 
 export function renderSitemapIndex(urls: readonly string[]): string {
@@ -73,21 +69,6 @@ export function sitemapXmlResponse(xml: string): Response {
       "Content-Type": "application/xml; charset=utf-8",
     },
   });
-}
-
-function datePathsForYear(year: number): string[] {
-  const paths: string[] = [];
-  for (let month = 1; month <= 12; month += 1) {
-    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
-    for (let day = 1; day <= daysInMonth; day += 1) {
-      paths.push(`/date/${year}-${pad(month)}-${pad(day)}`);
-    }
-  }
-  return paths;
-}
-
-function pad(value: number): string {
-  return value.toString().padStart(2, "0");
 }
 
 function xmlDeclaration(): string {

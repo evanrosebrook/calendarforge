@@ -13,19 +13,19 @@ describe("date guide search intent", () => {
       title: { absolute: "August 5, 2026 Is a Wednesday | Calendar Forge" },
       description: expect.stringContaining("05/08/2026 in day-first format"),
       alternates: { canonical: "/date/2026-08-05" },
-      robots: undefined,
+      robots: { index: false, follow: false },
     });
   });
 
-  it("contains date guides outside the acquisition window", async () => {
+  it("keeps date guides usable while excluding them from search", async () => {
     await expect(generateMetadata({ params: Promise.resolve({ date: "2101-08-05" }) })).resolves.toMatchObject({
       alternates: { canonical: "/date/2101-08-05" },
       robots: { index: false, follow: false },
     });
 
     const html = renderToStaticMarkup(await DatePage({ params: Promise.resolve({ date: "2101-08-05" }) }));
-    expect(html).not.toContain('href="/date/2101-08-04"');
-    expect(html).not.toContain('href="/date/2101-08-06"');
+    expect(html).toContain('rel="nofollow" href="/date/2101-08-04"');
+    expect(html).toContain('rel="nofollow" href="/date/2101-08-06"');
   });
 
   it("answers numeric ambiguity before the calendar and offers tracked actions", async () => {

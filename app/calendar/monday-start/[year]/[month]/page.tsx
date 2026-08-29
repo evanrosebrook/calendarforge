@@ -77,7 +77,7 @@ export default async function MondayStartMonthPage({ params, searchParams }: Pro
                 ? <Link className="icon-button" href={`/calendar/monday-start/${next.year}/${next.month}${query}`} aria-label="Next month"><ArrowRight size={17} /></Link>
                 : <span className="icon-button" aria-hidden="true"><ArrowRight size={17} /></span>}
             </nav>
-            <CalendarGrid calendar={calendar} compact={settings.density === "compact"} highlightWeekends={settings.highlightWeekends} linkDates={acquisitionPage} title={settings.title} showNotes={settings.showNotes} />
+            <CalendarGrid calendar={calendar} compact={settings.density === "compact"} highlightWeekends={settings.highlightWeekends} title={settings.title} showNotes={settings.showNotes} />
             <AdSlot />
           </div>
         </div>

@@ -73,8 +73,8 @@ export default async function AgeCalculatorPage({ searchParams }: Props) {
                   </div>
                   <p className="calculation-note">Calendar age advances by anniversaries first, then complete months, then remaining days. A February 29 birthday uses February 28 as its anniversary in non-leap years.</p>
                   <div className="result-actions no-print">
-                    <Link className="button button-ghost" href={`/date/${toIsoDate(birth)}`}>Open birth date</Link>
-                    <Link className="button button-ghost" href={`/date/${toIsoDate(asOf)}`}>Open as-of date</Link>
+                    <Link className="button button-ghost" href={`/date/${toIsoDate(birth)}`} rel="nofollow">Open birth date</Link>
+                    <Link className="button button-ghost" href={`/date/${toIsoDate(asOf)}`} rel="nofollow">Open as-of date</Link>
                     <Link className="button button-ghost" href={`/date-calculator/days-between?start=${toIsoDate(birth)}&end=${toIsoDate(asOf)}`}>Compare the dates</Link>
                   </div>
                 </>}

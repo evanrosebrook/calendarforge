@@ -16,7 +16,7 @@ export function MiniCalendar({ calendar, query = "", highlightWeekends = true, l
               {week.weekNumber !== undefined && <td className="week-col">{week.weekNumber}</td>}
               {week.days.map((day) => (
                 <td key={day.date} className={`${day.inMonth ? "" : "outside"} ${day.isWeekend && highlightWeekends ? "weekend" : ""} ${day.holidays.length ? "has-holiday" : ""}`}>
-                  {day.inMonth && linkDates ? <Link className="mini-day-link" href={`/date/${day.date}`} aria-label={`View date guide for ${day.date}`}>{day.day}</Link> : day.day}
+                  {day.inMonth && linkDates ? <Link className="mini-day-link" href={`/date/${day.date}`} aria-label={`View date guide for ${day.date}`} rel="nofollow">{day.day}</Link> : day.day}
                 </td>
               ))}
             </tr>

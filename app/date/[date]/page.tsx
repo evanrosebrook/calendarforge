@@ -5,7 +5,6 @@ import { CalendarGrid } from "@/components/calendar-grid";
 import { DateGuideActions } from "@/components/date-guide-actions";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
-import { isAcquisitionYear, robotsForYear } from "@/lib/acquisition";
 import {
   MAX_SUPPORTED_HOLIDAY_YEAR,
   MIN_SUPPORTED_HOLIDAY_YEAR,
@@ -35,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: { absolute: `${label} Is a ${facts.weekday} | Calendar Forge` },
     description: `${label} is a ${facts.weekday} in ISO week ${facts.isoWeek}. It is ${usNumeric} in U.S. format and ${internationalNumeric} in day-first format. See countdown and calendar.`,
     alternates: { canonical: `/date/${facts.isoDate}` },
-    robots: robotsForYear(date.getUTCFullYear()),
+    robots: { index: false, follow: false },
   };
 }
 
@@ -89,13 +88,9 @@ export default async function DatePage({ params }: Props) {
         </header>
 
         <nav className="date-stepper no-print" aria-label="Adjacent dates">
-          {isAcquisitionYear(previous.getUTCFullYear())
-            ? <Link href={`/date/${previousDate}`}>← {formatShortDate(previous)}</Link>
-            : <span>← {formatShortDate(previous)}</span>}
+          <Link href={`/date/${previousDate}`} rel="nofollow">← {formatShortDate(previous)}</Link>
           <Link href={`/calendar/${year}/${month}`}>Open {monthName} calendar</Link>
-          {isAcquisitionYear(next.getUTCFullYear())
-            ? <Link href={`/date/${nextDate}`}>{formatShortDate(next)} →</Link>
-            : <span>{formatShortDate(next)} →</span>}
+          <Link href={`/date/${nextDate}`} rel="nofollow">{formatShortDate(next)} →</Link>
         </nav>
 
         <section className="date-summary-grid" aria-label="Date summary">
@@ -147,7 +142,7 @@ export default async function DatePage({ params }: Props) {
             <div><span className="page-kicker">In context</span><h2>{monthName} {year} calendar</h2></div>
             <p>The selected date is highlighted. US national holidays are shown when they occur.</p>
           </div>
-          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} linkDates={isAcquisitionYear(year)} />
+          <CalendarGrid calendar={calendar} highlightDate={facts.isoDate} />
         </section>
 
         <section className="daily-planner" aria-labelledby="daily-planner-title">

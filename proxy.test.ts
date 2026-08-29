@@ -32,7 +32,7 @@ describe("crawler proxy", () => {
     expect(proxy(request("ClaudeBot/1.0", "/date/2866-09-16")).status).toBe(403);
     expect(proxy(request("ClaudeBot/1.0", "/calendar/2029/1")).status).toBe(403);
     expect(proxy(request("ClaudeBot/1.0", "/date-calculator/add-subtract?date=2866-09-16")).status).toBe(403);
-    expect(proxy(request("ClaudeBot/1.0", "/date/2028-02-29")).status).toBe(200);
+    expect(proxy(request("ClaudeBot/1.0", "/date/2028-02-29")).status).toBe(403);
     expect(proxy(request("ClaudeBot/1.0", "/holidays/us/holiday/independence-day")).status).toBe(200);
     expect(proxy(request("ClaudeBot/1.0", "/shift-calendar")).status).toBe(200);
     expect(proxy(request("ClaudeBot/1.0", "/shift-calendar?pattern=4-4")).status).toBe(403);

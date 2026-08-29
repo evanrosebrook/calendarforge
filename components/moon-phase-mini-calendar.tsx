@@ -27,7 +27,7 @@ export function MoonPhaseMiniCalendar({ calendar, phases }: Props) {
                 return (
                   <td key={day.date} className={`${day.inMonth ? "" : "outside"} ${phase ? "has-moon-phase" : ""}`}>
                     {day.inMonth ? (
-                      <Link className="mini-day-link moon-day-link" href={`/date/${day.date}`} aria-label={label}>
+                      <Link className="mini-day-link moon-day-link" href={`/date/${day.date}`} aria-label={label} rel="nofollow">
                         <span>{day.day}</span>
                         {phase && <span className={`moon-phase-glyph phase-${phase.id}`} aria-hidden="true">{phase.symbol}</span>}
                       </Link>

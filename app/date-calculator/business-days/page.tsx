@@ -200,13 +200,13 @@ function BusinessDayTrail({ entries }: { entries: BusinessDayEntry[] }) {
     ? entries
     : [...entries.slice(0, 15), null, ...entries.slice(-15)];
   return <div className="business-day-trail"><div className="business-day-trail-heading"><strong>Dates checked</strong><span><i className="business-swatch business" /> Workday <i className="business-swatch weekend" /> Weekend <i className="business-swatch holiday" /> Holiday</span></div><div className="business-day-cells">{preview.map((entry, index) => entry
-    ? <Link className={`business-day-cell ${entry.status}`} href={`/date/${entry.isoDate}`} key={entry.isoDate} title={entry.holidayNames.join(", ") || statusLabel(entry.status)}><span>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(entry.date)}</span><strong>{entry.date.getUTCDate()}</strong><small>{new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(entry.date)}</small></Link>
+    ? <Link className={`business-day-cell ${entry.status}`} href={`/date/${entry.isoDate}`} key={entry.isoDate} rel="nofollow" title={entry.holidayNames.join(", ") || statusLabel(entry.status)}><span>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(entry.date)}</span><strong>{entry.date.getUTCDate()}</strong><small>{new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(entry.date)}</small></Link>
     : <span className="business-day-gap" key={`gap-${index}`}>…</span>)}</div></div>;
 }
 
 function ResultLinks({ start, end, region }: { start: Date; end: Date; region: BusinessDayRegion }) {
   const catalog = region === "weekends" ? undefined : getHolidayCatalog(region);
-  return <div className="result-actions no-print"><Link className="button button-ghost" href={`/date/${toIsoDate(start)}`}>Open start date</Link><Link className="button button-ghost" href={`/date/${toIsoDate(end)}`}>Open result date</Link>{catalog && <Link className="button button-ghost" href={`/holidays/${catalog.slug}/${end.getUTCFullYear()}`}>View {catalog.demonym} holidays</Link>}</div>;
+  return <div className="result-actions no-print"><Link className="button button-ghost" href={`/date/${toIsoDate(start)}`} rel="nofollow">Open start date</Link><Link className="button button-ghost" href={`/date/${toIsoDate(end)}`} rel="nofollow">Open result date</Link>{catalog && <Link className="button button-ghost" href={`/holidays/${catalog.slug}/${end.getUTCFullYear()}`}>View {catalog.demonym} holidays</Link>}</div>;
 }
 
 function CalculatorError({ title, copy }: { title: string; copy: string }) {

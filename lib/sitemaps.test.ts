@@ -25,7 +25,6 @@ describe("search sitemaps", () => {
       "https://calendarforge.net/sitemaps/static.xml",
       "https://calendarforge.net/sitemaps/calendars.xml",
       "https://calendarforge.net/sitemaps/holidays.xml",
-      "https://calendarforge.net/sitemaps/dates.xml",
     ]);
   });
 
@@ -67,12 +66,13 @@ describe("search sitemaps", () => {
     expect(urls).toContain("https://calendarforge.net/holidays/canada/holiday/canada-day");
   });
 
-  it("includes every valid date from 2026 through 2028, including leap day", () => {
-    const urls = sitemapUrls("dates", now);
-    expect(urls).toHaveLength(1096);
-    expect(urls[0]).toBe("https://calendarforge.net/date/2026-01-01");
-    expect(urls).toContain("https://calendarforge.net/date/2028-02-29");
-    expect(urls.at(-1)).toBe("https://calendarforge.net/date/2028-12-31");
+  it("does not advertise generated daily date guides", () => {
+    const urls = [
+      ...sitemapUrls("static", now),
+      ...sitemapUrls("calendars", now),
+      ...sitemapUrls("holidays", now),
+    ];
+    expect(urls.some((url) => url.includes("/date/"))).toBe(false);
   });
 
   it("renders valid sitemap index and URL-set envelopes", () => {

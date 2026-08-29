@@ -59,7 +59,7 @@ export default async function HolidayDetailPage({ params }: Props) {
             {occurrences.map((occurrence) => {
               const [year, month, day] = occurrence.date.split("-").map(Number);
               const label = formatter.format(utcDate(year!, month!, day!));
-              return <li key={`${occurrence.date}-${occurrence.observed ? "observed" : "actual"}`}>{isAcquisitionYear(year!) ? <Link href={`/date/${occurrence.date}`}>{label}</Link> : <span>{label}</span>}{occurrence.observed && <span>Observed day</span>}</li>;
+              return <li key={`${occurrence.date}-${occurrence.observed ? "observed" : "actual"}`}>{isAcquisitionYear(year!) ? <Link href={`/date/${occurrence.date}`} rel="nofollow">{label}</Link> : <span>{label}</span>}{occurrence.observed && <span>Observed day</span>}</li>;
             })}
           </ol>
         </section>

@@ -102,7 +102,7 @@ export default async function MoonPhasesPage({ params }: Props) {
                       return (
                         <li key={event.instant}>
                           <span className={`moon-phase-glyph phase-${event.id}`} aria-hidden="true">{event.symbol}</span>
-                          <span><strong>{event.name}</strong>{acquisitionPage ? <Link href={`/date/${event.date}`}>{dateFormatter.format(utcDate(year, calendar.month, Number(event.date.slice(8, 10))))}</Link> : <span>{dateFormatter.format(utcDate(year, calendar.month, Number(event.date.slice(8, 10))))}</span>}</span>
+                          <span><strong>{event.name}</strong>{acquisitionPage ? <Link href={`/date/${event.date}`} rel="nofollow">{dateFormatter.format(utcDate(year, calendar.month, Number(event.date.slice(8, 10))))}</Link> : <span>{dateFormatter.format(utcDate(year, calendar.month, Number(event.date.slice(8, 10))))}</span>}</span>
                           <time dateTime={event.instant}>{timeFormatter.format(instant)} UTC</time>
                         </li>
                       );

@@ -87,7 +87,7 @@ export default async function CountryHolidayYearPage({ params }: Props) {
                   const date = utcDate(dateYear!, month!, day!);
                   return (
                     <tr key={`${holiday.date}-${holiday.id}-${holiday.observed ? "observed" : "actual"}`}>
-                      <td>{acquisitionPage ? <Link href={`/date/${holiday.date}`}>{formatter.format(date)}</Link> : formatter.format(date)}</td>
+                      <td>{acquisitionPage ? <Link href={`/date/${holiday.date}`} rel="nofollow">{formatter.format(date)}</Link> : formatter.format(date)}</td>
                       <td>{weekdayFormatter.format(date)}</td>
                       <td><Link href={`/holidays/${catalog.slug}/holiday/${holiday.id}`}>{holiday.name}</Link></td>
                       <td><span className="category-tag">National{holiday.observed ? " · Observed" : ""}</span></td>

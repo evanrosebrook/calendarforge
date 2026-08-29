@@ -46,7 +46,7 @@ export function CalendarGrid({ calendar, compact = false, highlightWeekends = tr
                     data-date={day.date}
                   >
                     {day.inMonth && linkDates && showDayContent ? (
-                      <Link className="day-number-link" href={`/date/${day.date}`} aria-label={`View date guide for ${day.date}`}>
+                      <Link className="day-number-link" href={`/date/${day.date}`} aria-label={`View date guide for ${day.date}`} rel="nofollow">
                         <time className="day-number" dateTime={day.date}>{day.day}</time>
                       </Link>
                     ) : <time className="day-number" dateTime={day.date}>{day.day}</time>}
