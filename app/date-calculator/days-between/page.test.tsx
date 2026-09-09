@@ -14,6 +14,9 @@ describe("days-between calculator page", () => {
     expect(html).toContain('href="/today"');
     expect(html).toContain('href="/date-calculator/age"');
     expect(html).toContain('href="/date-calculator/add-subtract"');
+    expect(html).toContain("March 1 to March 8 is therefore seven days");
+    expect(html).toContain("March 1 through March 8 becomes eight days");
+    expect(html).toContain("The years, months, and days result advances through the calendar");
   });
 
   it("publishes an intent-focused title and canonical", () => {

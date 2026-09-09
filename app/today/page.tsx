@@ -78,6 +78,17 @@ export default async function TodayPage({ searchParams }: Props) {
           </section>
         </div>
         <div className="result-actions no-print"><Link className="button button-ghost" href={`/date/${facts.isoDate}`} rel="nofollow">Open today’s date guide</Link><Link className="button button-ghost" href={`/calendar/${year}/${Number(month)}`}>Open this month</Link><Link className="button button-ghost" href={`/date-calculator/days-between?start=${facts.isoDate}`}>Days from today</Link><Link className="button button-ghost" href={`/date-calculator/add-subtract?date=${toIsoDate(facts.date)}`}>Add or subtract from today</Link><Link className="button button-ghost" href={`/date-calculator/business-days?mode=shift&date=${toIsoDate(facts.date)}`}>Add business days</Link><Link className="button button-ghost" href="/date-calculator/age">Calculate an age</Link></div>
+        <section className="calculator-explainer no-print" aria-labelledby="today-explained">
+          <div><span className="page-kicker">Reading today’s date</span><h2 id="today-explained">What each number means</h2></div>
+          <div className="calculator-explainer-grid">
+            <article><h3>The timezone sets the date</h3><p>“Today” changes at midnight in the timezone selected above. Choosing a timezone makes the answer dependable near midnight, while traveling, or when coordinating across regions.</p></article>
+            <article><h3>ISO weeks start Monday</h3><p>ISO week {facts.isoWeek} follows the international Monday-to-Sunday system. Week 1 is the week containing January 4, so the first days of January can belong to the previous ISO week-year.</p></article>
+            <article><h3>Day {facts.dayOfYear} of {facts.leapYear ? 366 : 365}</h3><p>The day-of-year count starts with January 1 as day 1. “Days after today” excludes today itself, leaving {facts.daysRemainingAfterToday} complete calendar days in this year.</p></article>
+            <article><h3>Plan a future date</h3><p>The quick-date links jump to the calendar month containing each future date. For a custom interval, use <Link href={`/date-calculator/add-subtract?date=${facts.isoDate}`}>add or subtract dates</Link>.</p></article>
+            <article><h3>Measure an exact span</h3><p>Use the <Link href={`/date-calculator/days-between?start=${facts.isoDate}`}>days-between calculator</Link> to compare today with a deadline, trip, anniversary, or any other Gregorian calendar date.</p></article>
+            <article><h3>Count working days</h3><p>The <Link href={`/date-calculator/business-days?mode=shift&date=${facts.isoDate}`}>business-days calculator</Link> can skip weekends and optionally U.S. or Canadian national holidays.</p></article>
+          </div>
+        </section>
       </div>
     </main>
   );

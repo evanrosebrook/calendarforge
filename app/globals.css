@@ -300,6 +300,10 @@ button, select { cursor: pointer; }
 .builder-copy { max-width: 760px; margin: 70px auto 10px; padding-top: 34px; border-top: 1px solid var(--line); text-align: center; }
 .builder-copy h2 { margin: 10px 0; font-family: Georgia, serif; font-size: 36px; font-weight: 500; letter-spacing: -.04em; }
 .builder-copy p { color: var(--muted); line-height: 1.65; }
+.builder-copy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; text-align: left; }
+.builder-copy-grid article { border-top: 1px solid var(--line); padding-top: 18px; }
+.builder-copy-grid h3 { margin: 0 0 9px; font-size: 15px; }
+.builder-copy-grid article p { margin: 0; font-size: 13px; line-height: 1.6; }
 .fiscal-summary { display: grid; grid-template-columns: 2fr repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 12px; background: var(--paper); }
 .fiscal-summary > div { min-width: 0; padding: 14px 16px; border-left: 1px solid var(--line); }
 .fiscal-summary > div:first-child { border-left: 0; }
@@ -608,6 +612,7 @@ button, select { cursor: pointer; }
   .business-day-trail-heading > span { justify-content: start; margin-top: 8px; }
   .business-day-cells { grid-template-columns: repeat(5, minmax(40px, 1fr)); }
   .calculator-explainer-grid { grid-template-columns: 1fr; }
+  .builder-copy-grid { grid-template-columns: 1fr; }
   .metric-grid, .today-metrics { grid-template-columns: 1fr; }
   .metric, .metric:not(:nth-child(3n+1)), .today-metrics .metric:nth-child(3), .today-metrics .metric:nth-child(4) { padding: 14px 0; border-left: 0; }
   .metric span { min-height: 0; }

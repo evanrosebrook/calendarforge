@@ -91,9 +91,12 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
         <section className="calculator-explainer no-print">
           <div><span className="page-kicker">Counting rules</span><h2>How the date difference is calculated</h2></div>
           <div className="calculator-explainer-grid">
-            <article><h3>Calendar days</h3><p>Standard mode excludes the earlier date and includes the later date. Inclusive mode counts both endpoints.</p></article>
-            <article><h3>Weekdays</h3><p>Monday through Friday are counted separately. For holiday-aware deadlines, use the <Link href="/date-calculator/business-days">business days calculator</Link>.</p></article>
-            <article><h3>Related calculations</h3><p>Start with <Link href="/today">today’s date</Link>, calculate an <Link href="/date-calculator/age">exact age</Link>, or <Link href="/date-calculator/add-subtract">add time to a date</Link>.</p></article>
+            <article><h3>Standard counting</h3><p>The start date is excluded and the end date is included. March 1 to March 8 is therefore seven days—the amount of time that passes between the two dates.</p></article>
+            <article><h3>Inclusive counting</h3><p>Turn on inclusive mode when both boundary dates belong in the count. March 1 through March 8 becomes eight days, which is useful for attendance, bookings, and event schedules.</p></article>
+            <article><h3>Monday–Friday weekdays</h3><p>The weekday total counts Mondays through Fridays, but not public holidays. For holiday-aware deadlines, use the <Link href="/date-calculator/business-days">business-days calculator</Link>.</p></article>
+            <article><h3>Calendar span</h3><p>The years, months, and days result advances through the calendar instead of treating every month as a fixed length. That is why it complements rather than replaces the exact day total.</p></article>
+            <article><h3>Reversed dates</h3><p>If the end date comes first, the calculator identifies the reversed direction and keeps the totals positive. You can compare the same two dates without rearranging them.</p></article>
+            <article><h3>Choose the next calculation</h3><p>Start with <Link href="/today">today’s date</Link>, calculate an <Link href="/date-calculator/age">exact age</Link>, or <Link href="/date-calculator/add-subtract">find the date before or after a duration</Link>.</p></article>
           </div>
         </section>
       </div>

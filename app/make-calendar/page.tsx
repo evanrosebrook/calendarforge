@@ -5,7 +5,7 @@ import { createBuilderCalendars, parseBuilderState } from "@/lib/builder";
 import type { SearchParams } from "@/lib/settings";
 
 export const metadata: Metadata = {
-  title: "Custom Calendar Maker",
+  title: "Free Custom Calendar Maker — Print & Export",
   description: "Build a clean 1, 3, 6, or 12-month calendar with holidays, date notes, print layouts, and shareable settings. No account required.",
   alternates: { canonical: "/make-calendar" },
 };
@@ -49,8 +49,16 @@ export default async function MakeCalendarPage({ searchParams }: Props) {
         </div>
         <section className="builder-copy no-print" aria-labelledby="builder-about">
           <span className="page-kicker">Made to stay useful</span>
-          <h2 id="builder-about">One link, your complete calendar</h2>
-          <p>Calendar settings and date notes are encoded in the share link. Nothing requires an account, and note text is excluded from telemetry and advertising. PDF and spreadsheet downloads use the same date range you see above.</p>
+          <h2 id="builder-about">Build once, use it anywhere</h2>
+          <p>Choose the date range and layout that fit the job, then print, download, or share the exact same calendar. Every option is available without an account.</p>
+          <div className="builder-copy-grid">
+            <article><h3>Choose the right range</h3><p>Build one, three, six, or twelve consecutive months starting in any month. Switch between Sunday and Monday starts and add week numbers when the schedule depends on numbered weeks.</p></article>
+            <article><h3>Prepare a print-ready page</h3><p>Use Letter or A4 paper in portrait or landscape orientation. Weekend shading, a notes area, and three visual themes help the printed calendar match its purpose.</p></article>
+            <article><h3>Add holidays and date notes</h3><p>Include U.S. or Canadian national holidays and place short notes on specific dates. Notes appear on the matching calendar day and stay with supported downloads.</p></article>
+            <article><h3>Pick a useful file format</h3><p>PDF is ready to print, SVG is suited to design tools, ICS imports calendar events, and CSV or XLSX works well for lists and spreadsheets.</p></article>
+            <article><h3>Share the configured calendar</h3><p>The share link contains the selected range, layout, title, and date notes. Someone opening it sees the same configuration and can make their own copy.</p></article>
+            <article><h3>Keep control of your plans</h3><p>No account or saved profile is required. Calendar settings live in the URL, while note text is excluded from analytics and advertising telemetry.</p></article>
+          </div>
         </section>
       </div>
     </main>
