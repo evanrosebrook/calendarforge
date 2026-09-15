@@ -16,6 +16,9 @@ describe("business days calculator page", () => {
     expect(html).toContain("Independence Day (observed)");
     expect(html).toContain('href="/date/2026-07-03"');
     expect(html).toContain("Both endpoints are eligible to count.");
+    expect(html).toContain("Monday, March 2 through Friday, March 6 contains five business days");
+    expect(html).toContain("State, provincial, local, company, school, and market closures");
+    expect(html).toContain('href="/date-calculator/add-subtract"');
   });
 
   it("renders add mode across a holiday weekend", async () => {

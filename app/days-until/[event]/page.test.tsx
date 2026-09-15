@@ -20,6 +20,10 @@ describe("bounded countdown event pages", () => {
     expect(html).toContain("The target date is today");
     expect(html).toContain("Christmas is always December 25");
     expect(html).toContain("start=2026-12-25&amp;target=2026-12-25");
+    expect(html).toContain("From December 24 to December 25 is one calendar day");
+    expect(html).toContain("complete seven-day blocks and a remainder");
+    expect(html).toContain('href="/date-calculator/business-days?mode=between"');
+    expect(html).toContain('href="/calendar/2026/12"');
   });
 
   it("renders the computed Western Easter date and useful qualification", async () => {
@@ -30,6 +34,7 @@ describe("bounded countdown event pages", () => {
     expect(html).toContain("35 days to go");
     expect(html).toContain("Sunday, April 5, 2026");
     expect(html).toContain("Orthodox Easter and local observances may use a different date");
+    expect(html).toContain("always falls on a Sunday from March 22 through April 25");
   });
 
   it("publishes stable canonical metadata", async () => {

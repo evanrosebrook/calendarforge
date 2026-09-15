@@ -73,11 +73,20 @@ export default async function CountdownEventPage({ params }: Props) {
         </div>
 
         <section className="calculator-explainer no-print">
-          <div><span className="page-kicker">The details</span><h2>How this countdown works</h2></div>
+          <div><span className="page-kicker">The details</span><h2>How this {event.shortLabel} countdown works</h2></div>
           <div className="calculator-explainer-grid">
             <article><h3>Today is day zero</h3><p>The countdown excludes today and includes {event.shortLabel}. If today is the event date, the result is zero and the page says “Today.”</p></article>
             <article><h3>Calendar days</h3><p>UTC calendar dates avoid daylight-saving-time shifts. Leap days are included automatically whenever they fall in the interval.</p></article>
             <article><h3>Weekdays</h3><p>The weekday total counts Monday through Friday. It does not remove public holidays or regional non-working days.</p></article>
+            {event.id === "christmas" ? <>
+              <article><h3>The day-before example</h3><p>From December 24 to December 25 is one calendar day. On Christmas Day the countdown reaches zero, and on December 26 it begins counting toward the following year.</p></article>
+              <article><h3>Weeks plus remaining days</h3><p>The weeks display divides the calendar-day total into complete seven-day blocks and a remainder. It is another way to read the same interval, not a separate estimate.</p></article>
+              <article><h3>Plan a working-day deadline</h3><p>Shipping cutoffs and office schedules may exclude weekends and holidays. Use the <Link href="/date-calculator/business-days?mode=between">business-days calculator</Link> for a holiday-aware count, or open the <Link href={`/calendar/${target.date.getUTCFullYear()}/12`}>{target.date.getUTCFullYear()} December calendar</Link>.</p></article>
+            </> : <>
+              <article><h3>The Saturday-before example</h3><p>From the Saturday before Easter to Easter Sunday is one calendar day. On Easter itself the countdown reaches zero before rolling to the following year.</p></article>
+              <article><h3>The date changes yearly</h3><p>Western Easter is calculated for the Gregorian calendar and always falls on a Sunday from March 22 through April 25.</p></article>
+              <article><h3>Plan around closures</h3><p>This countdown does not infer school, business, or market closures. Use the <Link href="/date-calculator/business-days?mode=between">business-days calculator</Link> for a weekday or national-holiday-aware interval.</p></article>
+            </>}
           </div>
         </section>
 

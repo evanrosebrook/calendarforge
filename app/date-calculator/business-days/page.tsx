@@ -66,11 +66,14 @@ export default async function BusinessDaysPage({ searchParams }: Props) {
           : <ShiftCalculator params={params} region={region} today={today} />}
 
         <section className="calculator-explainer no-print">
-          <div><span className="page-kicker">Counting rules</span><h2>What counts as a business day?</h2></div>
+          <div><span className="page-kicker">Counting rules</span><h2>How business-day counting works</h2></div>
           <div className="calculator-explainer-grid">
             <article><h3>Weekdays</h3><p>Monday through Friday count unless the selected holiday calendar marks the date as a national holiday.</p></article>
             <article><h3>Observed holidays</h3><p>When a fixed holiday falls on a weekend, its cataloged weekday observance is excluded. The weekend date remains classified as a weekend.</p></article>
             <article><h3>Endpoints</h3><p>Between-date mode lets you include or exclude each endpoint. Add/subtract mode excludes the starting date unless you choose to count it.</p></article>
+            <article><h3>A five-day example</h3><p>Monday, March 2 through Friday, March 6 contains five business days when both endpoints count. Excluding Monday makes the same range four business days.</p></article>
+            <article><h3>U.S. and Canadian coverage</h3><p>The holiday options remove U.S. federal or Canadian national holidays. State, provincial, local, company, school, and market closures are not removed automatically.</p></article>
+            <article><h3>Calendar days versus workdays</h3><p>Use this calculator for payroll periods, shipping windows, and weekday deadlines. To move by every calendar day instead, use <Link href="/date-calculator/add-subtract">add or subtract dates</Link>.</p></article>
           </div>
         </section>
       </div>
