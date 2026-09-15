@@ -13,6 +13,10 @@ describe("age calculator page", () => {
     expect(html).toContain("May 20, 2027");
     expect(html).toContain('href="/date/1990-05-20"');
     expect(html).toContain("February 29 birthday uses February 28");
+    expect(html).toContain("Someone born May 20, 1990 is 35 on May 19, 2026");
+    expect(html).toContain("Legal and administrative rules can vary by jurisdiction");
+    expect(html).toContain('href="/date-calculator/days-between"');
+    expect(html).toContain('href="/date-calculator/add-subtract"');
   });
 
   it("rejects an as-of date before the birth date", async () => {

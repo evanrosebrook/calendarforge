@@ -35,11 +35,17 @@ describe("bounded countdown event pages", () => {
     expect(html).toContain("Sunday, April 5, 2026");
     expect(html).toContain("Orthodox Easter and local observances may use a different date");
     expect(html).toContain("always falls on a Sunday from March 22 through April 25");
+    expect(html).toContain("Good Friday is two calendar days before Easter Sunday");
+    expect(html).toContain("Whether either date is a public holiday depends on the country or region");
+    expect(html).toContain('href="/calendar/2026/4"');
+    expect(html).toContain("April 2026 calendar");
+    expect(html).toContain('href="/date-calculator/business-days?mode=between"');
   });
 
   it("publishes stable canonical metadata", async () => {
     await expect(generateMetadata({ params: Promise.resolve({ event: "easter" }) })).resolves.toMatchObject({
       title: "How Many Days Until Easter?",
+      description: expect.stringContaining("Western Easter Sunday"),
       alternates: { canonical: "/days-until/easter" },
     });
   });

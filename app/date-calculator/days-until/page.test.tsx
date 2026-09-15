@@ -14,6 +14,11 @@ describe("days until calculator page", () => {
     expect(html).toContain('name="start"');
     expect(html).toContain('name="target"');
     expect(html).toContain("Spring and summer shortcuts use meteorological seasons");
+    expect(html).toContain("because February 29 falls between them");
+    expect(html).toContain("A 17-day countdown is displayed as 2 weeks and 3 days");
+    expect(html).toContain('href="/date-calculator/business-days?mode=between"');
+    expect(html).toContain('href="/days-until/christmas"');
+    expect(html).toContain('href="/days-until/easter"');
   });
 
   it("labels past and matching target dates clearly", async () => {

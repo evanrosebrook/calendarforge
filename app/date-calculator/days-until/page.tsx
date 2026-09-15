@@ -66,14 +66,23 @@ export default async function DaysUntilPage({ searchParams }: Props) {
             : <>{submitted && <CalculatorResultTelemetry surface="days_until" />}<CountdownResult start={start} target={target} /></>}
         </div>
 
-        <section className="calculator-explainer no-print">
-          <div><span className="page-kicker">Counting rules</span><h2>What does the countdown include?</h2></div>
+        <section className="calculator-explainer no-print" aria-labelledby="countdown-rules-explained">
+          <div><span className="page-kicker">Counting rules</span><h2 id="countdown-rules-explained">What does the countdown include?</h2></div>
           <div className="calculator-explainer-grid">
             <article><h3>UTC calendar dates</h3><p>The default starting date is today in UTC. Once submitted, both dates stay in the URL so the result can be bookmarked and checked again exactly.</p></article>
             <article><h3>Standard countdown</h3><p>For a future target, today is day zero: the starting date is excluded and the target date is included. Matching dates return zero days.</p></article>
-            <article><h3>Past targets</h3><p>A target before the starting date is labeled “ago.” Counts remain positive and use the absolute distance between the two dates.</p></article>
+            <article><h3>A leap-day example</h3><p>From February 28 to March 1, 2024 is two calendar days because February 29 falls between them. The same dates are one day apart in a non-leap year.</p></article>
+            <article><h3>Weeks and remaining days</h3><p>The weeks result divides the calendar-day total into complete seven-day blocks plus a remainder. A 17-day countdown is displayed as 2 weeks and 3 days.</p></article>
+            <article><h3>Weekdays are not business days</h3><p>The Monday–Friday count does not remove public holidays. For a shipping, payroll, or office deadline, use the <Link href="/date-calculator/business-days?mode=between">business-days calculator</Link>.</p></article>
+            <article><h3>Past dates and exact times</h3><p>A past target is labeled “ago” and keeps a positive distance. This is a calendar-date count, not an hours-and-minutes timer, so local time zones and daylight-saving changes do not alter the result.</p></article>
           </div>
         </section>
+
+        <div className="inline-actions no-print">
+          <Link className="button button-ink" href="/days-until/christmas">Days until Christmas</Link>
+          <Link className="button button-ghost" href="/days-until/easter">Days until Easter</Link>
+          <Link className="button button-ghost" href="/date-calculator/days-between">Compare two dates</Link>
+        </div>
       </div>
     </main>
   );

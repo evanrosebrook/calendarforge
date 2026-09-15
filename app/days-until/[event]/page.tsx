@@ -29,7 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!event) return { title: "Countdown not found" };
   return {
     title: `How Many Days Until ${event.shortLabel}?`,
-    description: `See the live UTC countdown to the next ${event.label}, including calendar days, full weeks, and Monday–Friday weekdays.`,
+    description: event.id === "easter"
+      ? "See the live countdown to the next Western Easter Sunday, including its date, calendar days, full weeks, and Monday–Friday weekdays."
+      : `See the live UTC countdown to the next ${event.label}, including calendar days, full weeks, and Monday–Friday weekdays.`,
     alternates: { canonical: `/days-until/${event.id}` },
   };
 }
@@ -84,8 +86,11 @@ export default async function CountdownEventPage({ params }: Props) {
               <article><h3>Plan a working-day deadline</h3><p>Shipping cutoffs and office schedules may exclude weekends and holidays. Use the <Link href="/date-calculator/business-days?mode=between">business-days calculator</Link> for a holiday-aware count, or open the <Link href={`/calendar/${target.date.getUTCFullYear()}/12`}>{target.date.getUTCFullYear()} December calendar</Link>.</p></article>
             </> : <>
               <article><h3>The Saturday-before example</h3><p>From the Saturday before Easter to Easter Sunday is one calendar day. On Easter itself the countdown reaches zero before rolling to the following year.</p></article>
-              <article><h3>The date changes yearly</h3><p>Western Easter is calculated for the Gregorian calendar and always falls on a Sunday from March 22 through April 25.</p></article>
-              <article><h3>Plan around closures</h3><p>This countdown does not infer school, business, or market closures. Use the <Link href="/date-calculator/business-days?mode=between">business-days calculator</Link> for a weekday or national-holiday-aware interval.</p></article>
+              <article><h3>The date changes yearly</h3><p>Western Easter is calculated for the Gregorian calendar and always falls on a Sunday from March 22 through April 25. The page automatically advances to the following year after Easter Sunday passes in UTC.</p></article>
+              <article><h3>Western and Orthodox dates</h3><p>This result is for Western Easter. Orthodox Easter may occur on a different date because its calculation can use a different calendar and ecclesiastical rules.</p></article>
+              <article><h3>Related Easter dates</h3><p>Good Friday is two calendar days before Easter Sunday, and Easter Monday is one day after it. Whether either date is a public holiday depends on the country or region.</p></article>
+              <article><h3>Open the Easter month</h3><p>View the <Link href={`/calendar/${target.date.getUTCFullYear()}/${target.date.getUTCMonth() + 1}`}>{new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(target.date)} calendar</Link> to place Easter Sunday in its surrounding weeks.</p></article>
+              <article><h3>Plan around closures</h3><p>This countdown does not infer school, business, or market closures. Use the <Link href="/date-calculator/business-days?mode=between">business-days calculator</Link> for a weekday or supported national-holiday-aware interval.</p></article>
             </>}
           </div>
         </section>

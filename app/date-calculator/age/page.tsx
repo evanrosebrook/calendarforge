@@ -81,12 +81,15 @@ export default async function AgeCalculatorPage({ searchParams }: Props) {
           </section>
         </div>
 
-        <section className="calculator-explainer no-print">
-          <div><span className="page-kicker">How it works</span><h2>Calendar age, not an average</h2></div>
+        <section className="calculator-explainer no-print" aria-labelledby="age-calculation-explained">
+          <div><span className="page-kicker">How it works</span><h2 id="age-calculation-explained">Calendar age, not an average</h2></div>
           <div className="calculator-explainer-grid">
-            <article><h3>Exact calendar units</h3><p>Years and months follow real anniversary dates, so month lengths and leap years are handled without approximations.</p></article>
-            <article><h3>Any as-of date</h3><p>Use today or choose a past or future date to calculate age at a milestone, event, or deadline.</p></article>
-            <article><h3>Shareable inputs</h3><p>Both dates remain in the URL after calculation, making the result easy to bookmark or send.</p></article>
+            <article><h3>Birthday-first calculation</h3><p>Completed birthdays determine the year count before complete months and remaining days are measured. Someone born May 20, 1990 is 35 on May 19, 2026 and turns 36 on May 20.</p></article>
+            <article><h3>Exact calendar units</h3><p>Years and months follow real anniversary dates rather than average month or year lengths. The displayed years, months, and days therefore describe a calendar age, not a decimal-age estimate.</p></article>
+            <article><h3>Leap-day birthdays</h3><p>This calculator treats February 28 as the anniversary of a February 29 birthday in non-leap years. Legal and administrative rules can vary by jurisdiction, so verify the applicable rule for official deadlines.</p></article>
+            <article><h3>Total days lived</h3><p>The total-days metric is the elapsed calendar-day distance from the birth date to the as-of date: the birth date is day zero. Use <Link href="/date-calculator/days-between">days between dates</Link> to include both endpoints instead.</p></article>
+            <article><h3>Age on another date</h3><p>Choose a past or future as-of date to check age at a graduation, retirement date, eligibility deadline, or other milestone. The next-birthday countdown is calculated from that same as-of date.</p></article>
+            <article><h3>Plan from a birthday</h3><p>Both inputs stay in the URL for bookmarking or sharing. To move a birth or milestone date by a fixed duration, use the <Link href="/date-calculator/add-subtract">add-or-subtract date calculator</Link>.</p></article>
           </div>
         </section>
       </div>
