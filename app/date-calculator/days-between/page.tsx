@@ -9,7 +9,7 @@ import type { SearchParams } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Days Between Dates Calculator — Count Days & Weekdays",
-  description: "Count the exact number of days between two dates, including weekdays, full weeks, calendar years and months, and optional inclusive endpoints.",
+  description: "Count exact days between two dates, with weekday and weekend totals, full weeks, calendar years and months, and optional inclusive endpoints.",
   alternates: { canonical: "/date-calculator/days-between" },
 };
 
@@ -37,6 +37,14 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
   const today = new Date();
   const defaultStart = toIsoDate(new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())));
   const defaultEnd = toIsoDate(addUtcDays(parseIsoCalendarDate(defaultStart)!, 30));
+  const quickRanges = [7, 30, 90].map((days) => ({
+    label: `Next ${days} days`,
+    href: `/date-calculator/days-between?start=${defaultStart}&end=${toIsoDate(addUtcDays(parseIsoCalendarDate(defaultStart)!, days))}`,
+  }));
+  quickRanges.push({
+    label: "Through year end",
+    href: `/date-calculator/days-between?start=${defaultStart}&end=${today.getUTCFullYear()}-12-31`,
+  });
   const startValue = valueOf(params.start) ?? defaultStart;
   const endValue = valueOf(params.end) ?? defaultEnd;
   const inclusive = valueOf(params.inclusive) === "1";
@@ -61,6 +69,10 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
           </header>
           <PageActions />
         </div>
+        <nav className="date-range-shortcuts no-print" aria-label="Common date ranges">
+          <span>Quick ranges from today</span>
+          <div>{quickRanges.map(({ label, href }) => <Link key={label} className="button button-ghost" href={href}>{label}</Link>)}</div>
+        </nav>
         <div className="calculator-workspace">
           <form className="calculator-form" action="/date-calculator/days-between" method="get">
             <div className="calculator-field"><label htmlFor="start-date">Start date</label><input id="start-date" name="start" type="date" min="0001-01-01" max="9999-12-31" defaultValue={startValue} required /></div>
@@ -75,8 +87,9 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
               <span className="result-kicker">{result.direction < 0 ? "The end date comes before the start date" : inclusive ? "Counting both endpoints" : "Excluding the start date"}</span>
               <h2>{result.totalDays.toLocaleString("en-US")} {result.totalDays === 1 ? "day" : "days"}</h2>
               <p className="result-summary">From <strong>{formatCalendarDate(start!)}</strong> to <strong>{formatCalendarDate(end!)}</strong>.</p>
-              <div className="metric-grid">
+              <div className="metric-grid days-between-metric-grid">
                 <Metric label="Monday–Friday weekdays" value={result.weekdays.toLocaleString("en-US")} />
+                <Metric label="Weekend days" value={result.weekendDays.toLocaleString("en-US")} />
                 <Metric label="Weeks and days" value={`${result.weeks.toLocaleString("en-US")}w ${result.remainingDays}d`} />
                 <Metric label="Calendar span" value={durationLabel(result.duration)} />
               </div>
@@ -95,6 +108,7 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
             <article><h3>Inclusive counting</h3><p>Turn on inclusive mode when both boundary dates belong in the count. March 1 through March 8 becomes eight days, which is useful for attendance, bookings, and event schedules.</p></article>
             <article><h3>Monday–Friday weekdays</h3><p>The weekday total counts Mondays through Fridays, but not public holidays. For holiday-aware deadlines, use the <Link href="/date-calculator/business-days">business-days calculator</Link>.</p></article>
             <article><h3>Calendar span</h3><p>The years, months, and days result advances through the calendar instead of treating every month as a fixed length. That is why it complements rather than replaces the exact day total.</p></article>
+            <article><h3>Whole calendar dates</h3><p>Calculations use whole Gregorian dates in UTC. Daylight-saving changes therefore cannot turn a date-to-date count into a 23- or 25-hour day.</p></article>
             <article><h3>Reversed dates</h3><p>If the end date comes first, the calculator identifies the reversed direction and keeps the totals positive. You can compare the same two dates without rearranging them.</p></article>
             <article><h3>Choose the next calculation</h3><p>Start with <Link href="/today">today’s date</Link>, calculate an <Link href="/date-calculator/age">exact age</Link>, or <Link href="/date-calculator/add-subtract">find the date before or after a duration</Link>.</p></article>
           </div>

@@ -36,6 +36,7 @@ export type DateDifference = {
   direction: -1 | 0 | 1;
   totalDays: number;
   weekdays: number;
+  weekendDays: number;
   weeks: number;
   remainingDays: number;
   duration: CalendarDuration;
@@ -107,10 +108,12 @@ export function calculateDateDifference(start: Date, end: Date, inclusive = fals
   const later = startTime <= endTime ? end : start;
   const countedEnd = inclusive ? addUtcDays(later, 1) : later;
   const totalDays = Math.round((countedEnd.getTime() - earlier.getTime()) / DAY_MS);
+  const weekdays = countWeekdays(earlier, later, inclusive);
   return {
     direction,
     totalDays,
-    weekdays: countWeekdays(earlier, later, inclusive),
+    weekdays,
+    weekendDays: totalDays - weekdays,
     weeks: Math.floor(totalDays / 7),
     remainingDays: totalDays % 7,
     duration: decomposeCalendarDuration(earlier, countedEnd),

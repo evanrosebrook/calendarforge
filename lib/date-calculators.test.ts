@@ -37,16 +37,16 @@ describe("date calculators", () => {
   it("calculates leap-day spans, weekday counts, and inclusive endpoints", () => {
     const start = utcDate(2024, 2, 28);
     const end = utcDate(2024, 3, 1);
-    expect(calculateDateDifference(start, end)).toMatchObject({ totalDays: 2, weekdays: 2, weeks: 0, remainingDays: 2, duration: { years: 0, months: 0, days: 2 } });
-    expect(calculateDateDifference(start, end, true)).toMatchObject({ totalDays: 3, weekdays: 3, duration: { years: 0, months: 0, days: 3 } });
+    expect(calculateDateDifference(start, end)).toMatchObject({ totalDays: 2, weekdays: 2, weekendDays: 0, weeks: 0, remainingDays: 2, duration: { years: 0, months: 0, days: 2 } });
+    expect(calculateDateDifference(start, end, true)).toMatchObject({ totalDays: 3, weekdays: 3, weekendDays: 0, duration: { years: 0, months: 0, days: 3 } });
   });
 
   it("handles reversed and identical ranges deterministically", () => {
     const first = utcDate(2026, 8, 1);
     const second = utcDate(2026, 8, 12);
-    expect(calculateDateDifference(second, first)).toMatchObject({ direction: -1, totalDays: 11 });
-    expect(calculateDateDifference(first, first)).toMatchObject({ direction: 0, totalDays: 0, weekdays: 0 });
-    expect(calculateDateDifference(first, first, true)).toMatchObject({ totalDays: 1, weekdays: 0 });
+    expect(calculateDateDifference(second, first)).toMatchObject({ direction: -1, totalDays: 11, weekdays: 8, weekendDays: 3 });
+    expect(calculateDateDifference(first, first)).toMatchObject({ direction: 0, totalDays: 0, weekdays: 0, weekendDays: 0 });
+    expect(calculateDateDifference(first, first, true)).toMatchObject({ totalDays: 1, weekdays: 0, weekendDays: 1 });
   });
 
   it("calculates age, lifetime days, and the next birthday", () => {

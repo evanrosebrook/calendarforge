@@ -10,6 +10,12 @@ describe("days-between calculator page", () => {
     }) }));
 
     expect(html).toContain("9 days");
+    expect(html).toContain("Weekend days");
+    expect(html).toContain(">2</strong>");
+    expect(html).toContain("Next 7 days");
+    expect(html).toContain("Next 30 days");
+    expect(html).toContain("Next 90 days");
+    expect(html).toContain("Through year end");
     expect(html).toContain('href="/date-calculator/business-days"');
     expect(html).toContain('href="/today"');
     expect(html).toContain('href="/date-calculator/age"');
@@ -17,11 +23,13 @@ describe("days-between calculator page", () => {
     expect(html).toContain("March 1 to March 8 is therefore seven days");
     expect(html).toContain("March 1 through March 8 becomes eight days");
     expect(html).toContain("The years, months, and days result advances through the calendar");
+    expect(html).toContain("Daylight-saving changes therefore cannot turn a date-to-date count into a 23- or 25-hour day");
   });
 
   it("publishes an intent-focused title and canonical", () => {
     expect(metadata).toMatchObject({
       title: "Days Between Dates Calculator — Count Days & Weekdays",
+      description: "Count exact days between two dates, with weekday and weekend totals, full weeks, calendar years and months, and optional inclusive endpoints.",
       alternates: { canonical: "/date-calculator/days-between" },
     });
   });

@@ -389,6 +389,9 @@ button, select { cursor: pointer; }
 .countdown-shortcuts > span { display: block; margin-bottom: 9px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
 .countdown-shortcuts > div { display: flex; flex-wrap: wrap; gap: 7px; }
 .countdown-shortcuts small { display: block; margin-top: 9px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.date-range-shortcuts { margin: 0 0 20px; border-block: 1px solid var(--line); padding: 14px 0; }
+.date-range-shortcuts > span { display: block; margin-bottom: 9px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+.date-range-shortcuts > div { display: flex; flex-wrap: wrap; gap: 7px; }
 .countdown-event-copy { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; background: #eceae2; }
 .countdown-event-copy h2 { margin: 12px 0; font-family: Georgia, serif; font-size: 29px; line-height: 1.05; font-weight: 500; letter-spacing: -.035em; }
 .countdown-event-copy p { color: var(--muted); font-size: 13px; line-height: 1.6; }
@@ -399,6 +402,8 @@ button, select { cursor: pointer; }
 .calculator-results > h2, .date-format-panel h2, .quick-date-panel h2 { margin: 12px 0; font-family: Georgia, serif; font-size: clamp(32px, 4vw, 48px); line-height: 1; letter-spacing: -.04em; font-weight: 500; }
 .result-summary { margin: 0 0 28px; color: var(--muted); line-height: 1.55; }
 .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); }
+.days-between-metric-grid { grid-template-columns: repeat(4, 1fr); }
+.days-between-metric-grid .metric:not(:first-child) { padding-left: 14px; border-left: 1px solid var(--line); }
 .metric { min-width: 0; padding: 17px 15px 17px 0; border-bottom: 1px solid var(--line); }
 .metric:not(:nth-child(3n+1)) { padding-left: 15px; border-left: 1px solid var(--line); }
 .metric span { display: block; min-height: 28px; color: var(--muted); font-size: 10px; line-height: 1.35; text-transform: uppercase; letter-spacing: .08em; font-weight: 750; }
@@ -608,6 +613,8 @@ button, select { cursor: pointer; }
   .calculator-mode-nav a { flex: 1; text-align: center; }
   .business-metric-grid { grid-template-columns: 1fr; }
   .business-metric-grid .metric:not(:nth-child(3n+1)) { padding: 14px 0; border-left: 0; }
+  .days-between-metric-grid { grid-template-columns: 1fr; }
+  .days-between-metric-grid .metric:not(:first-child) { padding: 14px 0; border-left: 0; }
   .business-day-trail-heading { display: block; }
   .business-day-trail-heading > span { justify-content: start; margin-top: 8px; }
   .business-day-cells { grid-template-columns: repeat(5, minmax(40px, 1fr)); }
