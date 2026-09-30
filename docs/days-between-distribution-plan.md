@@ -53,11 +53,11 @@ The first five targets have a relevant editorial page and a public contact route
 
 | Priority | Publisher | Relevant page | Contact route | Specific fit | Status |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Exceljet | [Get days between dates](https://exceljet.net/formulas/get-days-between-dates) | [Contact form](https://exceljet.net/contact) | Lets readers check subtraction or `DAYS` results and see how CalendarForge handles reversed input, endpoints, weekdays, and weekends. | Ready; approval and sender identity required |
-| 2 | SpreadsheetPoint | [Calculate days between two dates in Google Sheets](https://spreadsheetpoint.com/calculate-days-between-two-dates-google-sheets/) | [Contact form](https://spreadsheetpoint.com/contact/) | A no-sign-in browser check beside the guide's four Sheets methods, especially for inclusive counting and weekend splits. | Ready; approval and sender identity required |
-| 3 | ExcelDemy | [Calculate days between dates in Excel](https://www.exceldemy.com/learn-excel/date-time/calculate-date/days-between-dates/) | [Contact page](https://www.exceldemy.com/contact/) | Quick verification for the guide's project and date-range examples before readers adapt the workbook formulas. | Ready; approval and sender identity required |
-| 4 | My Online Training Hub | [Excel DAYS function](https://www.myonlinetraininghub.com/excel-functions/excel-days-function) | [Contact page](https://www.myonlinetraininghub.com/contact-us) | A live illustration of the guide's point that standard counting excludes the first date and inclusive counting adds one. | Ready; approval and sender identity required |
-| 5 | ChalkBee | [Calendar teaching guide](https://www.chalkbee.com/learn/calendar) | [Contact form](https://www.chalkbee.com/contact) | Optional teacher answer-check after pupils learn to count jumps rather than both endpoint labels. | Ready; approval and sender identity required |
+| 1 | Exceljet | [Get days between dates](https://exceljet.net/formulas/get-days-between-dates) | [Contact form](https://exceljet.net/contact) | Lets readers check subtraction or `DAYS` results and see how CalendarForge handles reversed input, endpoints, weekdays, and weekends. | Sent September 29; form confirmed delivery |
+| 2 | SpreadsheetPoint | [Calculate days between two dates in Google Sheets](https://spreadsheetpoint.com/calculate-days-between-two-dates-google-sheets/) | [Contact form](https://spreadsheetpoint.com/contact/) | A no-sign-in browser check beside the guide's four Sheets methods, especially for inclusive counting and weekend splits. | Sent September 29; form confirmed delivery |
+| 3 | ExcelDemy | [Calculate days between dates in Excel](https://www.exceldemy.com/learn-excel/date-time/calculate-date/days-between-dates/) | [Contact page](https://www.exceldemy.com/contact/) | Quick verification for the guide's project and date-range examples before readers adapt the workbook formulas. | Blocked September 29; email-only contact and no CalendarForge send-from alias |
+| 4 | My Online Training Hub | [Excel DAYS function](https://www.myonlinetraininghub.com/excel-functions/excel-days-function) | [Contact page](https://www.myonlinetraininghub.com/contact-us) | A live illustration of the guide's point that standard counting excludes the first date and inclusive counting adds one. | Blocked September 29; email-only contact and no CalendarForge send-from alias |
+| 5 | ChalkBee | [Calendar teaching guide](https://www.chalkbee.com/learn/calendar) | [Contact form](https://www.chalkbee.com/contact) | Optional teacher answer-check after pupils learn to count jumps rather than both endpoint labels. | Sent September 29; form confirmed delivery |
 | 6 | K5 Learning | [Calendar and elapsed-time worksheets](https://www.k5learning.com/free-math-worksheets/third-grade-3/telling-time/calendar-elapsed-time) | [Feedback form](https://www.k5learning.com/contact) | Adult or teacher checking aid for exercises that cross weekends or month boundaries. | Second wave |
 | 7 | SkillrHub | [Dates and days between events](https://skillrhub.com/year2/maths/ac9m2m03-the-date-and-determine-the-number-of-days-between-events/) | [Contact page](https://skillrhub.com/contact.html) | Optional verification after the guide's worked examples on jumps, endpoints, and month boundaries. | Second wave |
 | 8 | Daily Maths Review | [Calendar practice classroom routine](https://dailymathsreview.au/teacher-blog/calendar-practice-app-classroom-routine) | `support@dailymathsreview.au` | Teacher verification for the distinction between elapsed distance and dates touched. | Lower priority: publisher has its own calendar app |
@@ -114,6 +114,16 @@ Use the clean canonical URL in editorial outreach. Personalize the greeting from
 3. that a test message to that address is received.
 
 After those checks, present the exact first-wave destinations and final messages for approval immediately before submission. Log each approved submission date and response beneath the queue; never infer approval for the remaining targets from approval of one message.
+
+## Outreach log
+
+| Date | Publisher | Delivery | Result |
+| --- | --- | --- | --- |
+| September 29, 2026 | Exceljet | Web contact form | Confirmed: “Thank you! Your message has been sent.” |
+| September 29, 2026 | SpreadsheetPoint | Web contact form | Confirmed: “Your submission was successful.” |
+| September 29, 2026 | ChalkBee | Web contact form | Confirmed: “Thanks, your message is on its way.” |
+| September 29, 2026 | ExcelDemy | Email only (`admin@exceldemy.com`) | Not sent: Gmail has no `hello@calendarforge.net` send-from identity configured. |
+| September 29, 2026 | My Online Training Hub | Email only (`website@myonlinetraininghub.com`) | Not sent: Gmail has no `hello@calendarforge.net` send-from identity configured. |
 
 ## Decision gate
 
