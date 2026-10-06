@@ -27,6 +27,19 @@ describe("custom calendar maker page", () => {
     expect(metadata).toMatchObject({
       title: "Free Custom Calendar Maker — Print & Export",
       alternates: { canonical: "/make-calendar" },
+      openGraph: {
+        type: "website",
+        url: "/make-calendar",
+        images: [{
+          url: "/make-calendar/opengraph-image",
+          width: 1200,
+          height: 630,
+        }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        images: [{ url: "/make-calendar/opengraph-image" }],
+      },
     });
   });
 });

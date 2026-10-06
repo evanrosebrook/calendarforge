@@ -4,10 +4,33 @@ import { CalendarGrid } from "@/components/calendar-grid";
 import { createBuilderCalendars, parseBuilderState } from "@/lib/builder";
 import type { SearchParams } from "@/lib/settings";
 
+const socialTitle = "Free Custom Calendar Maker — Print & Export";
+const socialDescription = "Build a clean 1, 3, 6, or 12-month calendar with holidays, date notes, print layouts, and shareable settings. No account required.";
+const socialImage = {
+  url: "/make-calendar/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: "Calendar Forge custom calendar maker with a printable monthly calendar preview",
+};
+
 export const metadata: Metadata = {
-  title: "Free Custom Calendar Maker — Print & Export",
-  description: "Build a clean 1, 3, 6, or 12-month calendar with holidays, date notes, print layouts, and shareable settings. No account required.",
+  title: socialTitle,
+  description: socialDescription,
   alternates: { canonical: "/make-calendar" },
+  openGraph: {
+    type: "website",
+    url: "/make-calendar",
+    siteName: "Calendar Forge",
+    title: socialTitle,
+    description: socialDescription,
+    images: [socialImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: socialTitle,
+    description: socialDescription,
+    images: [socialImage],
+  },
 };
 
 type Props = { searchParams: Promise<SearchParams> };
