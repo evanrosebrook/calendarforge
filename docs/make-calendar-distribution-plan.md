@@ -42,6 +42,18 @@ Do not describe CalendarForge as a collaborative scheduling app or photo-calenda
 | Ultimate Free Tools | [Submit a Tool](https://ultimatefreetools.com/submit-a-tool/) | Directory focused on free, no-sign-up browser tools. | Hold: submission requires a publisher account. |
 | Ignlab Launch | Submission form reviewed October 5 | Nominally a free no-account product directory. | Excluded: the form repeatedly redirected to an unrelated deceptive download page before submission. |
 
+## Second wave and checkpoint — October 13, 2026
+
+| Publisher | Relevant page or listing | Specific fit | Status |
+| --- | --- | --- | --- |
+| The Tool Directory | [CalendarForge listing](https://thetooldirectory.com/tools/calendarforge/) | Free productivity profile linking to `/make-calendar`. | Published October 6; live at the October 13 check. No attributable GA4 referral session yet. |
+| Weird Web Tools | [Submit a tool](https://www.weirdwebtools.com/submit) | Human-tested, single-purpose, free browser utilities. | Submitted October 13 in Productivity with the canonical builder URL; “Submitted — thank you!” review-queue confirmation. |
+| nologin.tools | [Submit a tool](https://nologin.tools/submit) | Curated tools whose core function works without an account. | Submitted October 13 with the canonical builder URL; “Submission Received!” confirmation and [pending tool page](https://nologin.tools/tool/calendarforge-net-make-calendar). The pending page is not evidence of a public listing. |
+
+The October 5–11 Search Console window fell to ten `/make-calendar` impressions, zero clicks, 0% CTR, and average position 26.5, compared with 124 page impressions in September 28–October 4. URL Inspection still says the page is indexed, and production returned HTTP 200. In GA4 for October 5–12, `/make-calendar` had four landing sessions and five key events (three Bing organic sessions/one key event; one direct session/four key events). Sitewide there were five calendar exports, one calendar print, and no share event. The only referral source was doubao.com, with three unengaged sessions and no key events; no submitted placement has produced attributable traffic.
+
+Recheck on October 19 for public approvals, attributable referrals and engagement, builder actions, and Search Console exposure. The one live listing meets the plan's minimum publication signal, but without qualified visits this is not evidence that the channel can grow traffic. Do not submit to more directories before the follow-up; if these placements remain quiet, pursue a targeted editorial/audience angle rather than another directory batch.
+
 ## Editorial message sent
 
 > Hi Emma — your guides to free calendar schedule makers and weekly calendar makers compare scheduling apps, templates, and printable options, but they do not include a no-account tool that builds one to twelve consecutive monthly calendars with holidays and date notes and exports PDF, SVG, ICS, CSV, and XLSX. CalendarForge is free at https://calendarforge.net/make-calendar. If it would add a useful plain-printable option when you next update either guide, feel free to test it; no obligation.
