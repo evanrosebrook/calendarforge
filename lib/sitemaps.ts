@@ -11,6 +11,7 @@ const STATIC_PATHS = [
   "/make-calendar",
   "/fiscal-calendar",
   "/pay-period-calendar",
+  "/pay-period-calendar/2027",
   "/shift-calendar",
   "/today",
   "/date-calculator",

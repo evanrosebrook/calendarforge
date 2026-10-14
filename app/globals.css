@@ -241,6 +241,22 @@ button, select { cursor: pointer; }
 .country-card > span { color: var(--accent-dark); font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .country-card h2 { margin: 10px 0; font-family: Georgia, serif; font-size: 32px; font-weight: 500; letter-spacing: -.035em; }
 .country-card p { color: var(--muted); line-height: 1.5; }
+.pay-period-guide-section { margin-top: 48px; }
+.pay-period-guide-section > h2 { margin: 0 0 8px; font-family: Georgia, serif; font-size: 34px; font-weight: 500; letter-spacing: -.04em; }
+.pay-period-guide-section > p { color: var(--muted); line-height: 1.6; }
+.pay-period-guide-faq { max-width: 760px; }
+.pay-period-guide-faq h3 { margin: 23px 0 4px; font-size: 17px; }
+.pay-period-guide-faq h3 + p { margin: 0; }
+.pay-period-guide-section .country-card-grid { margin-top: 22px; }
+.pay-period-example { display: flex; flex-direction: column; align-items: flex-start; }
+.pay-period-example h3 { margin: 10px 0; font-family: Georgia, serif; font-size: 32px; font-weight: 500; letter-spacing: -.035em; }
+.pay-period-example ul { width: 100%; margin: 8px 0 24px; padding: 0; list-style: none; }
+.pay-period-example li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 16px; border-top: 1px solid var(--line); padding: 10px 0; font-size: 12px; }
+.pay-period-example li strong { font-weight: 750; }
+.pay-period-example li span { color: var(--muted); }
+.pay-period-example .button { margin-top: auto; }
+.pay-period-guide-page > .shell > .source-copy { margin-top: 24px; }
+.pay-period-guide-page .source-copy a { color: var(--accent-dark); }
 .text-link { color: var(--accent-dark); font-size: 14px; font-weight: 800; }
 .content-note { margin-top: 28px; border-left: 3px solid var(--accent); padding: 17px 20px; background: var(--soft); }
 .content-note strong { font-size: 13px; }

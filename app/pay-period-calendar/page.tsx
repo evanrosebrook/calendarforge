@@ -22,7 +22,7 @@ export default async function PayPeriodCalendarPage({ searchParams }: Props) {
   const formatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
   const formatDate = (date: string) => formatter.format(new Date(`${date}T00:00:00Z`));
   const threePaycheckLabel = schedule.threePaycheckMonths.length
-    ? schedule.threePaycheckMonths.map((month) => month.label).join(" and ")
+    ? new Intl.ListFormat("en-US", { style: "long", type: "conjunction" }).format(schedule.threePaycheckMonths.map((month) => month.label))
     : "None in this cycle";
 
   return (
@@ -111,6 +111,7 @@ export default async function PayPeriodCalendarPage({ searchParams }: Props) {
             <article><h3>Use the schedule elsewhere</h3><p>Print or save a PDF, add paydays to Apple, Google, or Outlook Calendar with ICS, or use CSV for a spreadsheet and budget plan.</p></article>
             <article><h3>Keep dates private</h3><p>No account is required. The shared URL contains only calendar settings—not earnings, employer details, or other payroll information.</p></article>
             <article><h3>Check business days</h3><p>Need to count working days around a payroll cutoff? Use the <Link href="/date-calculator/business-days">business-day calculator</Link> with U.S. federal holidays.</p></article>
+            <article><h3>Plan 2027 paydays</h3><p>See how two different Friday cycles change the <Link href="/pay-period-calendar/2027">three-paycheck months in 2027</Link>, then use your own known payday here.</p></article>
             <article><h3>Build another calendar</h3><p>For holidays, notes, and custom printable ranges, open the <Link href="/make-calendar">custom calendar maker</Link>.</p></article>
           </div>
         </section>

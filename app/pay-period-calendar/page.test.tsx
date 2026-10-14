@@ -30,4 +30,15 @@ describe("pay-period calendar page", () => {
     expect(html).toContain("Download ICS");
     expect(html).toContain("Download CSV");
   });
+
+  it("formats all three three-paycheck months in a 27-payday cycle", async () => {
+    const html = renderToStaticMarkup(await PayPeriodCalendarPage({ searchParams: Promise.resolve({
+      year: "2027",
+      payday: "2027-01-15",
+      lag: "6",
+      adjust: "none",
+    }) }));
+    expect(html).toContain("27 paydays");
+    expect(html).toContain("January, July, and December");
+  });
 });
