@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, StandardFonts } from "pdf-lib";
 import { createBuilderCalendars, parseBuilderState } from "./builder";
 import { calendarsToSvg } from "./builder-svg";
-import { calendarsToCsv, calendarsToIcs, calendarsToPdf } from "./exports";
+import { calendarsToCsv, calendarsToIcs, calendarsToPdf, wrapPdfCellLabel } from "./exports";
 
 const state = parseBuilderState({
   year: "2026", month: "12", months: "3", start: "monday", weekends: "0", theme: "blueprint",
@@ -47,5 +47,39 @@ describe("custom calendar exports", () => {
     });
     const pdf = await PDFDocument.load(pdfBytes);
     expect(pdf.getPageCount()).toBe(4); // one page per month plus the date-notes appendix
+  });
+
+  it("fits complete long holiday names in two readable PDF cell lines", async () => {
+    const pdf = await PDFDocument.create();
+    const font = await pdf.embedFont(StandardFonts.HelveticaBold);
+    const yearState = parseBuilderState({ year: "2028", month: "1", months: "12" });
+    const labels = [
+      "Birthday of Martin Luther King, Jr.",
+      "New Year’s Day (observed)",
+      "Juneteenth National Independence Day",
+      ...createBuilderCalendars(yearState).flatMap((calendar) => calendar.weeks.flatMap((week) => week.days.flatMap((day) => day.holidays.map((holiday) => holiday.name)))),
+    ];
+    for (const width of [65, 91]) {
+      for (const label of labels) {
+        const lines = wrapPdfCellLabel(label, font, 6.25, width);
+        expect(lines.length).toBeGreaterThan(0);
+        expect(lines.length).toBeLessThanOrEqual(2);
+        expect(lines.join(" ")).toBe(label.replace("’", "'"));
+        expect(lines.every((line) => font.widthOfTextAtSize(line, 6.25) <= width)).toBe(true);
+      }
+    }
+    expect(wrapPdfCellLabel(labels[0], font, 6.25, 65)).toHaveLength(2);
+  });
+
+  it("allows three lines for longer single-holiday labels", async () => {
+    const pdf = await PDFDocument.create();
+    const font = await pdf.embedFont(StandardFonts.HelveticaBold);
+    const state = parseBuilderState({ year: "2028", month: "1", months: "12", country: "ca" });
+    const labels = createBuilderCalendars(state).flatMap((calendar) => calendar.weeks.flatMap((week) => week.days.flatMap((day) => day.holidays.map((holiday) => holiday.name))));
+    for (const label of labels) {
+      const lines = wrapPdfCellLabel(label, font, 6.25, 65, 3);
+      expect(lines.join(" ")).toBe(label.replace("’", "'"));
+      expect(lines.every((line) => font.widthOfTextAtSize(line, 6.25) <= 65)).toBe(true);
+    }
   });
 });

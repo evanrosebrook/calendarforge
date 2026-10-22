@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb, type PDFFont } from "pdf-lib";
 import ExcelJS from "exceljs";
 import type { CalendarMonth } from "@/lib/calendar";
 
@@ -38,7 +38,34 @@ function escapeIcs(value: string): string {
 }
 
 function pdfSafe(value: string): string {
-  return value.normalize("NFKD").replaceAll(/[\u0300-\u036f]/g, "").replaceAll(/[^\x20-\x7E\xA0-\xFF]/g, "?");
+  return value.normalize("NFKD")
+    .replaceAll(/[\u0300-\u036f]/g, "")
+    .replaceAll(/[\u2018\u2019]/g, "'")
+    .replaceAll(/[\u201C\u201D]/g, '"')
+    .replaceAll(/[\u2013\u2014]/g, "-")
+    .replaceAll(/[^\x20-\x7E\xA0-\xFF]/g, "?");
+}
+
+export function wrapPdfCellLabel(value: string, font: PDFFont, size: number, maxWidth: number, maxLines = 2): string[] {
+  const words = pdfSafe(value).replaceAll(/\s+/g, " ").trim().split(" ").filter(Boolean);
+  const lines: string[] = [];
+  let line = "";
+  for (const word of words) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (!line || font.widthOfTextAtSize(candidate, size) <= maxWidth) line = candidate;
+    else {
+      lines.push(line);
+      line = word;
+    }
+  }
+  if (line) lines.push(line);
+  if (lines.length > maxLines) lines.splice(maxLines - 1, lines.length, lines.slice(maxLines - 1).join(" "));
+  return lines.map((text) => {
+    if (font.widthOfTextAtSize(text, size) <= maxWidth) return text;
+    let clipped = text;
+    while (clipped && font.widthOfTextAtSize(`${clipped}...`, size) > maxWidth) clipped = clipped.slice(0, -1);
+    return `${clipped.trimEnd()}...`;
+  });
 }
 
 function wrapPdfText(value: string, maxCharacters: number): string[] {
@@ -160,10 +187,14 @@ export async function calendarsToPdf(calendars: CalendarMonth[], options: Export
         if (column > 0 || weekColumn) page.drawLine({ start: { x, y: yTop }, end: { x, y: yBottom }, thickness: .4, color: line });
         const dayColor = day.inMonth ? ink : rgb(.68, .68, .65);
         page.drawText(String(day.day), { x: x + 6, y: yTop - 16, size: 9, font: bold, color: dayColor });
-        day.holidays.slice(0, 2).forEach((holiday, holidayIndex) => {
-          const maxChars = Math.max(8, Math.floor(dayWidth / 4.5));
-          const label = holiday.name.length > maxChars ? `${holiday.name.slice(0, maxChars - 1)}…` : holiday.name;
-          page.drawText(pdfSafe(label), { x: x + 6, y: yTop - 29 - holidayIndex * 10, size: 5.5, font: bold, color: accent });
+        let holidayLine = 0;
+        day.holidays.slice(0, 2).forEach((holiday) => {
+          const lines = wrapPdfCellLabel(holiday.name, bold, 6.25, dayWidth - 12, day.holidays.length > 1 ? 2 : 3);
+          lines.forEach((label) => {
+            page.drawText(label, { x: x + 6, y: yTop - 29 - holidayLine * 8.5, size: 6.25, font: bold, color: accent });
+            holidayLine += 1;
+          });
+          holidayLine += 0.25;
         });
         const note = day.inMonth ? options.dayNotes?.[day.date] : undefined;
         if (note) {
