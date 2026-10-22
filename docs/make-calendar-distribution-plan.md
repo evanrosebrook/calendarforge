@@ -78,3 +78,12 @@ Continue only if the first wave produces at least one of these signals within 14
 - a sustained improvement in `/make-calendar` impressions or average position.
 
 If none occurs, stop directory submissions and choose the next distribution angle from live Search Console queries instead of adding generated landing pages.
+
+## Fourteen-day outcome — October 22, 2026 (October 19 checkpoint)
+
+- Search Console, October 12–18: `/make-calendar` had one impression, zero clicks, 0% CTR, average position 3. October 5–11 had ten impressions, zero clicks, 0% CTR, average position 26.5. The one-impression position is not a ranking trend; sitewide impressions were only four in the later week.
+- GA4, October 12–18: 141 sessions, 11 engaged (7.8%), 530 events, two key events. The prior October 5–12 period had 91 sessions, 17 engaged (18.68%), 396 events, six key events. Direct drove 130 of the later sessions but only four engaged; the two referrals were both unengaged `doubao.com` sessions. No submitted placement produced an attributable visit. The date windows differ by one day.
+- The Tool Directory listing is still live. nologin.tools remains explicitly pending and `noindex`. No CalendarForge mention was found in the two relevant Planners Weekly guides or in public search for The Free Tools Directory and Weird Web Tools; their review status is unknown, not necessarily rejected.
+- `/make-calendar` remains indexed and self-canonical after a successful October 12 Googlebot smartphone crawl. Production returned HTTP 200 and its container was healthy on October 22. GA4's Landing page and Events reports failed to render, so later-week builder landing sessions, source engagement, and print/share/export counts could not be verified. The two sitewide key events must not be attributed to the builder without that report.
+
+The experiment met its minimum publication signal through one approved directory listing, but produced no attributable or engaged referral visits and search exposure shrank. End this directory wave; do not send another batch or optimize CTR from one impression. The next distinct angle is a targeted editorial mention for 2027 three-paycheck-month/pay-period planning, supported by the published `/pay-period-calendar/2027` guide and preconfigured generator examples. Identify an editor whose audience needs that specific use case, then seek approval before outreach. Recheck the missing GA4 builder-action breakdown once the reports recover, and keep monitoring search exposure; neither is a reason to redeploy or request reindexing now.
