@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { MAX_SHIFT_BLOCK_DAYS, SHIFT_MONTH_COUNTS, shiftCalendarStateToParams, type ShiftCalendarState, type ShiftPreset } from "@/lib/shift-calendar";
 import { reportTelemetry } from "@/lib/telemetry-client";
+import { markCalculatorIntent } from "@/lib/calculator-intent";
 import { Download, Printer, Share2 } from "./icons";
 
 export function ShiftCalendarToolbar({ state }: { state: ShiftCalendarState }) {
@@ -13,14 +14,17 @@ export function ShiftCalendarToolbar({ state }: { state: ShiftCalendarState }) {
   const [toast, setToast] = useState("");
   const exportQuery = shiftCalendarStateToParams(state).toString();
 
-  function navigate(mutator: (params: URLSearchParams) => void) {
+  function navigate(mutator: (params: URLSearchParams) => void, valid = true) {
     const next = shiftCalendarStateToParams(state);
+    const before = next.toString();
     mutator(next);
-    startTransition(() => router.replace(`${pathname}?${next}`, { scroll: false }));
+    const href = `${pathname}?${next}`;
+    if (valid && next.toString() !== before) markCalculatorIntent("shift_calendar", href, "settings");
+    startTransition(() => router.replace(href, { scroll: false }));
   }
 
-  function setParam(key: string, value?: string) {
-    navigate((params) => value === undefined ? params.delete(key) : params.set(key, value));
+  function setParam(key: string, value?: string, valid = true) {
+    navigate((params) => value === undefined ? params.delete(key) : params.set(key, value), valid);
   }
 
   function setPreset(preset: ShiftPreset) {
@@ -35,11 +39,11 @@ export function ShiftCalendarToolbar({ state }: { state: ShiftCalendarState }) {
     });
   }
 
-  function setCustomCount(key: "workDays" | "offDays", value: string) {
+  function setCustomCount(key: "workDays" | "offDays", value: string, valid: boolean) {
     navigate((params) => {
       params.set("pattern", "custom");
       params.set(key, value);
-    });
+    }, valid);
   }
 
   async function share() {
@@ -68,7 +72,7 @@ export function ShiftCalendarToolbar({ state }: { state: ShiftCalendarState }) {
         <span className="toolbar-label">Schedule start</span>
         <div className="field">
           <label htmlFor="shift-start-date">First work day</label>
-          <input id="shift-start-date" type="date" min="0001-01-01" max="9999-12-31" value={state.startDate} onChange={(event) => setParam("startDate", event.target.value)} />
+          <input id="shift-start-date" type="date" min="0001-01-01" max="9999-12-31" value={state.startDate} onChange={(event) => setParam("startDate", event.target.value, event.target.validity.valid && event.target.value !== "")} />
           <small className="field-help">The repeating cycle begins with a work block on this date.</small>
         </div>
       </section>
@@ -85,8 +89,8 @@ export function ShiftCalendarToolbar({ state }: { state: ShiftCalendarState }) {
           </select>
         </div>
         {state.preset === "custom" && <div className="shift-count-fields">
-          <div className="field"><label htmlFor="shift-work-days">Work days</label><input id="shift-work-days" type="number" min="1" max={MAX_SHIFT_BLOCK_DAYS} value={state.workDays} onChange={(event) => setCustomCount("workDays", event.target.value)} /></div>
-          <div className="field"><label htmlFor="shift-off-days">Off days</label><input id="shift-off-days" type="number" min="1" max={MAX_SHIFT_BLOCK_DAYS} value={state.offDays} onChange={(event) => setCustomCount("offDays", event.target.value)} /></div>
+          <div className="field"><label htmlFor="shift-work-days">Work days</label><input id="shift-work-days" type="number" min="1" max={MAX_SHIFT_BLOCK_DAYS} value={state.workDays} onChange={(event) => setCustomCount("workDays", event.target.value, event.target.validity.valid && event.target.value !== "")} /></div>
+          <div className="field"><label htmlFor="shift-off-days">Off days</label><input id="shift-off-days" type="number" min="1" max={MAX_SHIFT_BLOCK_DAYS} value={state.offDays} onChange={(event) => setCustomCount("offDays", event.target.value, event.target.validity.valid && event.target.value !== "")} /></div>
         </div>}
       </section>
 

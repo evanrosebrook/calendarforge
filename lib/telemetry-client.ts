@@ -1,7 +1,8 @@
 import { reportGoogleTelemetry } from "./google-analytics";
 import { isLikelyAutomatedUserAgent } from "./bot-detection";
+import type { CalculatorInteraction } from "./calculator-intent";
 
-export type TelemetryName = "ad_viewable" | "calculator_result" | "cls" | "date_guide_action" | "export" | "lcp" | "page_view" | "print" | "share";
+export type TelemetryName = "ad_viewable" | "calculator_result" | "calculator_result_view" | "calculator_complete" | "cls" | "date_guide_action" | "export" | "lcp" | "page_view" | "print" | "share";
 
 export type TelemetryDetails = {
   value?: number;
@@ -9,6 +10,7 @@ export type TelemetryDetails = {
   format?: string;
   surface?: string;
   source?: string;
+  interaction?: CalculatorInteraction;
 };
 
 export function reportTelemetry(name: TelemetryName, details: TelemetryDetails = {}) {
@@ -22,6 +24,7 @@ export function reportTelemetry(name: TelemetryName, details: TelemetryDetails =
     format: details.format,
     surface: details.surface,
     source: details.source,
+    interaction: details.interaction,
   };
   const body = JSON.stringify(event);
   if (navigator.sendBeacon?.("/api/telemetry", body)) return;

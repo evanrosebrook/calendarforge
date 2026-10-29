@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { calculatorResultKey } from "@/lib/calculator-intent";
 import { ShiftCalendarToolbar } from "@/components/shift-calendar-toolbar";
 import { ShiftMiniCalendar } from "@/components/shift-mini-calendar";
 import { createShiftCalendar, parseShiftCalendarState } from "@/lib/shift-calendar";
@@ -23,7 +24,7 @@ export default async function ShiftCalendarPage({ searchParams }: Props) {
   return (
     <main className="calendar-page shift-page">
       <style>{"@page { size: letter landscape; margin: .35in; }"}</style>
-      {Object.keys(params).length > 0 && <CalculatorResultTelemetry surface="shift_calendar" />}
+      {Object.keys(params).length > 0 && <CalculatorResultTelemetry surface="shift_calendar" resultKey={calculatorResultKey(params)} />}
       <div className="shell">
         <div className="page-title-row builder-title-row">
           <div>

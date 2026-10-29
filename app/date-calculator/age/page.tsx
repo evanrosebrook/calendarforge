@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { CalculatorForm } from "@/components/calculator-interactions";
+import { calculatorResultKey } from "@/lib/calculator-intent";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { daysInMonth, toIsoDate, utcDate } from "@/lib/calendar";
@@ -50,11 +52,11 @@ export default async function AgeCalculatorPage({ searchParams }: Props) {
         </div>
 
         <div className="calculator-workspace">
-          <form className="calculator-form" action="/date-calculator/age" method="get">
+          <CalculatorForm surface="age" className="calculator-form" action="/date-calculator/age">
             <div className="calculator-field"><label htmlFor="birth-date">Date of birth</label><input id="birth-date" name="birth" type="date" min="0001-01-01" max="9999-12-31" defaultValue={birthValue} required /></div>
             <div className="calculator-field"><label htmlFor="age-as-of">Age on this date</label><input id="age-as-of" name="asOf" type="date" min="0001-01-01" max="9999-12-31" defaultValue={asOfValue} required /></div>
             <button className="button button-ink" type="submit">Calculate age</button>
-          </form>
+          </CalculatorForm>
 
           <section className="calculator-results" aria-live="polite">
             {!birth || !asOf
@@ -62,7 +64,7 @@ export default async function AgeCalculatorPage({ searchParams }: Props) {
               : reversed || !result
                 ? <CalculatorError title="The birth date comes after the as-of date." copy="Choose an as-of date on or after the date of birth." />
                 : <>
-                  {submitted && <CalculatorResultTelemetry surface="age" />}
+                  {submitted && <CalculatorResultTelemetry surface="age" resultKey={calculatorResultKey(params)} />}
                   <span className="result-kicker">Exact age on {formatCalendarDate(asOf, "medium")}</span>
                   <h2>{durationLabel(result.age)}</h2>
                   <p className="result-summary">Born on <strong>{formatCalendarDate(birth)}</strong>, a {result.bornWeekday}.</p>

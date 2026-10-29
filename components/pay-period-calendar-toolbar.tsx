@@ -11,6 +11,7 @@ import {
   type PayPeriodCalendarState,
 } from "@/lib/pay-period-calendar";
 import { reportTelemetry } from "@/lib/telemetry-client";
+import { markCalculatorIntent } from "@/lib/calculator-intent";
 import { Download, Printer, Share2 } from "./icons";
 
 export function PayPeriodCalendarToolbar({ state }: { state: PayPeriodCalendarState }) {
@@ -20,11 +21,14 @@ export function PayPeriodCalendarToolbar({ state }: { state: PayPeriodCalendarSt
   const [toast, setToast] = useState("");
   const exportQuery = payPeriodCalendarStateToParams(state).toString();
 
-  function setParam(key: string, value?: string) {
+  function setParam(key: string, value?: string, valid = true) {
     const next = payPeriodCalendarStateToParams(state);
+    const before = next.toString();
     if (value === undefined) next.delete(key);
     else next.set(key, value);
-    startTransition(() => router.replace(`${pathname}?${next}`, { scroll: false }));
+    const href = `${pathname}?${next}`;
+    if (valid && next.toString() !== before) markCalculatorIntent("pay_period", href, "settings");
+    startTransition(() => router.replace(href, { scroll: false }));
   }
 
   async function share() {
@@ -53,7 +57,7 @@ export function PayPeriodCalendarToolbar({ state }: { state: PayPeriodCalendarSt
         <span className="toolbar-label">Calendar year</span>
         <div className="field">
           <label htmlFor="pay-period-year">Year to plan</label>
-          <input id="pay-period-year" type="number" min={MIN_PAY_PERIOD_YEAR} max={MAX_PAY_PERIOD_YEAR} value={state.year} onChange={(event) => setParam("year", event.target.value)} />
+          <input id="pay-period-year" type="number" min={MIN_PAY_PERIOD_YEAR} max={MAX_PAY_PERIOD_YEAR} value={state.year} onChange={(event) => setParam("year", event.target.value, event.target.validity.valid && event.target.value !== "")} />
         </div>
       </section>
 
@@ -61,7 +65,7 @@ export function PayPeriodCalendarToolbar({ state }: { state: PayPeriodCalendarSt
         <span className="toolbar-label">Biweekly cycle</span>
         <div className="field">
           <label htmlFor="known-payday">One known payday</label>
-          <input id="known-payday" type="date" min="0001-01-01" max="9999-12-31" value={state.knownPayday} onChange={(event) => setParam("payday", event.target.value)} />
+          <input id="known-payday" type="date" min="0001-01-01" max="9999-12-31" value={state.knownPayday} onChange={(event) => setParam("payday", event.target.value, event.target.validity.valid && event.target.value !== "")} />
           <small className="field-help">Every other payday is counted in 14-day steps from this anchor.</small>
         </div>
         <div className="field">

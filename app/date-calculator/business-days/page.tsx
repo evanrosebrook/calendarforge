@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { CalculatorForm } from "@/components/calculator-interactions";
+import { calculatorResultKey } from "@/lib/calculator-intent";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import {
@@ -99,7 +101,7 @@ function BetweenCalculator({ params, region, today }: { params: SearchParams; re
 
   return (
     <div className="calculator-workspace">
-      <form className="calculator-form" action="/date-calculator/business-days" method="get">
+      <CalculatorForm surface="business_days" className="calculator-form" action="/date-calculator/business-days">
         <input name="mode" type="hidden" value="between" />
         <input name="submitted" type="hidden" value="1" />
         <DateField id="business-start" name="start" label="Start date" region={region} value={startValue} />
@@ -108,7 +110,7 @@ function BetweenCalculator({ params, region, today }: { params: SearchParams; re
         <label className="calculator-check"><input name="includeStart" type="checkbox" value="1" defaultChecked={includeStart} /><span>Count the start date when it is a business day</span></label>
         <label className="calculator-check"><input name="includeEnd" type="checkbox" value="1" defaultChecked={includeEnd} /><span>Count the end date when it is a business day</span></label>
         <button className="button button-ink" type="submit">Count business days</button>
-      </form>
+      </CalculatorForm>
 
       <section className="calculator-results business-day-results" aria-live="polite">
         {!start || !end
@@ -120,7 +122,7 @@ function BetweenCalculator({ params, region, today }: { params: SearchParams; re
             : outsideHolidayRange
               ? <CalculatorError title="Holiday data is unavailable for part of this range." copy={`Choose dates from ${MIN_SUPPORTED_HOLIDAY_YEAR} through ${MAX_SUPPORTED_HOLIDAY_YEAR}, or select Weekends only.`} />
               : result && <>
-                {submitted && <CalculatorResultTelemetry surface="business_days" />}
+                {submitted && <CalculatorResultTelemetry surface="business_days" resultKey={calculatorResultKey(params)} />}
                 <span className="result-kicker">Workdays in this range</span>
                 <h2>{pluralize(result.businessDays, "business day")}</h2>
                 <p className="result-summary">From <strong>{formatCalendarDate(start)}</strong> through <strong>{formatCalendarDate(end)}</strong>. {endpointSummary(includeStart, includeEnd)}</p>
@@ -150,7 +152,7 @@ function ShiftCalculator({ params, region, today }: { params: SearchParams; regi
 
   return (
     <div className="calculator-workspace">
-      <form className="calculator-form" action="/date-calculator/business-days" method="get">
+      <CalculatorForm surface="business_days" className="calculator-form" action="/date-calculator/business-days">
         <input name="mode" type="hidden" value="shift" />
         <DateField id="business-base" name="date" label="Starting date" region={region} value={dateValue} />
         <div className="calculator-field"><label htmlFor="business-direction">Operation</label><select id="business-direction" name="direction" defaultValue={direction}><option value="add">Add business days</option><option value="subtract">Subtract business days</option></select></div>
@@ -158,7 +160,7 @@ function ShiftCalculator({ params, region, today }: { params: SearchParams; regi
         <RegionField region={region} />
         <label className="calculator-check"><input name="includeStart" type="checkbox" value="1" defaultChecked={includeStart} /><span>Count the starting date when it is a business day</span></label>
         <button className="button button-ink" type="submit">Calculate deadline</button>
-      </form>
+      </CalculatorForm>
 
       <section className="calculator-results business-day-results" aria-live="polite">
         {!start || amount === null
@@ -166,7 +168,7 @@ function ShiftCalculator({ params, region, today }: { params: SearchParams; regi
           : outsideHolidayRange
             ? <CalculatorError title="The calculation leaves the verified holiday range." copy={`Reduce the shift, choose dates from ${MIN_SUPPORTED_HOLIDAY_YEAR} through ${MAX_SUPPORTED_HOLIDAY_YEAR}, or select Weekends only.`} />
             : result && <>
-              {submitted && <CalculatorResultTelemetry surface="business_days" />}
+              {submitted && <CalculatorResultTelemetry surface="business_days" resultKey={calculatorResultKey(params)} />}
               <span className="result-kicker">Calculated business date</span>
               <h2>{formatCalendarDate(result.target)}</h2>
               <p className="result-summary">{direction === "add" ? "Adding" : "Subtracting"} <strong>{pluralize(amount, "business day")}</strong> {direction === "add" ? "to" : "from"} {formatCalendarDate(start)}. The starting date {includeStart ? "can count as day one" : "is not counted"}.</p>

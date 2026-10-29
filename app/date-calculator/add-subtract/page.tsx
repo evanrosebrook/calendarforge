@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { CalculatorForm } from "@/components/calculator-interactions";
+import { calculatorResultKey } from "@/lib/calculator-intent";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { toIsoDate, utcDate } from "@/lib/calendar";
@@ -53,7 +55,7 @@ export default async function AddSubtractPage({ searchParams }: Props) {
           <PageActions />
         </div>
         <div className="calculator-workspace">
-          <form className="calculator-form" action="/date-calculator/add-subtract" method="get">
+          <CalculatorForm surface="add_subtract" className="calculator-form" action="/date-calculator/add-subtract">
             <div className="calculator-field"><label htmlFor="base-date">Starting date</label><input id="base-date" name="date" type="date" min="0001-01-01" max="9999-12-31" defaultValue={dateValue} required /></div>
             <div className="calculator-field"><label htmlFor="operation">Operation</label><select id="operation" name="operation" defaultValue={operation}><option value="add">Add</option><option value="subtract">Subtract</option></select></div>
             <div className="amount-grid">
@@ -63,11 +65,11 @@ export default async function AddSubtractPage({ searchParams }: Props) {
               <AmountField name="days" label="Days" value={values.days} max={9999} />
             </div>
             <button className="button button-ink" type="submit">Calculate date</button>
-          </form>
+          </CalculatorForm>
 
           <section className="calculator-results" aria-live="polite">
             {!base ? <div className="calculator-error"><strong>Enter a valid starting date.</strong><p>The supported range is year 0001 through 9999.</p></div> : !result ? <div className="calculator-error"><strong>The result is outside the supported range.</strong><p>Reduce the adjustment so the result remains between years 0001 and 9999.</p></div> : <>
-              {submitted && <CalculatorResultTelemetry surface="add_subtract" />}
+              {submitted && <CalculatorResultTelemetry surface="add_subtract" resultKey={calculatorResultKey(params)} />}
               <span className="result-kicker">Result</span>
               <h2>{formatCalendarDate(result)}</h2>
               <p className="result-summary"><strong>{operation === "add" ? "Added to" : "Subtracted from"}</strong> {formatCalendarDate(base)}.</p>

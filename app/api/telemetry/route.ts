@@ -1,9 +1,10 @@
 import { isLikelyAutomatedUserAgent } from "@/lib/bot-detection";
 
-const allowedMetrics = new Set(["lcp", "cls", "ad_viewable", "calculator_result", "date_guide_action", "page_view", "print", "share", "export"]);
+const allowedMetrics = new Set(["lcp", "cls", "ad_viewable", "calculator_result", "calculator_result_view", "calculator_complete", "date_guide_action", "page_view", "print", "share", "export"]);
 const allowedFormats = new Set(["pdf", "svg", "ics", "csv", "xlsx"]);
 const allowedPlacements = new Set(["business_days", "calendar_after", "days_between", "open_calendar", "print_planner", "year_after"]);
 const allowedSurfaces = new Set(["add_subtract", "age", "builder", "business_days", "calendar", "date_guide", "days_between", "days_until", "fiscal_calendar", "page_actions", "pay_period", "shift_calendar"]);
+const allowedInteractions = new Set(["form", "shortcut", "settings"]);
 
 export async function POST(request: Request) {
   if (isLikelyAutomatedUserAgent(request.headers.get("user-agent") ?? "")) {
@@ -20,6 +21,7 @@ export async function POST(request: Request) {
       format?: string;
       surface?: string;
       source?: string;
+      interaction?: string;
     };
     if (!metric.name || !allowedMetrics.has(metric.name) || typeof metric.value !== "number" || !Number.isFinite(metric.value)) {
       return new Response(null, { status: 400 });
@@ -32,6 +34,7 @@ export async function POST(request: Request) {
       format: typeof metric.format === "string" && allowedFormats.has(metric.format) ? metric.format : undefined,
       surface: typeof metric.surface === "string" && allowedSurfaces.has(metric.surface) ? metric.surface : undefined,
       source: safeSource(metric.source),
+      interaction: typeof metric.interaction === "string" && allowedInteractions.has(metric.interaction) ? metric.interaction : undefined,
     };
     console.info("calendar_forge_metric", event);
     return new Response(null, { status: 204, headers: { "Cache-Control": "no-store" } });

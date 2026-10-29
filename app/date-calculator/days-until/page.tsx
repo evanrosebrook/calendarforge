@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { CalculatorForm, CalculatorShortcut } from "@/components/calculator-interactions";
+import { calculatorResultKey } from "@/lib/calculator-intent";
 import { CountdownResult } from "@/components/countdown-result";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
@@ -49,21 +51,21 @@ export default async function DaysUntilPage({ searchParams }: Props) {
         {start && <nav className="countdown-shortcuts no-print" aria-label="Popular countdown targets">
           <span>Popular targets from {startValue}</span>
           <div>{popularTargets.map(({ event, isoDate }) => (
-            <Link className="button button-ghost button-small" href={`/date-calculator/days-until?start=${startValue}&target=${isoDate}`} key={event.id}>{event.shortLabel} {isoDate.slice(0, 4)}</Link>
+            <CalculatorShortcut surface="days_until" className="button button-ghost button-small" href={`/date-calculator/days-until?start=${startValue}&target=${isoDate}`} key={event.id}>{event.shortLabel} {isoDate.slice(0, 4)}</CalculatorShortcut>
           ))}</div>
           <small>Spring and summer shortcuts use meteorological seasons, which begin March 1 and June 1.</small>
         </nav>}
 
         <div className="calculator-workspace">
-          <form className="calculator-form" action="/date-calculator/days-until" method="get">
+          <CalculatorForm surface="days_until" className="calculator-form" action="/date-calculator/days-until">
             <div className="calculator-field"><label htmlFor="countdown-start">Starting date</label><input id="countdown-start" name="start" type="date" min="0001-01-01" max="9999-12-31" defaultValue={startValue} required /></div>
             <div className="calculator-field"><label htmlFor="countdown-target">Target date</label><input id="countdown-target" name="target" type="date" min="0001-01-01" max="9999-12-31" defaultValue={targetValue} required /></div>
             <button className="button button-ink" type="submit">Calculate countdown</button>
-          </form>
+          </CalculatorForm>
 
           {!start || !target
             ? <section className="calculator-results" aria-live="polite"><div className="calculator-error"><strong>Enter two valid dates.</strong><p>Dates must use the Gregorian calendar and fall between years 0001 and 9999.</p></div></section>
-            : <>{submitted && <CalculatorResultTelemetry surface="days_until" />}<CountdownResult start={start} target={target} /></>}
+            : <>{submitted && <CalculatorResultTelemetry surface="days_until" resultKey={calculatorResultKey(params)} />}<CountdownResult start={start} target={target} /></>}
         </div>
 
         <section className="calculator-explainer no-print" aria-labelledby="countdown-rules-explained">

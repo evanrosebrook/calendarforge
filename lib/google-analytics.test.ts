@@ -2,6 +2,19 @@ import { describe, expect, it } from "vitest";
 import { buildGooglePageView, buildGoogleTelemetryEvent, isGoogleAnalyticsMeasurementId, safeAnalyticsPath } from "./google-analytics";
 
 describe("Google Analytics telemetry", () => {
+  it.each(["calculator_result_view", "calculator_complete"] as const)("keeps %s distinct and strips calculator inputs", (name) => {
+    expect(buildGoogleTelemetryEvent(
+      "G-MMP15FDWR4", name, { surface: "pay_period", interaction: "settings" },
+      "https://calendarforge.net", "/pay-period-calendar?payday=private", "Pay calendar",
+    )).toEqual({
+      name,
+      parameters: {
+        send_to: "G-MMP15FDWR4", page_location: "https://calendarforge.net/pay-period-calendar",
+        page_title: "Pay calendar", surface: "pay_period", interaction: "settings",
+      },
+    });
+  });
+
   it("accepts GA4 measurement IDs only", () => {
     expect(isGoogleAnalyticsMeasurementId("G-MMP15FDWR4")).toBe(true);
     expect(isGoogleAnalyticsMeasurementId("G-")).toBe(false);

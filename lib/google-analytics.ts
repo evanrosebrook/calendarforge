@@ -19,6 +19,8 @@ declare global {
 const googleEventNames: Partial<Record<TelemetryName, string>> = {
   ad_viewable: "ad_viewable",
   calculator_result: "calculator_result",
+  calculator_result_view: "calculator_result_view",
+  calculator_complete: "calculator_complete",
   date_guide_action: "date_guide_action",
   export: "calendar_export",
   print: "calendar_print",
@@ -38,6 +40,7 @@ const allowedSurfaces = new Set([
   "days_until",
   "fiscal_calendar",
   "page_actions",
+  "pay_period",
   "shift_calendar",
 ]);
 
@@ -84,6 +87,7 @@ export function buildGoogleTelemetryEvent(
   if (details.format && allowedFormats.has(details.format)) parameters.format = details.format;
   if (details.surface && allowedSurfaces.has(details.surface)) parameters.surface = details.surface;
   if (details.placement && allowedPlacements.has(details.placement)) parameters.placement = details.placement;
+  if (details.interaction && ["form", "shortcut", "settings"].includes(details.interaction)) parameters.interaction = details.interaction;
   return { name: googleName, parameters };
 }
 

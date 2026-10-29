@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { calculatorResultKey } from "@/lib/calculator-intent";
 import { PayPeriodCalendarToolbar } from "@/components/pay-period-calendar-toolbar";
 import { PayPeriodMiniCalendar } from "@/components/pay-period-mini-calendar";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
@@ -32,7 +33,7 @@ export default async function PayPeriodCalendarPage({ searchParams }: Props) {
         { name: "Biweekly pay-period calendar", path: "/pay-period-calendar" },
       ]} />
       <style>{"@page { size: letter landscape; margin: .35in; }"}</style>
-      {Object.keys(params).length > 0 && <CalculatorResultTelemetry surface="pay_period" />}
+      {Object.keys(params).length > 0 && <CalculatorResultTelemetry surface="pay_period" resultKey={calculatorResultKey(params)} />}
       <div className="shell">
         <div className="page-title-row builder-title-row">
           <div>

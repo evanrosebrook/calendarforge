@@ -6,6 +6,17 @@ afterEach(() => {
 });
 
 describe("telemetry endpoint", () => {
+  it.each(["calculator_result_view", "calculator_complete"])("records %s without raw inputs", async (name) => {
+    const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const response = await POST(request({
+      name, value: 1, path: "/date-calculator/age?birth=private", surface: "age", interaction: "form", birth: "private",
+    }));
+    expect(response.status).toBe(204);
+    const recorded = info.mock.calls[0]?.[1];
+    expect(recorded).toMatchObject({ name, path: "/date-calculator/age", surface: "age", interaction: "form" });
+    expect(JSON.stringify(recorded)).not.toContain("private");
+  });
+
   it("records an allowed event without query strings", async () => {
     const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
     const response = await POST(request({

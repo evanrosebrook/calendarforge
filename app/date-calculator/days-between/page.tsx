@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorResultTelemetry } from "@/components/calculator-result-telemetry";
+import { CalculatorForm, CalculatorShortcut } from "@/components/calculator-interactions";
+import { calculatorResultKey } from "@/lib/calculator-intent";
 import { PageActions } from "@/components/page-actions";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { addUtcDays, toIsoDate } from "@/lib/calendar";
@@ -71,19 +73,19 @@ export default async function DaysBetweenPage({ searchParams }: Props) {
         </div>
         <nav className="date-range-shortcuts no-print" aria-label="Common date ranges">
           <span>Quick ranges from today</span>
-          <div>{quickRanges.map(({ label, href }) => <Link key={label} className="button button-ghost" href={href}>{label}</Link>)}</div>
+          <div>{quickRanges.map(({ label, href }) => <CalculatorShortcut surface="days_between" key={label} className="button button-ghost" href={href}>{label}</CalculatorShortcut>)}</div>
         </nav>
         <div className="calculator-workspace">
-          <form className="calculator-form" action="/date-calculator/days-between" method="get">
+          <CalculatorForm surface="days_between" className="calculator-form" action="/date-calculator/days-between">
             <div className="calculator-field"><label htmlFor="start-date">Start date</label><input id="start-date" name="start" type="date" min="0001-01-01" max="9999-12-31" defaultValue={startValue} required /></div>
             <div className="calculator-field"><label htmlFor="end-date">End date</label><input id="end-date" name="end" type="date" min="0001-01-01" max="9999-12-31" defaultValue={endValue} required /></div>
             <label className="calculator-check"><input name="inclusive" type="checkbox" value="1" defaultChecked={inclusive} /><span>Count both start and end dates</span></label>
             <button className="button button-ink" type="submit">Calculate difference</button>
-          </form>
+          </CalculatorForm>
 
           <section className="calculator-results" aria-live="polite">
             {!result ? <div className="calculator-error"><strong>Enter two valid dates.</strong><p>Dates must use the Gregorian calendar and fall between years 0001 and 9999.</p></div> : <>
-              {submitted && <CalculatorResultTelemetry surface="days_between" />}
+              {submitted && <CalculatorResultTelemetry surface="days_between" resultKey={calculatorResultKey(params)} />}
               <span className="result-kicker">{result.direction < 0 ? "The end date comes before the start date" : inclusive ? "Counting both endpoints" : "Excluding the start date"}</span>
               <h2>{result.totalDays.toLocaleString("en-US")} {result.totalDays === 1 ? "day" : "days"}</h2>
               <p className="result-summary">From <strong>{formatCalendarDate(start!)}</strong> to <strong>{formatCalendarDate(end!)}</strong>.</p>
