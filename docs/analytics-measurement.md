@@ -21,6 +21,12 @@ GA4 key-event changes affect future collection, not historical key-event totals.
 
 References: [GA4 key events](https://support.google.com/analytics/answer/13128484?hl=en), [GA4 engaged-session definition](https://support.google.com/analytics/answer/12195621?hl=en).
 
+## Yearly PDF layout attribution — implemented locally November 4, 2026
+
+Yearly calendar PDF download links continue to send the existing `export` first-party event and GA4 `calendar_export` event, with `format=pdf` and `surface=calendar`. The approved `placement` field distinguishes `year_one_page` from `year_monthly_pack`. Both the prominent download cards and sidebar menu use the same layout tags; each clicked link has one reporter, with no parent click reporter or server-side duplicate. The download is an export action, not proof that a physical calendar was printed.
+
+Custom titles, holiday selections, and other URL settings are not added to event payloads. The new placement values are allowlisted in the first-party endpoint and GA4 event builder. Local browser verification recorded one export for each of two deliberate download clicks, with the expected placements. GA4 was disabled locally; production collection remains to be verified after deployment. No GA4 key-event or custom-dimension configuration was changed for this feature.
+
 ## Saved reports
 
 - Standard-report comparison: **Suspected calculator automation**. Conditions are Country exactly `Singapore` AND Session source / medium exactly `(direct) / (none)` AND Landing page + query string exactly one of `/date-calculator/business-days`, `/date-calculator/add-subtract`, or `/date-calculator/days-between`.

@@ -70,6 +70,7 @@ export default function HomePage() {
             <article className="calculator-card"><span>Date calculator</span><h2>Days between dates</h2><p>Count exact calendar days, weekdays, full weeks, and calendar duration with explicit endpoint rules.</p><Link className="text-link" href={`/date-calculator/days-between?start=${today}`}>Calculate days →</Link></article>
             <article className="calculator-card"><span>Work schedule</span><h2>Shift calendar</h2><p>Turn a 4-on/4-off, 2-on/2-off, 7-on/7-off, or custom rotation into a printable and shareable calendar.</p><Link className="text-link" href={`/shift-calendar?startDate=${today}&pattern=4-4&months=3`}>Build a shift calendar →</Link></article>
           </div>
+          <p className="home-year-link">Planning ahead? <Link className="text-link" href={`/calendar/${year + 1}`}>Get a printable {year + 1} calendar →</Link></p>
         </div>
       </section>
 

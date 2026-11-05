@@ -6,6 +6,13 @@ afterEach(() => {
 });
 
 describe("telemetry endpoint", () => {
+  it.each(["year_one_page", "year_monthly_pack"])("records %s as one export", async (placement) => {
+    const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    expect((await POST(request({ name: "export", value: 1, path: "/calendar/2027?title=Private", format: "pdf", surface: "calendar", placement }))).status).toBe(204);
+    expect(info).toHaveBeenCalledTimes(1);
+    expect(info.mock.calls[0]?.[1]).toMatchObject({ name: "export", path: "/calendar/2027", placement });
+    expect(JSON.stringify(info.mock.calls)).not.toContain("Private");
+  });
   it.each(["calculator_result_view", "calculator_complete"])("records %s without raw inputs", async (name) => {
     const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
     const response = await POST(request({

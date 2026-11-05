@@ -28,7 +28,7 @@ const googleEventNames: Partial<Record<TelemetryName, string>> = {
 };
 
 const allowedFormats = new Set(["pdf", "svg", "ics", "csv", "xlsx"]);
-const allowedPlacements = new Set(["business_days", "calendar_after", "days_between", "open_calendar", "print_planner", "year_after"]);
+const allowedPlacements = new Set(["business_days", "calendar_after", "days_between", "open_calendar", "print_planner", "year_after", "year_one_page", "year_monthly_pack"]);
 const allowedSurfaces = new Set([
   "add_subtract",
   "age",

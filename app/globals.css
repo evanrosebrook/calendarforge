@@ -177,6 +177,28 @@ button, select { cursor: pointer; }
 
 .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .year-sheet { padding: 28px; }
+.year-sheet .sheet-heading { gap: 16px; }
+.year-sheet .sheet-heading h2 { min-width: 0; overflow-wrap: anywhere; }
+.year-sheet .sheet-heading p { flex-shrink: 0; }
+.year-page-intro { max-width: 630px; margin: 13px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.year-downloads { margin-bottom: 20px; }
+.year-download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.year-download-card { padding: 24px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
+.year-download-card:first-child { border-top: 3px solid var(--accent); padding-top: 22px; }
+.year-download-card h2 { margin: 9px 0; font-family: Georgia, serif; font-size: 29px; font-weight: 500; letter-spacing: -.035em; }
+.year-download-card p { max-width: 420px; margin: 0 0 18px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.year-download-settings { margin: 12px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.year-presets { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
+.year-presets > span { color: var(--muted); font-size: 11px; margin-right: 5px; }
+.year-presets a { border: 1px solid var(--line); border-radius: 100px; padding: 8px 13px; font-size: 12px; background: var(--paper); }
+.year-presets a:hover { border-color: var(--accent); color: var(--accent-dark); }
+.year-calendar-guide { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
+.year-calendar-guide > h2 { margin: 10px 0 24px; font-family: Georgia, serif; font-size: 32px; font-weight: 500; letter-spacing: -.035em; }
+.year-guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.year-guide-grid h3 { margin: 0 0 10px; font-size: 15px; }
+.year-guide-grid p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.year-guide-grid .text-link { font-size: 13px; }
+.home-year-link { margin: 24px 0 0; color: var(--muted); font-size: 14px; }
 .mini-calendar { border-top: 2px solid var(--ink); padding-top: 10px; min-width: 0; }
 .mini-title { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
 .mini-title h3 { font-family: Georgia, serif; font-size: 20px; letter-spacing: -.03em; margin: 0; font-weight: 500; }
@@ -606,6 +628,10 @@ button, select { cursor: pointer; }
 }
 
 @media (max-width: 620px) {
+  .year-download-grid, .year-guide-grid { grid-template-columns: 1fr; }
+  .year-download-card { padding: 20px; }
+  .year-download-card:first-child { padding-top: 18px; }
+  .year-download-card .button { width: 100%; }
   .shell { width: min(100% - 24px, 1180px); }
   .header-inner { height: 62px; }
   .site-header .mobile-nav-menu .button { display: flex; }

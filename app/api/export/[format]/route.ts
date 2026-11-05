@@ -1,6 +1,7 @@
 import { createCalendarMonth, createCalendarYear } from "@/lib/calendar";
 import { calendarsToCsv, calendarsToIcs, calendarsToPdf, calendarsToXlsx } from "@/lib/exports";
 import { holidaysForSettings, parseSettings, type SearchParams } from "@/lib/settings";
+import { yearCalendarToPdf } from "@/lib/year-calendar-pdf";
 
 type Context = { params: Promise<{ format: string }> };
 
@@ -12,6 +13,10 @@ export async function GET(request: Request, context: Context) {
   const year = Number(url.searchParams.get("year"));
   const monthValue = url.searchParams.get("month");
   const month = monthValue ? Number(monthValue) : undefined;
+  const layout = url.searchParams.get("layout");
+  if (layout !== null && (format !== "pdf" || !["year", "monthly"].includes(layout) || (layout === "year" && month !== undefined))) {
+    return new Response("Invalid PDF layout", { status: 400 });
+  }
   if (!Number.isInteger(year) || year < 1 || year > 9999 || (month !== undefined && (!Number.isInteger(month) || month < 1 || month > 12))) {
     return new Response("Invalid year or month", { status: 400 });
   }
@@ -30,7 +35,15 @@ export async function GET(request: Request, context: Context) {
   if (format === "ics") return fileResponse(calendarsToIcs(calendars), "text/calendar; charset=utf-8", `${stem}.ics`);
   if (format === "csv") return fileResponse(`\uFEFF${calendarsToCsv(calendars)}`, "text/csv; charset=utf-8", `${stem}.csv`);
   if (format === "pdf") {
-    const bytes = await calendarsToPdf(calendars, { orientation: settings.orientation, paper: settings.paper, title: settings.title });
+    if (layout === "year") {
+      const bytes = await yearCalendarToPdf(calendars, {
+        orientation: settings.orientation, paper: settings.paper, title: settings.title,
+        highlightWeekends: settings.highlightWeekends,
+        holidayLabel: settings.holidayCountry === "ca" ? "Canadian federal holidays" : "U.S. federal holidays",
+      });
+      return fileResponse(new Uint8Array(bytes).buffer, "application/pdf", `${stem}-one-page.pdf`);
+    }
+    const bytes = await calendarsToPdf(calendars, { orientation: settings.orientation, paper: settings.paper, title: settings.title, highlightWeekends: settings.highlightWeekends });
     return fileResponse(new Uint8Array(bytes).buffer, "application/pdf", `${stem}.pdf`);
   }
   const workbook = await calendarsToXlsx(calendars, settings.title);

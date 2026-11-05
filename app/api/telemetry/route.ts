@@ -2,7 +2,7 @@ import { isLikelyAutomatedUserAgent } from "@/lib/bot-detection";
 
 const allowedMetrics = new Set(["lcp", "cls", "ad_viewable", "calculator_result", "calculator_result_view", "calculator_complete", "date_guide_action", "page_view", "print", "share", "export"]);
 const allowedFormats = new Set(["pdf", "svg", "ics", "csv", "xlsx"]);
-const allowedPlacements = new Set(["business_days", "calendar_after", "days_between", "open_calendar", "print_planner", "year_after"]);
+const allowedPlacements = new Set(["business_days", "calendar_after", "days_between", "open_calendar", "print_planner", "year_after", "year_one_page", "year_monthly_pack"]);
 const allowedSurfaces = new Set(["add_subtract", "age", "builder", "business_days", "calendar", "date_guide", "days_between", "days_until", "fiscal_calendar", "page_actions", "pay_period", "shift_calendar"]);
 const allowedInteractions = new Set(["form", "shortcut", "settings"]);
 

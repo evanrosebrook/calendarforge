@@ -37,7 +37,7 @@ function escapeIcs(value: string): string {
   return value.replaceAll("\r\n", "\n").replaceAll("\r", "\n").replaceAll("\\", "\\\\").replaceAll(";", "\\;").replaceAll(",", "\\,").replaceAll("\n", "\\n");
 }
 
-function pdfSafe(value: string): string {
+export function pdfSafe(value: string): string {
   return value.normalize("NFKD")
     .replaceAll(/[\u0300-\u036f]/g, "")
     .replaceAll(/[\u2018\u2019]/g, "'")

@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 import { buildGooglePageView, buildGoogleTelemetryEvent, isGoogleAnalyticsMeasurementId, safeAnalyticsPath } from "./google-analytics";
 
 describe("Google Analytics telemetry", () => {
+  it.each(["year_one_page", "year_monthly_pack"])("attributes PDF downloads to %s without forwarding settings", (placement) => {
+    const event = buildGoogleTelemetryEvent("G-MMP15FDWR4", "export", { format: "pdf", surface: "calendar", placement }, "https://calendarforge.net", "/calendar/2027?title=Private", "2027 calendar");
+    expect(event?.parameters).toMatchObject({ format: "pdf", surface: "calendar", placement, page_location: "https://calendarforge.net/calendar/2027" });
+    expect(JSON.stringify(event)).not.toContain("Private");
+  });
   it.each(["calculator_result_view", "calculator_complete"] as const)("keeps %s distinct and strips calculator inputs", (name) => {
     expect(buildGoogleTelemetryEvent(
       "G-MMP15FDWR4", name, { surface: "pay_period", interaction: "settings" },

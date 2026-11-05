@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import type { WeekStart } from "@/lib/calendar";
 import type { CalendarSettings } from "@/lib/settings";
 import { reportTelemetry } from "@/lib/telemetry-client";
+import { calendarPdfHref } from "@/lib/calendar-downloads";
 import { Download, Printer, Share2 } from "./icons";
 
 type Props = { settings: CalendarSettings; year: number; month?: number; defaultFirstDayOfWeek?: WeekStart };
@@ -112,7 +113,8 @@ export function CalendarToolbar({ settings, year, month, defaultFirstDayOfWeek =
         <div className="download-wrap">
           <button className="button button-ghost" type="button" aria-expanded={downloadsOpen} onClick={() => setDownloadsOpen(!downloadsOpen)}><Download size={15} /> Download</button>
           {downloadsOpen && <div className="download-menu">
-            {(["pdf", "ics", "csv", "xlsx"] as const).map((format) => <a key={format} href={`${exportBase}${format}?${exportQuery}`} onClick={() => reportTelemetry("export", { format, surface: "calendar" })}><Download size={14} /> {format === "ics" ? "Calendar events" : format === "xlsx" ? "Spreadsheet" : format.toUpperCase()} <small>{format}</small></a>)}
+            {!month && <a href={calendarPdfHref(year, settings, "year")} onClick={() => reportTelemetry("export", { format: "pdf", surface: "calendar", placement: "year_one_page" })}><Download size={14} /> Year on one page <small>pdf</small></a>}
+            {(["pdf", "ics", "csv", "xlsx"] as const).map((format) => <a key={format} href={!month && format === "pdf" ? calendarPdfHref(year, settings, "monthly") : `${exportBase}${format}?${exportQuery}`} onClick={() => reportTelemetry("export", { format, surface: "calendar", ...(!month && format === "pdf" ? { placement: "year_monthly_pack" } : {}) })}><Download size={14} /> {format === "pdf" && !month ? "12 monthly pages" : format === "ics" ? "Calendar events" : format === "xlsx" ? "Spreadsheet" : format.toUpperCase()} <small>{format}</small></a>)}
           </div>}
         </div>
         <button className="button button-ghost" type="button" onClick={share}><Share2 size={15} /> Share link</button>

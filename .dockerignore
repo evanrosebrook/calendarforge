@@ -2,6 +2,7 @@
 .gitignore
 .next
 coverage
+output
 node_modules
 *.log
 .DS_Store
