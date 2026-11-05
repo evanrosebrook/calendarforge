@@ -27,6 +27,8 @@ Yearly calendar PDF download links continue to send the existing `export` first-
 
 Custom titles, holiday selections, and other URL settings are not added to event payloads. The new placement values are allowlisted in the first-party endpoint and GA4 event builder. Local browser verification recorded one export for each of two deliberate download clicks, with the expected placements. GA4 was disabled locally; production collection remains to be verified after deployment. No GA4 key-event or custom-dimension configuration was changed for this feature.
 
+Published November 5 in image `calendarforge:20261105-200020-d99e7a20bb58` from commit `d99e7a2`. A live one-page PDF click emitted one first-party `export` with `placement=year_one_page`; production GA4 Realtime layout attribution was not independently checked. The verification visit is labeled `codex_verify / qa`, campaign `yearly_pdf_release_20261105`; exclude it from acquisition interpretation. November 6 is the first complete post-release day.
+
 ## Saved reports
 
 - Standard-report comparison: **Suspected calculator automation**. Conditions are Country exactly `Singapore` AND Session source / medium exactly `(direct) / (none)` AND Landing page + query string exactly one of `/date-calculator/business-days`, `/date-calculator/add-subtract`, or `/date-calculator/days-between`.
